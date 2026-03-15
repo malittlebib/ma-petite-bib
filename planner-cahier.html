@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📓 Mon Cahier Planner • Enseignant</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(135deg, #8B7355 0%, #D2B48C 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  perspective: 1500px;
+}
+
+/* CAHIER CONTAINER */
+.cahier {
+  width: 900px;
+  max-width: 95vw;
+  background: white;
+  box-shadow: 
+    0 10px 40px rgba(0,0,0,0.3),
+    0 30px 60px rgba(0,0,0,0.2),
+    inset 0 0 0 1px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  position: relative;
+  transform: rotateY(-2deg);
+  transition: transform 0.5s ease;
+}
+
+.cahier:hover {
+  transform: rotateY(0deg);
+}
+
+/* RELIURE À SPIRALE */
+.reliure {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  background: linear-gradient(180deg, #FF69B4 0%, #FFB6C1 100%);
+  border-radius: 10px 0 0 10px;
+  box-shadow: inset -3px 0 8px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.spirale {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  height: 100%;
+  justify-content: space-around;
+}
+
+.anneau {
+  width: 30px;
+  height: 30px;
+  border: 4px solid white;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  box-shadow: 
+    inset 0 2px 5px rgba(0,0,0,0.3),
+    0 2px 5px rgba(255,255,255,0.5);
+}
+
+/* PAGE */
+.page {
+  margin-left: 50px;
+  padding: 60px 50px 60px 70px;
+  min-height: 600px;
+  background: 
+    repeating-linear-gradient(
+      transparent,
+      transparent 29px,
+      #E6E6FA 29px,
+      #E6E6FA 30px
+    ),
+    linear-gradient(90deg, 
+      transparent 60px,
+      #FFB6C1 60px,
+      #FFB6C1 62px,
+      transparent 62px
+    ),
+    white;
+  position: relative;
+}
+
+/* HEADER PAGE */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #FFB6C1;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  color: #FF69B4;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.page-date {
+  font-size: 1.2rem;
+  color: #666;
+  background: #FFF9E6;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 2px dashed #FFB6C1;
+}
+
+/* NAVIGATION */
+.nav-pages {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.nav-btn {
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(255,105,180,0.3);
+}
+
+.nav-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(255,105,180,0.4);
+}
+
+.nav-btn:active {
+  transform: translateY(0);
+}
+
+/* ONGLETS */
+.tabs-menu {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 25px;
+  border-bottom: 3px solid #FFB6C1;
+  padding-bottom: 10px;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 12px 20px;
+  background: #FFF9E6;
+  border: 2px solid #FFB6C1;
+  border-bottom: none;
+  border-radius: 15px 15px 0 0;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+  color: #666;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background: #FFE8F0;
+  transform: translateY(-3px);
+}
+
+.tab.active {
+  background: white;
+  color: #FF69B4;
+  font-weight: 800;
+  border-color: #FF69B4;
+  position: relative;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: white;
+}
+
+/* CONTENT */
+.content-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #FF69B4;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background: linear-gradient(135deg, rgba(255,182,193,0.2) 0%, rgba(255,192,203,0.2) 100%);
+  border-radius: 15px;
+  border-left: 5px solid #FF69B4;
+}
+
+/* EMPLOI DU TEMPS */
+.horaire-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.horaire-item {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 15px;
+  background: #FFFAF0;
+  border-radius: 10px;
+  border-left: 5px solid #667eea;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.horaire-item:hover {
+  transform: translateX(10px);
+  box-shadow: 0 4px 10px rgba(102,126,234,0.2);
+}
+
+.horaire-time {
+  min-width: 80px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #667eea;
+  background: white;
+  padding: 8px 15px;
+  border-radius: 10px;
+  text-align: center;
+  border: 3px solid #667eea;
+}
+
+.horaire-content {
+  flex: 1;
+}
+
+.horaire-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.horaire-desc {
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+/* STICKER */
+.sticker {
+  font-size: 2rem;
+  margin-left: 10px;
+}
+
+/* TODO LIST */
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.todo-item {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 15px;
+  background: white;
+  border: 3px solid #FFB6C1;
+  border-radius: 12px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.todo-item:hover {
+  background: #FFF5F8;
+  transform: translateX(5px);
+  box-shadow: 0 4px 10px rgba(255,182,193,0.3);
+}
+
+.todo-checkbox {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border: 4px solid #FF69B4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+
+.todo-item.done .todo-checkbox {
+  background: #27ae60;
+  border-color: #27ae60;
+  color: white;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* NOTES */
+.notes-box {
+  background: #FFF9E6;
+  border: 3px dashed #FFB6C1;
+  border-radius: 15px;
+  padding: 25px;
+  min-height: 200px;
+  font-size: 1.2rem;
+  line-height: 2;
+  color: #2c3e50;
+  position: relative;
+}
+
+.notes-box::before {
+  content: '📝';
+  position: absolute;
+  top: -25px;
+  left: 20px;
+  font-size: 3rem;
+  background: white;
+  padding: 5px 15px;
+  border-radius: 50%;
+  border: 3px solid #FFB6C1;
+}
+
+.notes-box[contenteditable="true"]:empty::before {
+  content: '✏️ Écrivez vos notes ici...';
+  color: #aaa;
+  font-style: italic;
+  position: absolute;
+  top: 25px;
+  left: 25px;
+}
+
+/* STICKERS PANEL */
+.stickers-drawer {
+  background: linear-gradient(135deg, #FFF9E6 0%, #FFFAF0 100%);
+  border: 3px solid #FFB6C1;
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.stickers-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #FF69B4;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.stickers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.sticker-btn {
+  font-size: 2.5rem;
+  background: white;
+  border: 2px solid #FFB6C1;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.sticker-btn:hover {
+  transform: scale(1.3);
+  box-shadow: 0 4px 10px rgba(255,105,180,0.3);
+  z-index: 10;
+}
+
+/* COIN DE PAGE */
+.page-corner {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, transparent 50%, #FFB6C1 50%);
+  border-radius: 0 0 10px 0;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0.7;
+}
+
+.page-corner:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* NUMERO PAGE */
+.page-number {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  color: #999;
+  background: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  border: 2px solid #FFB6C1;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .cahier {
+    width: 100%;
+  }
+  
+  .page {
+    padding: 40px 30px;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+}
+
+/* PRINT */
+@media print {
+  body {
+    background: white;
+  }
+  
+  .reliure,
+  .nav-pages,
+  .page-corner,
+  .stickers-drawer {
+    display: none;
+  }
+  
+  .cahier {
+    box-shadow: none;
+    transform: none;
+  }
+  
+  .page {
+    margin-left: 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="cahier">
+  
+  <!-- RELIURE -->
+  <div class="reliure">
+    <div class="spirale">
+      <div class="anneau"></div>
+      <div class="anneau"></div>
+      <div class="anneau"></div>
+      <div class="anneau"></div>
+      <div class="anneau"></div>
+      <div class="anneau"></div>
+      <div class="anneau"></div>
+      <div class="anneau"></div>
+      <div class="anneau"></div>
+      <div class="anneau"></div>
+    </div>
+  </div>
+
+  <!-- PAGE -->
+  <div class="page">
+    
+    <!-- HEADER -->
+    <div class="page-header">
+      <div class="page-title">
+        <span>📖</span>
+        <span>Mon Planner</span>
+      </div>
+      <div class="page-date">
+        Semaine du 3 au 7 Mars 2026
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="nav-pages">
+      <button class="nav-btn" onclick="changerPage(-1)">
+        <i class="fas fa-chevron-left"></i> Page précédente
+      </button>
+      <button class="nav-btn" onclick="window.location.href='planner-index.html'">
+        <i class="fas fa-home"></i> Accueil
+      </button>
+      <button class="nav-btn" onclick="changerPage(1)">
+        Page suivante <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- ONGLETS -->
+    <div class="tabs-menu">
+      <div class="tab active">📅 Semaine</div>
+      <div class="tab">✅ To-Do</div>
+      <div class="tab">📝 Notes</div>
+      <div class="tab">🎯 Priorités</div>
+      <div class="tab">💡 Idées</div>
+    </div>
+
+    <!-- EMPLOI DU TEMPS -->
+    <div class="content-section">
+      <div class="section-title">
+        <span>🕐</span>
+        <span>Lundi 3 Mars</span>
+      </div>
+      <div class="horaire-list">
+        <div class="horaire-item">
+          <div class="horaire-time">9h00</div>
+          <div class="horaire-content">
+            <div class="horaire-title">Accueil & Rituels</div>
+            <div class="horaire-desc">Date, météo, appel, comptage</div>
+          </div>
+          <span class="sticker">☀️</span>
+        </div>
+        <div class="horaire-item">
+          <div class="horaire-time">9h30</div>
+          <div class="horaire-content">
+            <div class="horaire-title">Phonologie</div>
+            <div class="horaire-desc">Atelier syllabes - Groupe jaune</div>
+          </div>
+          <span class="sticker">📚</span>
+        </div>
+        <div class="horaire-item">
+          <div class="horaire-time">10h30</div>
+          <div class="horaire-content">
+            <div class="horaire-title">Récréation</div>
+            <div class="horaire-desc">Cour extérieure</div>
+          </div>
+          <span class="sticker">🏃</span>
+        </div>
+        <div class="horaire-item">
+          <div class="horaire-time">11h00</div>
+          <div class="horaire-content">
+            <div class="horaire-title">Mathématiques</div>
+            <div class="horaire-desc">Ateliers manipulation - Nombres 1 à 5</div>
+          </div>
+          <span class="sticker">🔢</span>
+        </div>
+        <div class="horaire-item">
+          <div class="horaire-time">14h00</div>
+          <div class="horaire-content">
+            <div class="horaire-title">Sieste / Repos calme</div>
+            <div class="horaire-desc">Musique douce, albums</div>
+          </div>
+          <span class="sticker">😴</span>
+        </div>
+        <div class="horaire-item">
+          <div class="horaire-time">15h30</div>
+          <div class="horaire-content">
+            <div class="horaire-title">Arts Visuels</div>
+            <div class="horaire-desc">Peinture au doigt - Printemps</div>
+          </div>
+          <span class="sticker">🎨</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TO-DO LIST -->
+    <div class="content-section">
+      <div class="section-title">
+        <span>✅</span>
+        <span>À faire aujourd'hui</span>
+      </div>
+      <div class="todo-list">
+        <div class="todo-item done" onclick="toggleTodo(this)">
+          <div class="todo-checkbox">✓</div>
+          <div class="todo-text">Préparer matériel phonologie</div>
+        </div>
+        <div class="todo-item" onclick="toggleTodo(this)">
+          <div class="todo-checkbox"></div>
+          <div class="todo-text">Imprimer fiches maths</div>
+        </div>
+        <div class="todo-item" onclick="toggleTodo(this)">
+          <div class="todo-checkbox"></div>
+          <div class="todo-text">Appeler parents Emma (comportement)</div>
+        </div>
+        <div class="todo-item done" onclick="toggleTodo(this)">
+          <div class="todo-checkbox">✓</div>
+          <div class="todo-text">Commander peinture</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="content-section">
+      <div class="section-title">
+        <span>📝</span>
+        <span>Notes & Observations</span>
+      </div>
+      <div class="notes-box" contenteditable="true">
+Points positifs : bonne participation en phonologie ⭐
+
+À surveiller : Emma fatiguée cette semaine 😴
+
+Idées pour la suite : atelier pâte à modeler très apprécié 💡
+      </div>
+    </div>
+
+    <!-- STICKERS -->
+    <div class="stickers-drawer">
+      <div class="stickers-title">✨ Mes Stickers ✨</div>
+      <div class="stickers-grid">
+        <div class="sticker-btn" title="Important">⭐</div>
+        <div class="sticker-btn" title="Café">☕</div>
+        <div class="sticker-btn" title="Sport">🤸</div>
+        <div class="sticker-btn" title="Arts">🎨</div>
+        <div class="sticker-btn" title="Lecture">📚</div>
+        <div class="sticker-btn" title="Musique">🎵</div>
+        <div class="sticker-btn" title="Jeu">🎲</div>
+        <div class="sticker-btn" title="Réunion">👥</div>
+        <div class="sticker-btn" title="Sortie">🚌</div>
+        <div class="sticker-btn" title="Gâteau">🎂</div>
+        <div class="sticker-btn" title="Check">✅</div>
+        <div class="sticker-btn" title="Attention">⚠️</div>
+        <div class="sticker-btn" title="Coeur">❤️</div>
+        <div class="sticker-btn" title="Pouce">👍</div>
+        <div class="sticker-btn" title="Soleil">☀️</div>
+        <div class="sticker-btn" title="Lune">🌙</div>
+      </div>
+    </div>
+
+    <!-- COIN DE PAGE -->
+    <div class="page-corner" title="Tourner la page" onclick="changerPage(1)"></div>
+    
+    <!-- NUMERO PAGE -->
+    <div class="page-number">Page 1</div>
+
+  </div>
+
+</div>
+
+<script>
+// Toggle TODO
+function toggleTodo(element) {
+  element.classList.toggle('done');
+  sauvegarder();
+}
+
+// Changer de page
+function changerPage(direction) {
+  alert(`Navigation vers page ${direction > 0 ? 'suivante' : 'précédente'} (à implémenter)`);
+}
+
+// Stickers
+document.querySelectorAll('.sticker-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const emoji = this.textContent;
+    navigator.clipboard.writeText(emoji);
+    
+    // Animation
+    this.style.transform = 'scale(1.5) rotate(360deg)';
+    setTimeout(() => {
+      this.style.transform = '';
+    }, 400);
+    
+    // Toast notification
+    showToast('Sticker copié ! ' + emoji);
+  });
+});
+
+// Toast notification
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #27ae60;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: 700;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    animation: slideIn 0.3s ease;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.remove();
+  }, 2000);
+}
+
+// Sauvegarde automatique
+function sauvegarder() {
+  const notes = document.querySelector('.notes-box').innerHTML;
+  localStorage.setItem('cahier_notes', notes);
+}
+
+// Charger données
+document.addEventListener('DOMContentLoaded', function() {
+  const savedNotes = localStorage.getItem('cahier_notes');
+  if (savedNotes) {
+    document.querySelector('.notes-box').innerHTML = savedNotes;
+  }
+  
+  // Auto-save notes
+  document.querySelector('.notes-box').addEventListener('input', sauvegarder);
+});
+
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

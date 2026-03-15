@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vue Jour • Mon Planner</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #FF6B9D;
+  --primary-dark: #E91E63;
+  --secondary: #FFD93D;
+  --accent: #667eea;
+  --success: #27ae60;
+  --bg-main: #f8f9fa;
+  --bg-card: white;
+  --text-main: #2c3e50;
+  --text-light: #7f8c8d;
+  --border: #e9ecef;
+  --shadow: rgba(0,0,0,0.1);
+}
+
+body {
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(233, 30, 99, 0.3);
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.header-title h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.header-title p {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.header-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-light {
+  background: white;
+  color: var(--primary);
+}
+
+.btn-light:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255,255,255,0.3);
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* DATE BAR */
+.date-bar {
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.date-display {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.date-icon {
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+.date-info h2 {
+  font-size: 1.5rem;
+  color: var(--text-main);
+}
+
+.date-info p {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.date-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-nav {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: var(--bg-main);
+  color: var(--primary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-nav:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* GRID LAYOUT */
+.planner-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 30px;
+}
+
+/* MAIN COLUMN */
+.main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* SECTION CARD */
+.section-card {
+  background: var(--bg-card);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+
+.section-card:hover {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid var(--border);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.section-icon {
+  color: var(--primary);
+  font-size: 1.8rem;
+}
+
+.btn-add {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 3px 10px rgba(255,107,157,0.3);
+}
+
+.btn-add:hover {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  transform: scale(1.08);
+  box-shadow: 0 5px 15px rgba(255,107,157,0.4);
+}
+
+/* EMPLOI DU TEMPS */
+.horaire-item {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(102,126,234,0.08) 0%, rgba(255,255,255,1) 100%);
+  border-radius: 12px;
+  margin-bottom: 15px;
+  border-left: 5px solid var(--accent);
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.horaire-item:hover {
+  background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(255,255,255,1) 100%);
+  transform: translateX(8px);
+  box-shadow: 0 4px 15px rgba(102,126,234,0.2);
+}
+
+.horaire-time {
+  min-width: 90px;
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 1.1rem;
+  background: white;
+  padding: 8px 15px;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid var(--accent);
+}
+
+.horaire-content {
+  flex: 1;
+}
+
+.horaire-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-main);
+  font-size: 1.1rem;
+}
+
+.horaire-desc {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-light);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.3;
+}
+
+/* TO-DO LIST */
+.todo-item {
+  display: flex;
+  gap: 15px;
+  padding: 18px;
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: all 0.3s;
+  align-items: start;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.todo-item:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 15px rgba(255,107,157,0.15);
+  transform: translateX(5px);
+}
+
+.todo-checkbox {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border: 3px solid var(--primary);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.todo-checkbox:hover {
+  background: var(--primary);
+  color: white;
+  transform: scale(1.1);
+}
+
+.todo-checkbox.checked {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+}
+
+.todo-text {
+  flex: 1;
+  padding-top: 4px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.todo-text.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.todo-delete {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  opacity: 0;
+  font-size: 1rem;
+}
+
+.todo-item:hover .todo-delete {
+  opacity: 1;
+}
+
+.todo-delete:hover {
+  background: #e74c3c;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* INPUT FORM */
+.input-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.input-group input,
+.input-group textarea {
+  flex: 1;
+  padding: 15px;
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s;
+  background: white;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(255,107,157,0.1);
+}
+
+.input-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* SIDEBAR */
+.sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* PRIORITES */
+.priorite-item {
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(255,217,61,0.2) 0%, rgba(255,255,255,1) 100%);
+  border-radius: 12px;
+  border: 2px solid var(--secondary);
+  border-left: 6px solid var(--secondary);
+  margin-bottom: 15px;
+  transition: all 0.3s;
+  box-shadow: 0 2px 10px rgba(255,217,61,0.2);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.priorite-item:hover {
+  transform: translateX(-8px);
+  box-shadow: -8px 8px 20px rgba(255,217,61,0.3);
+  border-color: var(--primary);
+}
+
+.priorite-number {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 35px;
+  font-weight: 800;
+  margin-right: 15px;
+  font-size: 1.1rem;
+  box-shadow: 0 3px 10px rgba(255,107,157,0.3);
+}
+
+/* NOTES */
+.notes-area {
+  width: 100%;
+  min-height: 200px;
+  padding: 20px;
+  border: 3px solid var(--border);
+  border-radius: 15px;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.8;
+  resize: vertical;
+  transition: all 0.3s;
+  background: white;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.notes-area:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(255,107,157,0.03);
+  box-shadow: 0 0 0 4px rgba(255,107,157,0.1), inset 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .planner-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-title h1 {
+    font-size: 1.5rem;
+  }
+  
+  .date-bar {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-content">
+    <div class="header-title">
+      <h1>🌅 Vue Jour</h1>
+      <p>Organisez votre journée en détail</p>
+    </div>
+    <div class="header-nav">
+      <a href="planner-index.html" class="btn btn-light">
+        <i class="fas fa-arrow-left"></i> Retour
+      </a>
+      <button class="btn btn-light" onclick="window.print()">
+        <i class="fas fa-print"></i> Imprimer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTAINER -->
+<div class="container">
+  
+  <!-- DATE BAR -->
+  <div class="date-bar">
+    <div class="date-display">
+      <div class="date-icon">📅</div>
+      <div class="date-info">
+        <h2 id="dateActuelle">Jeudi 5 Mars 2026</h2>
+        <p id="detailDate">Semaine 10 • Période 4</p>
+      </div>
+    </div>
+    <div class="date-nav">
+      <button class="btn-nav" onclick="changerJour(-1)">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="btn-nav" onclick="allerAujourdhui()">
+        <i class="fas fa-calendar-day"></i>
+      </button>
+      <button class="btn-nav" onclick="changerJour(1)">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="planner-grid">
+    
+    <!-- MAIN COLUMN -->
+    <div class="main-column">
+      
+      <!-- EMPLOI DU TEMPS -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3 class="section-title">
+            <i class="fas fa-clock section-icon"></i>
+            Emploi du temps
+          </h3>
+          <button class="btn-add" onclick="ajouterHoraire()">
+            <i class="fas fa-plus"></i> Ajouter
+          </button>
+        </div>
+        <div id="horairesContainer">
+          <div class="horaire-item">
+            <div class="horaire-time">8h30</div>
+            <div class="horaire-content">
+              <div class="horaire-title">Accueil</div>
+              <div class="horaire-desc">Jeux libres, coins jeux</div>
+            </div>
+          </div>
+          <div class="horaire-item">
+            <div class="horaire-time">9h00</div>
+            <div class="horaire-content">
+              <div class="horaire-title">Rituels</div>
+              <div class="horaire-desc">Date, appel, météo, comptage</div>
+            </div>
+          </div>
+          <div class="horaire-item">
+            <div class="horaire-time">9h30</div>
+            <div class="horaire-content">
+              <div class="horaire-title">Phonologie</div>
+              <div class="horaire-desc">Atelier syllabes - Groupe jaune</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TO-DO LIST -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3 class="section-title">
+            <i class="fas fa-list-check section-icon"></i>
+            Ma to-do list
+          </h3>
+          <button class="btn-add" onclick="afficherFormulaireTodo()">
+            <i class="fas fa-plus"></i> Ajouter
+          </button>
+        </div>
+        <div id="todoContainer">
+          <!-- Les todos seront ajoutés ici -->
+        </div>
+        <div class="input-group" id="todoForm" style="display: none;">
+          <input type="text" id="todoInput" placeholder="Nouvelle tâche..." onkeypress="if(event.key==='Enter') ajouterTodo()">
+          <button class="btn-add" onclick="ajouterTodo()">
+            <i class="fas fa-check"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3 class="section-title">
+            <i class="fas fa-sticky-note section-icon"></i>
+            Notes & Réflexions
+          </h3>
+          <button class="btn-add" onclick="sauvegarderNotes()">
+            <i class="fas fa-save"></i> Sauvegarder
+          </button>
+        </div>
+        <textarea 
+          class="notes-area" 
+          id="notesJour"
+          placeholder="Écrivez vos notes, observations, réflexions de la journée...&#10;&#10;• Points positifs&#10;• Difficultés rencontrées&#10;• Idées pour la prochaine fois&#10;• Observations sur les élèves"
+        ></textarea>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-column">
+      
+      <!-- PRIORITÉS -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3 class="section-title">
+            <i class="fas fa-star section-icon"></i>
+            Top Priorités
+          </h3>
+        </div>
+        <div id="prioritesContainer">
+          <!-- Les priorités seront ajoutées ici -->
+        </div>
+        <div class="input-group">
+          <input type="text" id="prioriteInput" placeholder="Nouvelle priorité..." onkeypress="if(event.key==='Enter') ajouterPriorite()">
+          <button class="btn-add" onclick="ajouterPriorite()">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- CITATIONS DU JOUR -->
+      <div class="section-card" style="background: linear-gradient(135deg, rgba(255,107,157,0.1) 0%, rgba(255,217,61,0.1) 100%);">
+        <div class="section-header">
+          <h3 class="section-title">
+            <i class="fas fa-quote-left section-icon"></i>
+            Citation du jour
+          </h3>
+        </div>
+        <p style="font-style: italic; color: var(--text-main); line-height: 1.8;" id="citationJour">
+          "L'éducation est l'arme la plus puissante qu'on puisse utiliser pour changer le monde."
+        </p>
+        <p style="text-align: right; color: var(--text-light); margin-top: 10px; font-size: 0.9rem;">
+          — Nelson Mandela
+        </p>
+      </div>
+
+      <!-- HUMEUR DU JOUR -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3 class="section-title">
+            <i class="fas fa-smile section-icon"></i>
+            Mon humeur
+          </h3>
+        </div>
+        <div style="display: flex; justify-content: space-around; gap: 10px; font-size: 2rem;">
+          <span onclick="selecterHumeur('😊')" style="cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">😊</span>
+          <span onclick="selecterHumeur('😐')" style="cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">😐</span>
+          <span onclick="selecterHumeur('😢')" style="cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">😢</span>
+          <span onclick="selecterHumeur('😴')" style="cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">😴</span>
+          <span onclick="selecterHumeur('🤩')" style="cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">🤩</span>
+        </div>
+        <p id="humeurSelectionnee" style="text-align: center; margin-top: 15px; color: var(--text-light); font-size: 0.9rem;"></p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// Date management
+let dateActuelle = new Date();
+
+function afficherDate() {
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const dateStr = dateActuelle.toLocaleDateString('fr-FR', options);
+  const dateCapitalized = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+  
+  document.getElementById('dateActuelle').textContent = dateCapitalized;
+  
+  const semaine = getNumeroSemaine(dateActuelle);
+  const periode = getPeriode(dateActuelle);
+  document.getElementById('detailDate').textContent = `Semaine ${semaine} • ${periode}`;
+  
+  localStorage.setItem('planner_date', dateActuelle.toISOString());
+  chargerDonnees();
+}
+
+function getNumeroSemaine(date) {
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+}
+
+function getPeriode(date) {
+  const mois = date.getMonth() + 1;
+  if (mois === 9 || mois === 10) return 'Période 1';
+  if (mois === 11 || mois === 12) return 'Période 2';
+  if (mois === 1 || mois === 2) return 'Période 3';
+  if (mois === 3 || mois === 4) return 'Période 4';
+  return 'Période 5';
+}
+
+function changerJour(delta) {
+  dateActuelle.setDate(dateActuelle.getDate() + delta);
+  afficherDate();
+}
+
+function allerAujourdhui() {
+  dateActuelle = new Date();
+  afficherDate();
+}
+
+// TO-DO LIST
+let todos = [];
+
+function afficherFormulaireTodo() {
+  const form = document.getElementById('todoForm');
+  form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+  if (form.style.display === 'flex') {
+    document.getElementById('todoInput').focus();
+  }
+}
+
+function ajouterTodo() {
+  const input = document.getElementById('todoInput');
+  const text = input.value.trim();
+  
+  if (text) {
+    todos.push({ text, fait: false, date: dateActuelle.toDateString() });
+    input.value = '';
+    sauvegarderTodos();
+    afficherTodos();
+  }
+}
+
+function toggleTodo(index) {
+  todos[index].fait = !todos[index].fait;
+  sauvegarderTodos();
+  afficherTodos();
+}
+
+function supprimerTodo(index) {
+  if (confirm('Supprimer cette tâche ?')) {
+    todos.splice(index, 1);
+    sauvegarderTodos();
+    afficherTodos();
+  }
+}
+
+function afficherTodos() {
+  const container = document.getElementById('todoContainer');
+  const todosJour = todos.filter(t => t.date === dateActuelle.toDateString());
+  
+  if (todosJour.length === 0) {
+    container.innerHTML = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>Aucune tâche pour aujourd\'hui</p></div>';
+    return;
+  }
+  
+  container.innerHTML = todosJour.map((todo, index) => `
+    <div class="todo-item">
+      <div class="todo-checkbox ${todo.fait ? 'checked' : ''}" onclick="toggleTodo(${index})">
+        ${todo.fait ? '<i class="fas fa-check"></i>' : ''}
+      </div>
+      <div class="todo-text ${todo.fait ? 'completed' : ''}">${todo.text}</div>
+      <button class="todo-delete" onclick="supprimerTodo(${index})">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  `).join('');
+}
+
+function sauvegarderTodos() {
+  localStorage.setItem('planner_todos', JSON.stringify(todos));
+}
+
+// PRIORITÉS
+let priorites = [];
+
+function ajouterPriorite() {
+  const input = document.getElementById('prioriteInput');
+  const text = input.value.trim();
+  
+  if (text && priorites.length < 5) {
+    priorites.push({ text, date: dateActuelle.toDateString() });
+    input.value = '';
+    sauvegarderPriorites();
+    afficherPriorites();
+  } else if (priorites.length >= 5) {
+    alert('Maximum 5 priorités par jour !');
+  }
+}
+
+function afficherPriorites() {
+  const container = document.getElementById('prioritesContainer');
+  const prioritesJour = priorites.filter(p => p.date === dateActuelle.toDateString());
+  
+  if (prioritesJour.length === 0) {
+    container.innerHTML = '<div class="empty-state" style="padding: 20px;"><i class="fas fa-star"></i><p>Aucune priorité</p></div>';
+    return;
+  }
+  
+  container.innerHTML = prioritesJour.map((p, index) => `
+    <div class="priorite-item">
+      <span class="priorite-number">${index + 1}</span>
+      ${p.text}
+    </div>
+  `).join('');
+}
+
+function sauvegarderPriorites() {
+  localStorage.setItem('planner_priorites', JSON.stringify(priorites));
+}
+
+// NOTES
+function sauvegarderNotes() {
+  const notes = document.getElementById('notesJour').value;
+  const key = `planner_notes_${dateActuelle.toDateString()}`;
+  localStorage.setItem(key, notes);
+  
+  // Animation de confirmation
+  const btn = event.target;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-check"></i> Sauvegardé !';
+  btn.style.background = '#27ae60';
+  setTimeout(() => {
+    btn.innerHTML = originalText;
+    btn.style.background = '';
+  }, 2000);
+}
+
+// HUMEUR
+function selecterHumeur(emoji) {
+  const key = `planner_humeur_${dateActuelle.toDateString()}`;
+  localStorage.setItem(key, emoji);
+  document.getElementById('humeurSelectionnee').textContent = `Humeur sélectionnée : ${emoji}`;
+}
+
+// CHARGEMENT DES DONNÉES
+function chargerDonnees() {
+  // Charger todos
+  const savedTodos = localStorage.getItem('planner_todos');
+  if (savedTodos) {
+    todos = JSON.parse(savedTodos);
+  }
+  afficherTodos();
+  
+  // Charger priorités
+  const savedPriorites = localStorage.getItem('planner_priorites');
+  if (savedPriorites) {
+    priorites = JSON.parse(savedPriorites);
+  }
+  afficherPriorites();
+  
+  // Charger notes
+  const key = `planner_notes_${dateActuelle.toDateString()}`;
+  const savedNotes = localStorage.getItem(key);
+  if (savedNotes) {
+    document.getElementById('notesJour').value = savedNotes;
+  } else {
+    document.getElementById('notesJour').value = '';
+  }
+  
+  // Charger humeur
+  const humeurKey = `planner_humeur_${dateActuelle.toDateString()}`;
+  const savedHumeur = localStorage.getItem(humeurKey);
+  if (savedHumeur) {
+    document.getElementById('humeurSelectionnee').textContent = `Humeur sélectionnée : ${savedHumeur}`;
+  } else {
+    document.getElementById('humeurSelectionnee').textContent = '';
+  }
+}
+
+// INIT
+document.addEventListener('DOMContentLoaded', function() {
+  const savedDate = localStorage.getItem('planner_date');
+  if (savedDate) {
+    dateActuelle = new Date(savedDate);
+  }
+  
+  afficherDate();
+});
+</script>
+
+</body>
+</html>

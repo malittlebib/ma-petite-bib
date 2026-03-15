@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programmations Cycle 1</title>
+<style>
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  color: white;
+}
+
+.loading {
+  text-align: center;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+h2 { font-size: 1.5rem; margin-bottom: 10px; }
+p { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div class="loading">
+  <div class="spinner"></div>
+  <h2>Chargement des programmations...</h2>
+  <p id="niveau-text">Redirection en cours</p>
+</div>
+
+<script>
+// Récupérer le niveau choisi
+const niveau = localStorage.getItem('niveau_classe');
+
+// Mapping des niveaux vers les fichiers
+const programmationsFiles = {
+  'PS': 'programmations-ps.html',
+  'MS': 'programmations-ms.html',
+  'GS': 'programmations-gs.html'
+};
+
+if (niveau && programmationsFiles[niveau]) {
+  // Afficher le niveau détecté
+  document.getElementById('niveau-text').textContent = `Niveau détecté : ${niveau}`;
+  
+  // Rediriger vers le bon fichier
+  setTimeout(() => {
+    window.location.href = programmationsFiles[niveau];
+  }, 500);
+} else {
+  // Si pas de niveau, proposer de choisir
+  document.querySelector('.loading').innerHTML = `
+    <h2 style="margin-bottom: 30px;">⚠️ Aucun niveau sélectionné</h2>
+    <p style="margin-bottom: 30px;">Veuillez d'abord choisir votre niveau dans la Gestion de Classe</p>
+    <a href="gestion-classe.html" style="display: inline-block; padding: 15px 30px; background: white; color: #8b6f47; text-decoration: none; border-radius: 10px; font-weight: 700; transition: transform 0.2s;">
+      → Aller à Gestion de Classe
+    </a>
+  `;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Fiche Élève</title>
+  <script src="sync-data.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    .btn {
+      padding: 10px 20px;
+      background: #8b6f47;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔍 Debug Fiche Élève</h1>
+  
+  <button class="btn" onclick="tester()">Tester le chargement</button>
+  <button class="btn" onclick="window.location.href='index.html'">Retour</button>
+  
+  <div id="resultat"></div>
+
+  <script>
+    function tester() {
+      const resultat = document.getElementById('resultat');
+      let html = '<h2>📊 Résultats du test</h2>';
+      
+      // 1. Récupérer les élèves
+      const eleves = window.SyncData.getEleves();
+      html += `<h3>1. Nombre d'élèves : ${eleves ? eleves.length : 0}</h3>`;
+      
+      if (!eleves || eleves.length === 0) {
+        html += '<p style="color: red;">❌ Aucun élève trouvé !</p>';
+        resultat.innerHTML = html;
+        return;
+      }
+      
+      // 2. Afficher le premier élève
+      const premier = eleves[0];
+      html += '<h3>2. Premier élève (structure complète) :</h3>';
+      html += '<pre>' + JSON.stringify(premier, null, 2) + '</pre>';
+      
+      // 3. Tester l'accès aux champs
+      html += '<h3>3. Test d\'accès aux champs :</h3>';
+      html += '<table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%;">';
+      html += '<tr><th>Champ</th><th>Valeur</th><th>Type</th><th>Status</th></tr>';
+      
+      const champs = [
+        'id', 'nom', 'prenom', 'dateNaissance', 'genre', 'fratrie',
+        'parent1Nom', 'parent1Tel', 'parent1Email',
+        'parent2Nom', 'parent2Tel', 'parent2Email',
+        'pai', 'allergies', 'regime', 'traitements', 'besoinsParticuliers', 'photo'
+      ];
+      
+      champs.forEach(champ => {
+        const valeur = premier[champ];
+        const type = typeof valeur;
+        const status = valeur ? '✅' : '❌';
+        html += `<tr>
+          <td><strong>${champ}</strong></td>
+          <td>${valeur || '<em>vide</em>'}</td>
+          <td>${type}</td>
+          <td>${status}</td>
+        </tr>`;
+      });
+      
+      html += '</table>';
+      
+      // 4. Simuler l'ouverture de modal
+      html += '<h3>4. Simulation chargement dans inputs :</h3>';
+      html += '<pre>';
+      html += `document.getElementById('elevePrenom').value = "${premier.prenom || ''}";\n`;
+      html += `document.getElementById('eleveNom').value = "${premier.nom || ''}";\n`;
+      html += `document.getElementById('eleveDateNaissance').value = "${premier.dateNaissance || ''}";\n`;
+      html += `// etc...\n`;
+      html += '</pre>';
+      
+      // 5. Vérifier si les éléments existent dans le DOM
+      html += '<h3>5. Vérification des inputs dans gestion-classe.html :</h3>';
+      const inputs = [
+        'elevePrenom', 'eleveNom', 'eleveDateNaissance', 'eleveGenre',
+        'eleveParent1Nom', 'eleveParent1Tel', 'elevePAI', 'eleveAllergies'
+      ];
+      
+      html += '<p><em>Ouvrez cette page DEPUIS gestion-classe.html pour voir si les inputs existent</em></p>';
+      html += '<ul>';
+      inputs.forEach(id => {
+        const existe = document.getElementById(id) !== null;
+        html += `<li>${id}: ${existe ? '✅ Existe' : '❌ N\'existe pas'}</li>`;
+      });
+      html += '</ul>';
+      
+      resultat.innerHTML = html;
+    }
+  </script>
+
+</body>
+</html>

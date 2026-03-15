@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progressions & Programmations GS</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #667eea;
+  --primary-dark: #764ba2;
+  --bg: #f5f7fa;
+  --panel: #ffffff;
+  --text: #2c3e50;
+  --border: #dfe6e9;
+  --shadow: 0 4px 12px rgba(0,0,0,0.1);
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  font-family: 'Poppins', sans-serif; 
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  margin-bottom: 30px;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-logo img {
+  height: 80px;
+  background: white;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.header-text h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.header-text p {
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--primary);
+}
+
+.stat-card.success { border-left-color: var(--success); }
+.stat-card.warning { border-left-color: var(--warning); }
+.stat-card.info { border-left-color: #3498db; }
+
+.stat-card h3 {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-card .value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.stat-card .label {
+  font-size: 0.85rem;
+  color: #95a5a6;
+  margin-top: 4px;
+}
+
+.actions-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #e8f0f8;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #6c757d;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.3s;
+}
+
+.tab:hover {
+  color: var(--primary);
+}
+
+.tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.domain-card {
+  background: #f8f9fa;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.domain-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+}
+
+.domain-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.domain-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+}
+
+.competences-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.competence-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  transition: all 0.3s;
+}
+
+.competence-item:hover {
+  border-color: var(--primary);
+  transform: translateX(4px);
+}
+
+.competence-item.worked {
+  border-left: 4px solid var(--success);
+  background: #f0fff4;
+}
+
+.competence-text {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.competence-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-badge.done {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.todo {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--success) 0%, #27ae60 100%);
+  transition: width 0.5s ease;
+}
+
+.period-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.period-btn {
+  padding: 10px 20px;
+  border: 2px solid var(--border);
+  background: white;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.period-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.period-btn.active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border-color: var(--primary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6c757d;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  opacity: 0.3;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+@media print {
+  @page { size: A4 landscape; margin: 1.5cm; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .header { page-break-after: avoid; }
+  .actions-bar, .btn, .tabs { display: none !important; }
+  .section { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-content">
+    <div class="header-logo">
+      <img src="Logo Marie.png" alt="Logo">
+    </div>
+    <div class="header-text">
+      <h1><i class="fas fa-chart-line"></i> Progressions & Programmations GS</h1>
+      <p>Analyse intelligente de votre cahier journal - Suivi des compétences travaillées</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <!-- Statistiques -->
+  <div class="stats-grid">
+    <div class="stat-card success">
+      <h3>Compétences travaillées</h3>
+      <div class="value" id="statWorked">0</div>
+      <div class="label">sur <span id="statTotal">0</span> compétences</div>
+    </div>
+    
+    <div class="stat-card warning">
+      <h3>Reste à faire</h3>
+      <div class="value" id="statRemaining">0</div>
+      <div class="label">compétences non abordées</div>
+    </div>
+    
+    <div class="stat-card info">
+      <h3>Activités analysées</h3>
+      <div class="value" id="statActivities">0</div>
+      <div class="label">depuis toutes les semaines</div>
+    </div>
+    
+    <div class="stat-card">
+      <h3>Taux de couverture</h3>
+      <div class="value" id="statPercentage">0%</div>
+      <div class="label">du programme GS</div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions-bar">
+    <button class="btn btn-primary" onclick="analyserCahierJournal()">
+      <i class="fas fa-sync"></i> Analyser le cahier journal
+    </button>
+    <button class="btn btn-success" onclick="exporterPDF()">
+      <i class="fas fa-file-pdf"></i> Exporter PDF
+    </button>
+    <button class="btn btn-secondary" onclick="reinitialiser()">
+      <i class="fas fa-redo"></i> Réinitialiser
+    </button>
+  </div>
+
+  <!-- Sélection période -->
+  <div class="section">
+    <h2><i class="fas fa-calendar"></i> Filtrer par période</h2>
+    <div class="period-selector">
+      <button class="period-btn active" onclick="filtrerPeriode('toutes')">Toute l'année</button>
+      <button class="period-btn" onclick="filtrerPeriode(1)">Période 1 (Sep-Oct)</button>
+      <button class="period-btn" onclick="filtrerPeriode(2)">Période 2 (Nov-Déc)</button>
+      <button class="period-btn" onclick="filtrerPeriode(3)">Période 3 (Jan-Fév)</button>
+      <button class="period-btn" onclick="filtrerPeriode(4)">Période 4 (Mar-Avr)</button>
+      <button class="period-btn" onclick="filtrerPeriode(5)">Période 5 (Mai-Juin)</button>
+    </div>
+  </div>
+
+  <!-- Tabs domaines -->
+  <div class="section">
+    <div class="tabs" id="domaineTabs"></div>
+    <div id="domaineContent"></div>
+  </div>
+
+</div>
+
+<script src="competences-gs.js"></script>
+<script>
+// Variables globales
+var competencesTravaillees = new Set();
+var activitesAnalysees = [];
+var periodeActive = 'toutes';
+var domaineActif = null;
+
+// Couleurs par domaine
+var DOMAIN_COLORS = {
+  "Acquérir le langage oral": "#9D84B7",
+  "Passer de l'oral à l'écrit : se préparer à apprendre à lire": "#7A9CC6",
+  "Passer de l'oral à l'écrit : se préparer à apprendre à écrire": "#5B9BD5",
+  "Découvrir les nombres": "#F28B82",
+  "Utiliser les nombres pour résoudre des problèmes": "#E57373",
+  "Explorer les solides et les formes planes": "#BA68C8",
+  "Explorer des grandeurs : la longueur, la masse": "#CE93D8",
+  "Se familiariser avec les motifs organisés": "#9FA8DA",
+  "Agir dans l'espace, dans la durée et sur les objets": "#81C784",
+  "Adapter ses équilibres et ses déplacements": "#66BB6A",
+  "Communiquer avec les autres au travers d'actions à visée expressive ou artistique": "#4DB6AC",
+  "Les productions plastiques et visuelles": "#F06292",
+  "Univers sonores": "#BA68C8",
+  "Le spectacle vivant": "#FF80AB",
+  "Se repérer dans le temps": "#4DD0E1",
+  "Se repérer dans l'espace": "#26C6DA",
+  "Découvrir le monde du vivant": "#8BC34A",
+  "Explorer la matière": "#AED581"
+};
+
+// Analyser le cahier journal depuis localStorage
+function analyserCahierJournal() {
+  console.log('🔍 Analyse du cahier journal...');
+  
+  activitesAnalysees = [];
+  competencesTravaillees = new Set();
+  
+  // Parcourir toutes les clés du localStorage
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    
+    // Ne traiter que les clés de semaines du cahier journal
+    if (key && key.startsWith('planner_week_')) {
+      try {
+        var weekData = JSON.parse(localStorage.getItem(key));
+        
+        if (weekData && weekData.data && Array.isArray(weekData.data)) {
+          weekData.data.forEach(function(activity) {
+            if (activity.comp) {
+              // Ajouter la compétence à l'ensemble
+              competencesTravaillees.add(activity.comp);
+              
+              // Stocker l'activité avec sa date
+              activitesAnalysees.push({
+                semaine: weekData.weekStart || key.replace('planner_week_', ''),
+                domain: activity.domain || '',
+                competence: activity.comp || '',
+                objectif: activity.obj || '',
+                label: activity.label || ''
+              });
+            }
+          });
+        }
+      } catch(e) {
+        console.warn('Erreur lecture semaine:', key, e);
+      }
+    }
+  }
+  
+  console.log('✅ Analyse terminée:', {
+    activites: activitesAnalysees.length,
+    competences: competencesTravaillees.size
+  });
+  
+  // Mettre à jour l'affichage
+  mettreAJourStats();
+  afficherDomaines();
+  
+  alert('✅ Analyse terminée !\n\n' + 
+        activitesAnalysees.length + ' activités analysées\n' +
+        competencesTravaillees.size + ' compétences différentes travaillées');
+}
+
+// Mettre à jour les statistiques
+function mettreAJourStats() {
+  // Compter toutes les compétences du programme
+  var totalCompetences = 0;
+  if (typeof competencesData !== 'undefined') {
+    Object.keys(competencesData).forEach(function(domain) {
+      totalCompetences += compterCompetencesDomaine(competencesData[domain]);
+    });
+  }
+  
+  var worked = competencesTravaillees.size;
+  var remaining = totalCompetences - worked;
+  var percentage = totalCompetences > 0 ? Math.round((worked / totalCompetences) * 100) : 0;
+  
+  document.getElementById('statWorked').textContent = worked;
+  document.getElementById('statTotal').textContent = totalCompetences;
+  document.getElementById('statRemaining').textContent = remaining;
+  document.getElementById('statActivities').textContent = activitesAnalysees.length;
+  document.getElementById('statPercentage').textContent = percentage + '%';
+}
+
+// Compter les compétences d'un domaine
+function compterCompetencesDomaine(data) {
+  var count = 0;
+  if (Array.isArray(data)) {
+    return data.length;
+  }
+  if (typeof data === 'object') {
+    Object.keys(data).forEach(function(key) {
+      count += compterCompetencesDomaine(data[key]);
+    });
+  }
+  return count;
+}
+
+// Afficher les domaines avec leurs compétences
+function afficherDomaines() {
+  if (typeof competencesData === 'undefined') {
+    document.getElementById('domaineContent').innerHTML = 
+      '<div class="empty-state">' +
+      '<i class="fas fa-exclamation-triangle"></i>' +
+      '<h3>Données des compétences non disponibles</h3>' +
+      '<p>Le fichier competences-gs.js est requis</p>' +
+      '</div>';
+    return;
+  }
+  
+  var domaines = Object.keys(competencesData);
+  var tabsHtml = '';
+  
+  // Créer les onglets
+  domaines.forEach(function(domaine, index) {
+    var active = index === 0 ? 'active' : '';
+    tabsHtml += '<button class="tab ' + active + '" onclick="afficherDomaine(\'' + domaine + '\')">' +
+                domaine + '</button>';
+  });
+  
+  document.getElementById('domaineTabs').innerHTML = tabsHtml;
+  
+  // Afficher le premier domaine
+  if (domaines.length > 0) {
+    afficherDomaine(domaines[0]);
+  }
+}
+
+// Afficher un domaine spécifique
+function afficherDomaine(domaine) {
+  domaineActif = domaine;
+  
+  // Activer l'onglet
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function(tab) {
+    tab.classList.remove('active');
+    if (tab.textContent === domaine) {
+      tab.classList.add('active');
+    }
+  });
+  
+  var data = competencesData[domaine];
+  var color = DOMAIN_COLORS[domaine] || '#667eea';
+  var competences = extraireCompetences(data);
+  
+  var html = '<div class="domain-card">';
+  html += '<div class="domain-header">';
+  html += '<div class="domain-title">';
+  html += '<span class="domain-badge" style="background:' + color + '">' + domaine + '</span>';
+  html += '</div>';
+  html += '<div>';
+  
+  var worked = competences.filter(function(c) { 
+    return competencesTravaillees.has(c); 
+  }).length;
+  var total = competences.length;
+  var percent = total > 0 ? Math.round((worked / total) * 100) : 0;
+  
+  html += '<strong>' + worked + '/' + total + ' (' + percent + '%)</strong>';
+  html += '</div></div>';
+  
+  // Barre de progression
+  html += '<div class="progress-bar"><div class="progress-fill" style="width:' + percent + '%"></div></div>';
+  
+  // Liste des compétences
+  html += '<div class="competences-list" style="margin-top:20px">';
+  competences.forEach(function(comp) {
+    var isWorked = competencesTravaillees.has(comp);
+    var itemClass = isWorked ? 'competence-item worked' : 'competence-item';
+    var statusClass = isWorked ? 'status-badge done' : 'status-badge todo';
+    var statusText = isWorked ? '✓ Travaillée' : 'À faire';
+    
+    html += '<div class="' + itemClass + '">';
+    html += '<div class="competence-text">' + escapeHtml(comp) + '</div>';
+    html += '<div class="competence-status">';
+    html += '<span class="' + statusClass + '">' + statusText + '</span>';
+    html += '</div></div>';
+  });
+  html += '</div></div>';
+  
+  document.getElementById('domaineContent').innerHTML = html;
+}
+
+// Extraire toutes les compétences d'un domaine
+function extraireCompetences(data, result) {
+  result = result || [];
+  if (Array.isArray(data)) {
+    return result.concat(data);
+  }
+  if (typeof data === 'object') {
+    Object.keys(data).forEach(function(key) {
+      extraireCompetences(data[key], result);
+    });
+  }
+  return result;
+}
+
+// Filtrer par période
+function filtrerPeriode(periode) {
+  periodeActive = periode;
+  
+  // Activer le bouton
+  var btns = document.querySelectorAll('.period-btn');
+  btns.forEach(function(btn) {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  
+  // TODO: Filtrer les activités par période
+  console.log('Filtrage période:', periode);
+}
+
+// Export PDF
+function exporterPDF() {
+  alert('Export PDF en développement...\nPour le moment, utilisez Ctrl+P pour imprimer.');
+  window.print();
+}
+
+// Réinitialiser
+function reinitialiser() {
+  if (confirm('Voulez-vous réinitialiser l\'analyse ?\nCela ne supprimera pas votre cahier journal.')) {
+    competencesTravaillees = new Set();
+    activitesAnalysees = [];
+    mettreAJourStats();
+    afficherDomaines();
+  }
+}
+
+// Utilitaire
+function escapeHtml(text) {
+  var div = document.createElement('div');
+  div.textContent = text || '';
+  return div.innerHTML;
+}
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('📚 Outil Progressions & Programmations chargé');
+  
+  // Vérifier si competencesData existe
+  if (typeof competencesData === 'undefined') {
+    alert('⚠️ Fichier competences-gs.js manquant\nCertaines fonctionnalités ne seront pas disponibles.');
+  }
+  
+  mettreAJourStats();
+  afficherDomaines();
+});
+</script>
+
+</body>
+</html>

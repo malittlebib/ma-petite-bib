@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cahier Journal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="progressions-completes-data.js"></script>
+  <script src="competences-officielles-data.js"></script>
+  <style>
+    :root {
+      --primary: #8b6f47;
+      --primary-dark: #6b5435;
+      --success: #27ae60;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --info: #3498db;
+      --light: #f8f9fa;
+      --dark: #2c3e50;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .header h1 {
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .controls {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .week-nav {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .week-label {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--dark);
+      min-width: 300px;
+      text-align: center;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, var(--success) 0%, #229954 100%);
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    
+    .btn-light {
+      background: var(--light);
+      color: var(--dark);
+      border: 2px solid #dee2e6;
+    }
+    
+    .content {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      min-height: 500px;
+    }
+    
+    .cahier-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    
+    .cahier-table th {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid #dee2e6;
+    }
+    
+    .cahier-table td {
+      padding: 15px;
+      border: 1px solid #dee2e6;
+      vertical-align: top;
+    }
+    
+    .seance-card {
+      background: #f8f9fa;
+      border-left: 4px solid var(--primary);
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .seance-card:hover {
+      background: #e9ecef;
+      transform: translateX(5px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .seance-horaire {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .seance-titre {
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 3px;
+    }
+    
+    .seance-domaine {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: white;
+      margin-top: 5px;
+    }
+    
+    .seance-meta {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-top: 5px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #95a5a6;
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.3;
+    }
+    
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+    }
+    
+    .modal {
+      background: white;
+      border-radius: 20px;
+      max-width: 800px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 25px 30px;
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    
+    .btn-icon {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-icon:hover {
+      background: rgba(255,255,255,0.3);
+      transform: rotate(90deg);
+    }
+    
+    .modal-body {
+      padding: 30px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="time"],
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .modal-footer {
+      padding: 20px 30px;
+      border-top: 1px solid #e9ecef;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, var(--success) 0%, #229954 100%);
+      color: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      z-index: 10000;
+      animation: slideIn 0.4s ease-out;
+      max-width: 400px;
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(400px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .notification-close {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      float: right;
+    }
+    
+    @media print {
+      body { background: white; padding: 0; }
+      .controls, .btn, .header { display: none !important; }
+      .container { max-width: 100%; }
+      .content { box-shadow: none; }
+      
+      /* Header impression avec logo */
+      .content::before {
+        content: '';
+        display: block;
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 3px solid #8b6f47;
+        margin-bottom: 20px;
+        background-image: url('logo.png');
+        background-repeat: no-repeat;
+        background-position: center top;
+        background-size: 50px;
+        padding-top: 60px;
+      }
+      
+      /* Footer impression avec copyright */
+      .content::after {
+        content: 'Document généré le ' attr(data-date) ' • © 2026 Ma Petite Bib - Tous droits réservés';
+        display: block;
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+        font-size: 9pt;
+        color: #999;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1><i class="fas fa-book"></i> Cahier Journal</h1>
+    <button class="btn btn-light" onclick="window.location.href='index.html'">
+      <i class="fas fa-home"></i> Accueil
+    </button>
+  </div>
+  
+  <div class="controls">
+    <div class="week-nav">
+      <button class="btn btn-secondary" onclick="changerSemaine(-7)">
+        <i class="fas fa-chevron-left"></i> Précédent
+      </button>
+      <div class="week-label" id="weekLabel">Semaine actuelle</div>
+      <button class="btn btn-secondary" onclick="changerSemaine(7)">
+        Suivant <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+    
+    <div class="btn-group">
+      <button class="btn btn-success" onclick="importerDepuisEmploiDuTemps()">
+        <i class="fas fa-calendar-week"></i> Charger emploi du temps
+      </button>
+      
+      <button class="btn btn-primary" onclick="genererSuiviEleves()">
+        <i class="fas fa-users"></i> Suivi élèves
+      </button>
+      
+      <button class="btn btn-primary" onclick="sauvegarderCahier()">
+        <i class="fas fa-save"></i> Sauvegarder
+      </button>
+      
+      <button class="btn btn-secondary" onclick="window.print()">
+        <i class="fas fa-print"></i> Imprimer
+      </button>
+    </div>
+  </div>
+  
+  <div class="content" id="content">
+    <div class="empty-state">
+      <i class="fas fa-calendar-plus"></i>
+      <h2>Aucune séance pour cette semaine</h2>
+      <p>Cliquez sur "Charger emploi du temps" pour importer vos activités</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalSeance">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Éditer la séance</h3>
+      <button class="btn-icon" onclick="fermerModalSeance()">
+        <i class="fas fa-times fa-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Titre de la séance</label>
+        <input type="text" id="seanceTitre" placeholder="Ex: Phonologie, Numération...">
+      </div>
+      
+      <div class="form-group">
+        <label>Domaine *</label>
+        <select id="seanceDomaine" onchange="chargerSousDomainesCahier()">
+          <option value="">-- Sélectionner --</option>
+          <option value="Mobiliser le langage">Mobiliser le langage</option>
+          <option value="Acquérir les premiers outils mathématiques">Acquérir les premiers outils mathématiques</option>
+          <option value="Agir, s'exprimer à travers l'activité physique">Agir, s'exprimer à travers l'activité physique</option>
+          <option value="Agir, s'exprimer à travers les activités artistiques">Agir, s'exprimer à travers les activités artistiques</option>
+          <option value="Explorer le monde">Explorer le monde</option>
+          <option value="Autres">Autres</option>
+        </select>
+      </div>
+      
+      <div class="form-group" id="sousDomaineGroup" style="display: none;">
+        <label>Sous-domaine</label>
+        <select id="seanceSousDomaine" onchange="chargerCompetencesCahier()">
+          <option value="">-- Sélectionner --</option>
+        </select>
+      </div>
+      
+      <div class="form-group" id="competenceGroup" style="display: none;">
+        <label>Compétence</label>
+        <select id="seanceCompetence" onchange="remplirObjectifAuto()">
+          <option value="">-- Sélectionner --</option>
+        </select>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="form-group">
+          <label>Horaire</label>
+          <input type="text" id="seanceHoraire" readonly style="background: #f8f9fa;">
+        </div>
+        <div class="form-group">
+          <label>Niveaux</label>
+          <input type="text" id="seanceNiveaux" readonly style="background: #f8f9fa;">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Lieu / Salle</label>
+        <input type="text" id="seanceLieu" placeholder="Ex: Classe, Gymnase, Cour...">
+      </div>
+      
+      <div class="form-group">
+        <label>Objectif(s) pédagogique(s) *</label>
+        <textarea id="seanceObjectif" rows="3" placeholder="Ex: Manipuler les syllabes..."></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label>Déroulement de la séance</label>
+        <textarea id="seanceDeroulement" rows="5" placeholder="1. Introduction (5 min)&#10;2. Activité guidée (15 min)&#10;3. Pratique (10 min)&#10;4. Bilan (5 min)"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label>Matériel nécessaire</label>
+        <textarea id="seanceMateriel" rows="3" placeholder="Ex: Étiquettes, Jetons..."></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label>Observations / Remarques</label>
+        <textarea id="seanceObservations" rows="3" placeholder="Notes après la séance..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="creerFicheDepuisSeance()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <i class="fas fa-file-alt"></i> Créer fiche de prep
+      </button>
+      <button class="btn btn-secondary" onclick="fermerModalSeance()">Annuler</button>
+      <button class="btn btn-warning" onclick="dupliquerSeance()" style="background: #f39c12;">
+        <i class="fas fa-copy"></i> Dupliquer
+      </button>
+      <button class="btn btn-primary" onclick="sauvegarderSeance()">
+        <i class="fas fa-save"></i> Enregistrer
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentMonday = getMonday(new Date());
+let seancesActuelles = [];
+let seanceEnEdition = null;
+
+const COULEURS_DOMAINES = {
+  "Mobiliser le langage": "#e74c3c",
+  "Acquérir les premiers outils mathématiques": "#9b59b6",
+  "Agir, s'exprimer à travers l'activité physique": "#27ae60",
+  "Agir, s'exprimer à travers les activités artistiques": "#f39c12",
+  "Explorer le monde": "#3498db",
+  "Autres": "#95a5a6"
+};
+
+const JOURS = ['Lundi', 'Mardi', 'Jeudi', 'Vendredi'];
+const JOURS_INDEX = [1, 2, 4, 5];
+
+function chargerSousDomainesCahier() {
+  const domaine = document.getElementById('seanceDomaine').value;
+  const sousDomaineGroup = document.getElementById('sousDomaineGroup');
+  const sousDomaineSelect = document.getElementById('seanceSousDomaine');
+  const competenceGroup = document.getElementById('competenceGroup');
+  
+  sousDomaineSelect.innerHTML = '<option value="">-- Sélectionner --</option>';
+  document.getElementById('seanceCompetence').innerHTML = '<option value="">-- Sélectionner --</option>';
+  sousDomaineGroup.style.display = 'none';
+  competenceGroup.style.display = 'none';
+  
+  if (!domaine || domaine === "Autres") return;
+  
+  const mappingDomaines = {
+    "Mobiliser le langage": "Mobiliser le langage dans toutes ses dimensions",
+    "Acquérir les premiers outils mathématiques": "Acquérir les premiers outils mathématiques",
+    "Agir, s'exprimer à travers l'activité physique": "Agir, s'exprimer, comprendre à travers l'activité physique",
+    "Agir, s'exprimer à travers les activités artistiques": "Agir, s'exprimer, comprendre à travers les activités artistiques",
+    "Explorer le monde": "Explorer le monde"
+  };
+  
+  const domaineProgression = mappingDomaines[domaine];
+  
+  if (!domaineProgression || typeof progressionsCompletes === 'undefined') {
+    console.warn('Domaine non trouvé:', domaineProgression);
+    return;
+  }
+  
+  const donneesDomaine = progressionsCompletes[domaineProgression];
+  if (!donneesDomaine) return;
+  
+  let sousDomaines = [];
+  
+  if (donneesDomaine.sousDomainesParPeriode) {
+    sousDomaines = Object.keys(donneesDomaine.sousDomainesParPeriode);
+  } else if (donneesDomaine.sousDomainesTransversaux) {
+    sousDomaines = Object.keys(donneesDomaine.sousDomainesTransversaux);
+  }
+  
+  if (sousDomaines.length === 0) return;
+  
+  sousDomaines.forEach(sd => {
+    const option = document.createElement('option');
+    option.value = sd;
+    option.textContent = sd;
+    sousDomaineSelect.appendChild(option);
+  });
+  
+  sousDomaineGroup.style.display = 'block';
+}
+
+function chargerCompetencesCahier() {
+  const domaine = document.getElementById('seanceDomaine').value;
+  const sousDomaine = document.getElementById('seanceSousDomaine').value;
+  const competenceGroup = document.getElementById('competenceGroup');
+  const competenceSelect = document.getElementById('seanceCompetence');
+  
+  competenceSelect.innerHTML = '<option value="">-- Sélectionner --</option>';
+  competenceGroup.style.display = 'none';
+  
+  if (!sousDomaine) return;
+  
+  const mappingDomaines = {
+    "Mobiliser le langage": "Mobiliser le langage dans toutes ses dimensions",
+    "Acquérir les premiers outils mathématiques": "Acquérir les premiers outils mathématiques",
+    "Agir, s'exprimer à travers l'activité physique": "Agir, s'exprimer, comprendre à travers l'activité physique",
+    "Agir, s'exprimer à travers les activités artistiques": "Agir, s'exprimer, comprendre à travers les activités artistiques",
+    "Explorer le monde": "Explorer le monde"
+  };
+  
+  const domaineProgression = mappingDomaines[domaine];
+  
+  if (!domaineProgression || typeof progressionsCompletes === 'undefined') return;
+  
+  const donneesDomaine = progressionsCompletes[domaineProgression];
+  if (!donneesDomaine) return;
+  
+  let competences = [];
+  
+  if (donneesDomaine.sousDomainesParPeriode && donneesDomaine.sousDomainesParPeriode[sousDomaine]) {
+    const sousDomData = donneesDomaine.sousDomainesParPeriode[sousDomaine];
+    
+    ['P1', 'P2', 'P3', 'P4', 'P5', 'toutes'].forEach(periode => {
+      if (sousDomData[periode]) {
+        competences = competences.concat(sousDomData[periode]);
+      }
+    });
+  } else if (donneesDomaine.sousDomainesTransversaux && donneesDomaine.sousDomainesTransversaux[sousDomaine]) {
+    const sousDomData = donneesDomaine.sousDomainesTransversaux[sousDomaine];
+    if (sousDomData.toutes) {
+      competences = sousDomData.toutes;
+    }
+  }
+  
+  competences = [...new Set(competences)];
+  
+  if (competences.length > 0) {
+    competences.forEach(comp => {
+      const option = document.createElement('option');
+      option.value = comp;
+      option.textContent = comp;
+      competenceSelect.appendChild(option);
+    });
+    competenceGroup.style.display = 'block';
+  }
+}
+
+function remplirObjectifAuto() {
+  const competence = document.getElementById('seanceCompetence').value;
+  const objectifField = document.getElementById('seanceObjectif');
+  
+  if (competence && (!objectifField.value || objectifField.value.trim() === '')) {
+    objectifField.value = competence;
+  }
+}
+
+function getMonday(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(d.setDate(diff));
+}
+
+function formatDate(date) {
+  const d = new Date(date);
+  const jour = String(d.getDate()).padStart(2, '0');
+  const mois = String(d.getMonth() + 1).padStart(2, '0');
+  const annee = d.getFullYear();
+  return `${jour}/${mois}/${annee}`;
+}
+
+function dateToISO(date) {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function getDateForDay(dayIndex) {
+  const date = new Date(currentMonday);
+  date.setDate(date.getDate() + (JOURS_INDEX[dayIndex] - 1));
+  return date;
+}
+
+function changerSemaine(jours) {
+  currentMonday.setDate(currentMonday.getDate() + jours);
+  afficherSemaine();
+}
+
+function getCompetencesOfficiellesPourSeance(seance) {
+  // Essayer de trouver une fiche de prep correspondante
+  try {
+    const fiches = JSON.parse(localStorage.getItem('fiches_preparation') || '[]');
+    
+    // Chercher par titre exact
+    let fiche = fiches.find(f => f.titre && f.titre.toLowerCase() === seance.titre.toLowerCase());
+    
+    // Si pas trouvé, chercher par similarité
+    if (!fiche && seance.titre) {
+      fiche = fiches.find(f => f.titre && f.titre.toLowerCase().includes(seance.titre.toLowerCase()));
+    }
+    
+    if (fiche && fiche.competencesOfficielles && Array.isArray(fiche.competencesOfficielles)) {
+      return fiche.competencesOfficielles;
+    }
+  } catch (e) {
+    console.error('Erreur récupération compétences:', e);
+  }
+  
+  return [];
+}
+
+function verifierSiCompetenceEvaluee(uuid) {
+  try {
+    const evaluations = JSON.parse(localStorage.getItem('evaluations_competences') || '{}');
+    
+    // Vérifier tous les élèves
+    for (let eleveId in evaluations) {
+      if (evaluations[eleveId] && evaluations[eleveId][uuid]) {
+        return true; // Au moins un élève a été évalué sur cette compétence
+      }
+    }
+  } catch (e) {
+    console.error('Erreur vérification évaluation:', e);
+  }
+  
+  return false;
+}
+
+function afficherSemaine() {
+  const vendredi = new Date(currentMonday);
+  vendredi.setDate(vendredi.getDate() + 4);
+  
+  document.getElementById('weekLabel').textContent = 
+    `Semaine du ${formatDate(currentMonday)} au ${formatDate(vendredi)}`;
+  
+  chargerSeances();
+}
+
+function chargerSeances() {
+  const dateKey = dateToISO(currentMonday);
+  const cle = 'cahier_journal_' + dateKey;
+  const seancesStr = localStorage.getItem(cle);
+  
+  const content = document.getElementById('content');
+  
+  if (!seancesStr) {
+    content.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-calendar-plus"></i>
+        <h2>Aucune séance pour cette semaine</h2>
+        <p>Cliquez sur "Charger emploi du temps" pour importer vos activités</p>
+      </div>
+    `;
+    seancesActuelles = [];
+    return;
+  }
+  
+  try {
+    seancesActuelles = JSON.parse(seancesStr);
+    
+    if (!seancesActuelles || seancesActuelles.length === 0) {
+      content.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-calendar-plus"></i>
+          <h2>Aucune séance pour cette semaine</h2>
+        </div>
+      `;
+      return;
+    }
+    
+    afficherTableauHebdomadaire();
+    
+  } catch (e) {
+    console.error('Erreur chargement séances:', e);
+    content.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Erreur de chargement</h2>
+        <p>${e.message}</p>
+      </div>
+    `;
+  }
+}
+
+function afficherTableauHebdomadaire() {
+  const content = document.getElementById('content');
+  
+  const parJour = {};
+  JOURS.forEach(jour => parJour[jour] = []);
+  
+  seancesActuelles.forEach(seance => {
+    const date = new Date(seance.date + 'T00:00:00');
+    const jourSemaine = date.getDay();
+    
+    if (jourSemaine === 1) parJour['Lundi'].push(seance);
+    else if (jourSemaine === 2) parJour['Mardi'].push(seance);
+    else if (jourSemaine === 4) parJour['Jeudi'].push(seance);
+    else if (jourSemaine === 5) parJour['Vendredi'].push(seance);
+  });
+  
+  Object.keys(parJour).forEach(jour => {
+    parJour[jour].sort((a, b) => {
+      const [hA] = a.horaire.split(' - ');
+      const [hB] = b.horaire.split(' - ');
+      return hA.localeCompare(hB);
+    });
+  });
+  
+  let html = '<table class="cahier-table">';
+  html += '<thead><tr>';
+  JOURS.forEach((jour, index) => {
+    const dateJour = getDateForDay(index);
+    html += `<th>${jour}<br><small style="opacity: 0.8; font-weight: 400;">${formatDate(dateJour)}</small></th>`;
+  });
+  html += '</tr></thead>';
+  html += '<tbody><tr>';
+  
+  JOURS.forEach(jour => {
+    html += '<td>';
+    
+    if (parJour[jour].length === 0) {
+      html += '<div style="text-align: center; color: #adb5bd; padding: 20px;"><i class="fas fa-calendar-day"></i><br>Aucune séance</div>';
+    } else {
+      parJour[jour].forEach(seance => {
+        const couleur = COULEURS_DOMAINES[seance.domaine] || COULEURS_DOMAINES['Autres'];
+        
+        // Récupérer les compétences officielles associées (si fiche de prep liée)
+        const competencesOfficielles = getCompetencesOfficiellesPourSeance(seance);
+        
+        html += `<div class="seance-card" onclick="ouvrirModalSeance('${seance.id}')">`;
+        html += `<div class="seance-horaire"><i class="fas fa-clock"></i> ${seance.horaire}</div>`;
+        html += `<div class="seance-titre">${seance.titre || 'Activité'}</div>`;
+        html += `<span class="seance-domaine" style="background: ${couleur}">${seance.domaine}</span>`;
+        
+        if (seance.niveaux || seance.lieu) {
+          html += `<div class="seance-meta">`;
+          if (seance.niveaux) html += `<i class="fas fa-users"></i> ${seance.niveaux} `;
+          if (seance.lieu) html += `<i class="fas fa-map-marker-alt"></i> ${seance.lieu}`;
+          html += `</div>`;
+        }
+        
+        // Afficher les compétences officielles si présentes
+        if (competencesOfficielles && competencesOfficielles.length > 0) {
+          html += `<div class="competences-officielles-cahier" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.1);">`;
+          html += `<div style="font-size: 0.75rem; color: #7f8c8d; margin-bottom: 5px;"><i class="fas fa-award"></i> Compétences officielles :</div>`;
+          competencesOfficielles.forEach(comp => {
+            const estEvalue = verifierSiCompetenceEvaluee(comp.uuid);
+            const badgeStyle = estEvalue 
+              ? 'background: #27ae60; color: white;' 
+              : 'background: #f39c12; color: white;';
+            const badgeTexte = estEvalue ? '✓ Évaluée' : '⚠ À évaluer';
+            
+            html += `<div style="font-size: 0.7rem; padding: 4px 8px; margin: 3px 0; background: #f8f9fa; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">`;
+            html += `<span style="flex: 1;">${comp.competence.substring(0, 60)}${comp.competence.length > 60 ? '...' : ''}</span>`;
+            html += `<span style="${badgeStyle} padding: 2px 6px; border-radius: 8px; font-size: 0.65rem; white-space: nowrap; margin-left: 5px;">${badgeTexte}</span>`;
+            html += `</div>`;
+          });
+          html += `<a href="evaluations.html" style="display: inline-block; margin-top: 5px; font-size: 0.7rem; color: #667eea; text-decoration: none;" onclick="event.stopPropagation();"><i class="fas fa-clipboard-check"></i> Évaluer maintenant</a>`;
+          html += `</div>`;
+        }
+        
+        html += `</div>`;
+      });
+    }
+    
+    html += '</td>';
+  });
+  
+  html += '</tr></tbody></table>';
+  
+  content.innerHTML = html;
+}
+
+function ouvrirModalSeance(seanceId) {
+  const seance = seancesActuelles.find(s => s.id == seanceId);
+  if (!seance) return;
+  
+  seanceEnEdition = seance;
+  
+  document.getElementById('seanceTitre').value = seance.titre || '';
+  document.getElementById('seanceDomaine').value = seance.domaine || '';
+  document.getElementById('seanceHoraire').value = seance.horaire || '';
+  document.getElementById('seanceNiveaux').value = seance.niveaux || '';
+  document.getElementById('seanceLieu').value = seance.lieu || '';
+  document.getElementById('seanceObjectif').value = seance.objectif || '';
+  document.getElementById('seanceDeroulement').value = seance.deroulement || '';
+  document.getElementById('seanceMateriel').value = seance.materiel || '';
+  document.getElementById('seanceObservations').value = seance.observations || '';
+  
+  if (seance.domaine) {
+    setTimeout(() => {
+      chargerSousDomainesCahier();
+      if (seance.sousDomaine) {
+        document.getElementById('seanceSousDomaine').value = seance.sousDomaine;
+        setTimeout(() => {
+          chargerCompetencesCahier();
+          if (seance.competence) {
+            document.getElementById('seanceCompetence').value = seance.competence;
+          }
+        }, 100);
+      }
+    }, 100);
+  }
+  
+  document.getElementById('modalSeance').classList.add('active');
+}
+
+function fermerModalSeance() {
+  document.getElementById('modalSeance').classList.remove('active');
+  seanceEnEdition = null;
+}
+
+function sauvegarderSeance() {
+  if (!seanceEnEdition) return;
+  
+  seanceEnEdition.titre = document.getElementById('seanceTitre').value;
+  seanceEnEdition.domaine = document.getElementById('seanceDomaine').value;
+  seanceEnEdition.sousDomaine = document.getElementById('seanceSousDomaine').value;
+  seanceEnEdition.competence = document.getElementById('seanceCompetence').value;
+  seanceEnEdition.lieu = document.getElementById('seanceLieu').value;
+  seanceEnEdition.objectif = document.getElementById('seanceObjectif').value;
+  seanceEnEdition.deroulement = document.getElementById('seanceDeroulement').value;
+  seanceEnEdition.materiel = document.getElementById('seanceMateriel').value;
+  seanceEnEdition.observations = document.getElementById('seanceObservations').value;
+  
+  const dateKey = dateToISO(currentMonday);
+  const cle = 'cahier_journal_' + dateKey;
+  localStorage.setItem(cle, JSON.stringify(seancesActuelles));
+  
+  fermerModalSeance();
+  afficherTableauHebdomadaire();
+  
+  afficherNotification('✅ Séance enregistrée !', 'Modifications sauvegardées.');
+}
+
+function dupliquerSeance() {
+  if (!seanceEnEdition) return;
+  
+  // Demander sur quels jours dupliquer
+  const joursDisponibles = ['Lundi', 'Mardi', 'Jeudi', 'Vendredi'];
+  const dateSeanceActuelle = new Date(seanceEnEdition.date + 'T00:00:00');
+  const jourActuel = joursDisponibles[JOURS_INDEX.indexOf(dateSeanceActuelle.getDay())];
+  
+  let message = `Dupliquer cette séance sur quel(s) jour(s) ?\n\n`;
+  message += `Séance actuelle : ${jourActuel}\n`;
+  message += `${seanceEnEdition.horaire} - ${seanceEnEdition.titre}\n\n`;
+  message += `Cochez les jours souhaités :\n`;
+  
+  const joursADupliquer = [];
+  
+  joursDisponibles.forEach(jour => {
+    if (jour !== jourActuel) {
+      if (confirm(`Dupliquer sur ${jour} ?`)) {
+        joursADupliquer.push(jour);
+      }
+    }
+  });
+  
+  if (joursADupliquer.length === 0) {
+    afficherNotification('ℹ️ Duplication annulée', 'Aucun jour sélectionné.');
+    return;
+  }
+  
+  // Créer les duplicatas
+  let nbDuplications = 0;
+  
+  joursADupliquer.forEach(jour => {
+    const jourIndex = JOURS.indexOf(jour);
+    const dateJour = new Date(currentMonday);
+    dateJour.setDate(dateJour.getDate() + (JOURS_INDEX[jourIndex] - 1));
+    
+    const nouvelleSeance = {
+      id: Date.now() + Math.random(),
+      date: dateToISO(dateJour),
+      horaire: seanceEnEdition.horaire,
+      titre: seanceEnEdition.titre,
+      domaine: seanceEnEdition.domaine,
+      sousDomaine: seanceEnEdition.sousDomaine,
+      competence: seanceEnEdition.competence,
+      niveaux: seanceEnEdition.niveaux,
+      lieu: seanceEnEdition.lieu,
+      objectif: seanceEnEdition.objectif,
+      deroulement: seanceEnEdition.deroulement,
+      materiel: seanceEnEdition.materiel,
+      observations: ''
+    };
+    
+    seancesActuelles.push(nouvelleSeance);
+    nbDuplications++;
+  });
+  
+  // Sauvegarder
+  const dateKey = dateToISO(currentMonday);
+  const cle = 'cahier_journal_' + dateKey;
+  localStorage.setItem(cle, JSON.stringify(seancesActuelles));
+  
+  fermerModalSeance();
+  afficherTableauHebdomadaire();
+  
+  afficherNotification(
+    `✅ Séance dupliquée !`, 
+    `${nbDuplications} séance(s) créée(s) sur ${joursADupliquer.join(', ')}.`
+  );
+}
+
+function importerDepuisEmploiDuTemps() {
+  const dateKey = dateToISO(currentMonday);
+  const cle = 'cahier_journal_' + dateKey;
+  const seancesStr = localStorage.getItem(cle);
+  
+  if (!seancesStr) {
+    const confirmation = confirm(
+      '❌ Aucune séance trouvée pour cette semaine.\n\n' +
+      'Voulez-vous générer le cahier journal depuis l\'emploi du temps ?\n\n' +
+      'Cela va ouvrir la page Gestion de classe.'
+    );
+    
+    if (confirmation) {
+      window.location.href = 'gestion-classe.html#emploidutemps';
+    }
+    return;
+  }
+  
+  chargerSeances();
+  
+  try {
+    const seances = JSON.parse(seancesStr);
+    afficherNotification(
+      `✅ ${seances.length} séance(s) chargée(s) !`,
+      'Les activités sont affichées.'
+    );
+  } catch (e) {
+    alert('❌ Erreur : ' + e.message);
+  }
+}
+
+function sauvegarderCahier() {
+  const dateKey = dateToISO(currentMonday);
+  const cle = 'cahier_journal_' + dateKey;
+  
+  if (seancesActuelles.length === 0) {
+    alert('❌ Aucune séance à sauvegarder.');
+    return;
+  }
+  
+  localStorage.setItem(cle, JSON.stringify(seancesActuelles));
+  afficherNotification('✅ Cahier sauvegardé !', 'Enregistré.');
+}
+
+function genererSuiviEleves() {
+  if (seancesActuelles.length === 0) {
+    alert('❌ Aucune séance chargée.\n\nChargez d\'abord l\'emploi du temps.');
+    return;
+  }
+  
+  const elevesStr = localStorage.getItem('eleves');
+  if (!elevesStr) {
+    alert('❌ Aucun élève trouvé.\n\nAjoutez d\'abord des élèves.');
+    return;
+  }
+  
+  const eleves = JSON.parse(elevesStr);
+  if (eleves.length === 0) {
+    alert('❌ Aucun élève.');
+    return;
+  }
+  
+  // Domaines principaux uniquement
+  const DOMAINES_PRINCIPAUX = [
+    "Mobiliser le langage",
+    "Acquérir les premiers outils mathématiques",
+    "Agir, s'exprimer à travers l'activité physique",
+    "Agir, s'exprimer à travers les activités artistiques",
+    "Explorer le monde"
+  ];
+  
+  const competencesParDomaine = {};
+  
+  seancesActuelles.forEach(seance => {
+    const domaine = seance.domaine;
+    
+    // Ignorer si pas un domaine principal
+    if (!DOMAINES_PRINCIPAUX.includes(domaine)) return;
+    
+    if (!competencesParDomaine[domaine]) {
+      competencesParDomaine[domaine] = [];
+    }
+    
+    // Créer une entrée avec domaine > sous-domaine > compétence > objectif
+    let entree = '';
+    
+    if (seance.sousDomaine) {
+      entree = seance.sousDomaine;
+      
+      if (seance.competence) {
+        entree += ' → ' + seance.competence;
+      }
+      
+      if (seance.objectif && seance.objectif !== seance.competence) {
+        entree += ' → ' + seance.objectif;
+      }
+    } else if (seance.competence) {
+      entree = seance.competence;
+      
+      if (seance.objectif && seance.objectif !== seance.competence) {
+        entree += ' → ' + seance.objectif;
+      }
+    } else if (seance.objectif) {
+      entree = seance.objectif;
+    } else if (seance.titre) {
+      entree = seance.titre;
+    }
+    
+    if (entree) {
+      competencesParDomaine[domaine].push(entree);
+    }
+  });
+  
+  // Dédupliquer
+  Object.keys(competencesParDomaine).forEach(domaine => {
+    competencesParDomaine[domaine] = [...new Set(competencesParDomaine[domaine])];
+  });
+  
+  // Vérifier qu'il y a au moins une compétence
+  const totalCompetences = Object.values(competencesParDomaine).reduce((sum, arr) => sum + arr.length, 0);
+  
+  if (totalCompetences === 0) {
+    alert('❌ Aucune compétence trouvée dans les domaines principaux.\n\nComplétez les objectifs et compétences de vos séances.');
+    return;
+  }
+  
+  genererPDFSuivi(eleves, competencesParDomaine);
+}
+
+function genererPDFSuivi(eleves, competencesParDomaine) {
+  const vendredi = new Date(currentMonday);
+  vendredi.setDate(vendredi.getDate() + 4);
+  
+  const printWindow = window.open('', '_blank');
+  
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Suivi Élèves - ${formatDate(currentMonday)}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial; padding: 20px; font-size: 10pt; }
+    .header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #8b6f47; padding-bottom: 15px; }
+    .header-logo { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; }
+    .header-logo img { height: 50px; }
+    .header h1 { font-size: 18pt; color: #8b6f47; margin: 10px 0; }
+    .header .semaine { font-size: 11pt; color: #666; }
+    .domaine-section { margin-bottom: 40px; }
+    .domaine-titre { background: #8b6f47; color: white; padding: 10px; font-weight: bold; margin-bottom: 15px; }
+    .competence-block { margin-bottom: 30px; border: 1px solid #ddd; padding: 15px; background: #f9f9f9; }
+    .competence-titre { font-weight: bold; margin-bottom: 15px; color: #2c3e50; border-bottom: 2px solid #8b6f47; padding-bottom: 5px; }
+    .eleves-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .eleve-item { display: flex; gap: 8px; padding: 8px; border: 1px solid #ddd; background: white; }
+    .checkbox { width: 16px; height: 16px; border: 2px solid #8b6f47; flex-shrink: 0; }
+    .annotations { margin-top: 15px; padding: 10px; border: 1px solid #ddd; background: white; min-height: 60px; }
+    .footer { margin-top: 40px; text-align: center; font-size: 9pt; color: #999; border-top: 1px solid #ddd; padding-top: 10px; }
+    @media print { 
+      .competence-block { page-break-inside: avoid; }
+      body { padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-logo">
+      <img src="logo.png" alt="Ma Petite Bib">
+      <div style="font-size: 16pt; font-weight: bold; color: #8b6f47;">Ma Petite Bib</div>
+    </div>
+    <h1>📋 Suivi des Élèves</h1>
+    <div class="semaine">Semaine du ${formatDate(currentMonday)} au ${formatDate(vendredi)}</div>
+  </div>
+  ${Object.keys(competencesParDomaine).map(domaine => {
+    const competences = competencesParDomaine[domaine];
+    return `
+      <div class="domaine-section">
+        <div class="domaine-titre">${domaine}</div>
+        ${competences.map(comp => `
+          <div class="competence-block">
+            <div class="competence-titre">🎯 ${comp}</div>
+            <div class="eleves-grid">
+              ${eleves.map(e => {
+                const nom = (e.nom || e.nomFamille || '').toUpperCase();
+                const prenom = (e.prenom || '').charAt(0).toUpperCase() + (e.prenom || '').slice(1).toLowerCase();
+                return `<div class="eleve-item"><span class="checkbox"></span><span>${prenom} ${nom.charAt(0)}.</span></div>`;
+              }).join('')}
+            </div>
+            <div class="annotations">
+              <div style="font-weight: bold; margin-bottom: 5px;">📝 Observations :</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }).join('')}
+  <div class="footer">
+    <div style="margin-bottom: 5px;">Document généré le ${new Date().toLocaleDateString('fr-FR')}</div>
+    <div style="font-weight: bold;">© 2026 Ma Petite Bib - Tous droits réservés</div>
+  </div>
+  <script>window.onload = function() { setTimeout(() => window.print(), 500); };<\/script>
+</body>
+</html>`;
+  
+  printWindow.document.write(html);
+  printWindow.document.close();
+}
+
+function creerFicheDepuisSeance() {
+  if (!seanceEnEdition) return;
+  
+  // Récupérer le niveau de la classe
+  const niveau = localStorage.getItem('niveau_classe') || 'GS';
+  
+  // Sauvegarder les données complètes dans localStorage (pour les champs non passables en URL)
+  const tempData = {
+    timestamp: Date.now(),
+    sousDomaine: seanceEnEdition.sousDomaine || '',
+    competence: seanceEnEdition.competence || '',
+    objectif: seanceEnEdition.objectif || '',
+    deroulement: seanceEnEdition.deroulement || ''
+  };
+  localStorage.setItem('temp_fiche_prep_data', JSON.stringify(tempData));
+  
+  // Construire l'URL avec paramètres basiques
+  const params = new URLSearchParams();
+  
+  if (seanceEnEdition.titre) params.append('titre', seanceEnEdition.titre);
+  if (seanceEnEdition.domaine) params.append('domaine', seanceEnEdition.domaine);
+  if (seanceEnEdition.materiel) params.append('materiel', seanceEnEdition.materiel);
+  if (seanceEnEdition.niveaux) params.append('organisation', seanceEnEdition.niveaux);
+  
+  // Calculer la durée depuis l'horaire (ex: "09:00 - 09:30" → 30 min)
+  if (seanceEnEdition.horaire) {
+    const match = seanceEnEdition.horaire.match(/(\d{2}):(\d{2})\s*-\s*(\d{2}):(\d{2})/);
+    if (match) {
+      const [_, h1, m1, h2, m2] = match;
+      const debut = parseInt(h1) * 60 + parseInt(m1);
+      const fin = parseInt(h2) * 60 + parseInt(m2);
+      const duree = fin - debut;
+      if (duree > 0) params.append('duree', duree.toString());
+    }
+  }
+  
+  // Rediriger vers la fiche de prep du bon niveau
+  const fichePage = `fiche-preparation-${niveau.toLowerCase()}.html`;
+  window.location.href = `${fichePage}?${params.toString()}`;
+}
+
+function afficherNotification(titre, message) {
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.innerHTML = `
+    <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+    <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px;">${titre}</div>
+    <div style="font-size: 0.9rem;">${message}</div>
+  `;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.transition = 'all 0.4s ease-out';
+    notification.style.transform = 'translateX(400px)';
+    notification.style.opacity = '0';
+    setTimeout(() => notification.remove(), 400);
+  }, 5000);
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const dateParam = urlParams.get('date');
+
+if (dateParam) {
+  try {
+    const [annee, mois, jour] = dateParam.split('-').map(Number);
+    currentMonday = new Date(annee, mois - 1, jour);
+    
+    setTimeout(() => {
+      afficherNotification('📅 Séances prêtes !', 'Cliquez sur "Charger emploi du temps"');
+      setTimeout(() => importerDepuisEmploiDuTemps(), 1000);
+    }, 500);
+  } catch (e) {
+    console.error('Erreur date:', e);
+  }
+}
+
+afficherSemaine();
+console.log('✅ Cahier journal chargé !');
+</script>
+
+</body>
+</html>
