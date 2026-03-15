@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Export Programmations PS - Pour l'IEN</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  background: #f5f7fa;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* INTERFACE DE CONFIGURATION */
+.config-panel {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.config-panel h1 {
+  color: #FFD93D;
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+}
+
+.config-panel p {
+  color: #7f8c8d;
+  margin-bottom: 25px;
+}
+
+.form-section {
+  margin-bottom: 25px;
+}
+
+.form-section label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.form-section input,
+.form-section select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.checkbox-item {
+  background: #f8f9fa;
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-item:hover {
+  border-color: #FFD93D;
+  background: #FFF9F0;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: auto;
+  cursor: pointer;
+}
+
+.checkbox-item.checked {
+  border-color: #FFD93D;
+  background: #FFF9F0;
+}
+
+.btn-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #FFD93D 0%, #FFA500 100%);
+  color: white;
+  flex: 1;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 165, 0, 0.3);
+}
+
+.btn-secondary {
+  background: #7f8c8d;
+  color: white;
+}
+
+/* PREVIEW / PRINT */
+.print-preview {
+  display: none;
+  background: white;
+}
+
+/* STYLES D'IMPRESSION */
+@media print {
+  body {
+    background: white;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .config-panel,
+  .btn-group,
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-preview {
+    display: block !important;
+  }
+  
+  /* RÉDUIRE DRASTIQUEMENT LE PADDING */
+  .page {
+    page-break-after: always;
+    padding: 0.5cm 1cm !important;
+  }
+  
+  .page:last-child {
+    page-break-after: auto;
+  }
+  
+  /* TITRES COMPACTS */
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+  
+  .document-header h1 {
+    font-size: 16pt !important;
+    margin-bottom: 5px !important;
+  }
+  
+  .document-header h2 {
+    font-size: 13pt !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .document-header .meta p {
+    font-size: 9pt !important;
+    margin: 2px 0 !important;
+  }
+  
+  .document-header {
+    padding: 10px 0 !important;
+    margin-bottom: 15px !important;
+    border-bottom: 2px solid #FFD93D !important;
+  }
+  
+  /* PÉRIODES COMPACTES */
+  .periode-section {
+    margin-bottom: 15px !important;
+  }
+  
+  .periode-title {
+    font-size: 13pt !important;
+    padding: 6px 10px !important;
+    margin-bottom: 10px !important;
+  }
+  
+  /* DOMAINES COMPACTS */
+  .domaine-section {
+    margin-bottom: 12px !important;
+  }
+  
+  .domaine-title {
+    font-size: 11pt !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  /* COMPÉTENCES ULTRA COMPACTES */
+  .competence-block {
+    page-break-inside: avoid;
+    margin-bottom: 8px !important;
+    padding: 8px 10px !important;
+    background: #fafafa !important;
+  }
+  
+  .competence-title {
+    font-size: 10pt !important;
+    margin-bottom: 6px !important;
+  }
+  
+  /* PROGRESSIONS COMPACTES */
+  .progression-detail {
+    margin-top: 5px !important;
+    padding-left: 10px !important;
+  }
+  
+  .progression-detail p {
+    font-size: 9pt !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .semaine-item {
+    margin-bottom: 6px !important;
+    padding: 5px 8px !important;
+  }
+  
+  .semaine-item h4 {
+    font-size: 9pt !important;
+    margin-bottom: 3px !important;
+  }
+  
+  .semaine-item p {
+    font-size: 8pt !important;
+    line-height: 1.3 !important;
+  }
+  
+  /* FOOTER COMPACT */
+  .footer-page {
+    padding-top: 8px !important;
+    margin-top: 15px !important;
+    font-size: 8pt !important;
+  }
+  
+  /* FORMAT A4 */
+  @page {
+    size: A4 portrait;
+    margin: 1cm;
+  }
+}
+
+/* MISE EN PAGE DOCUMENT */
+.document-header {
+  text-align: center;
+  padding: 30px 0;
+  border-bottom: 3px solid #FFD93D;
+  margin-bottom: 30px;
+}
+
+.document-header h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.document-header .meta {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.periode-section {
+  margin-bottom: 40px;
+}
+
+.periode-title {
+  background: linear-gradient(135deg, #FFD93D 0%, #FFA500 100%);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+}
+
+.domaine-section {
+  margin-bottom: 30px;
+}
+
+.domaine-title {
+  color: #FFA500;
+  font-size: 1.3rem;
+  border-bottom: 2px solid #FFD93D;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.competence-block {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-left: 4px solid #FFD93D;
+  border-radius: 8px;
+}
+
+.competence-title {
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.05rem;
+}
+
+.progression-detail {
+  margin-top: 15px;
+  padding-left: 20px;
+}
+
+.semaine-item {
+  margin-bottom: 15px;
+  padding: 12px;
+  background: white;
+  border-radius: 6px;
+  border-left: 3px solid #27ae60;
+}
+
+.semaine-item h4 {
+  color: #27ae60;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.semaine-item p {
+  color: #555;
+  line-height: 1.6;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+.footer-page {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+  color: #95a5a6;
+  font-size: 0.85rem;
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- PANNEAU DE CONFIGURATION -->
+  <div class="config-panel no-print">
+    <h1>📄 Export Programmations - Petite Section</h1>
+    <p>Préparez un document professionnel pour l'IEN avec vos programmations et progressions détaillées</p>
+    
+    <!-- Informations établissement -->
+    <div class="form-section">
+      <label>🏫 École</label>
+      <input type="text" id="nomEcole" placeholder="Ex: École Marie Curie">
+    </div>
+    
+    <div class="form-section">
+      <label>👤 Enseignant(e)</label>
+      <input type="text" id="nomEnseignant" placeholder="Ex: Mme Dupont">
+    </div>
+    
+    <div class="form-section">
+      <label>📅 Année scolaire</label>
+      <input type="text" id="anneeScolaire" value="2025-2026">
+    </div>
+    
+    <!-- Sélection des périodes -->
+    <div class="form-section">
+      <label>📋 Périodes à inclure</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="checkbox" value="P1" checked onchange="updateCheckbox(this)">
+          <span>Période 1</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="P2" checked onchange="updateCheckbox(this)">
+          <span>Période 2</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="P3" checked onchange="updateCheckbox(this)">
+          <span>Période 3</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="P4" checked onchange="updateCheckbox(this)">
+          <span>Période 4</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="P5" checked onchange="updateCheckbox(this)">
+          <span>Période 5</span>
+        </label>
+      </div>
+    </div>
+    
+    <!-- Options d'affichage -->
+    <div class="form-section">
+      <label>📝 Format du document</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item checked">
+          <input type="checkbox" id="inclureProgressions" checked onchange="updateCheckbox(this)">
+          <span>Inclure les progressions détaillées (recommandé pour l'IEN)</span>
+        </label>
+      </div>
+    </div>
+    
+    <!-- Boutons d'action -->
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="window.location.href='programmations-ps.html'">
+        <i class="fas fa-arrow-left"></i> Retour
+      </button>
+      <button class="btn btn-primary" onclick="genererDocument()">
+        <i class="fas fa-file-pdf"></i> Générer et imprimer
+      </button>
+    </div>
+  </div>
+  
+  <!-- DOCUMENT À IMPRIMER -->
+  <div class="print-preview" id="documentPreview"></div>
+
+</div>
+
+<script>
+function updateCheckbox(checkbox) {
+  checkbox.closest('.checkbox-item').classList.toggle('checked', checkbox.checked);
+}
+
+function genererDocument() {
+  const nomEcole = document.getElementById('nomEcole').value || 'École [À compléter]';
+  const nomEnseignant = document.getElementById('nomEnseignant').value || 'Enseignant(e) [À compléter]';
+  const anneeScolaire = document.getElementById('anneeScolaire').value;
+  const inclureProgressions = document.getElementById('inclureProgressions').checked;
+  
+  // Récupérer les périodes sélectionnées
+  const periodesSelectionnees = [];
+  document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked').forEach(cb => {
+    if (cb.value && cb.value.startsWith('P')) {
+      periodesSelectionnees.push(cb.value);
+    }
+  });
+  
+  if (periodesSelectionnees.length === 0) {
+    alert('⚠️ Veuillez sélectionner au moins une période');
+    return;
+  }
+  
+  // Masquer le panneau de configuration
+  document.querySelector('.config-panel').style.display = 'none';
+  
+  // Charger les progressions
+  const progressions = JSON.parse(localStorage.getItem('progressions_ps') || '{}');
+  
+  // Générer le document avec logo et copyright
+  let html = `
+    <div class="page">
+      <!-- Logo et titre -->
+      <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #FFD93D;">
+        <img src="logo.png" alt="Ma Petite Bib" style="height: 50px; margin-bottom: 15px;">
+        <div style="font-size: 14pt; font-weight: bold; color: #8b6f47; margin-bottom: 5px;">Ma Petite Bib</div>
+      </div>
+      
+      <div class="document-header">
+        <h1>PROGRAMMATIONS ET PROGRESSIONS</h1>
+        <h2>Petite Section - Cycle 1</h2>
+        <div class="meta">
+          <p><strong>${nomEcole}</strong></p>
+          <p>${nomEnseignant}</p>
+          <p>Année scolaire ${anneeScolaire}</p>
+        </div>
+      </div>
+  `;
+  
+  // Structure des programmations par période
+  const programmations = {
+    'P1': {
+      titre: 'Période 1 - Septembre/Octobre',
+      domaines: {
+        'Mathématiques': [
+          'Réaliser une collection de 1 à 3 (même objet)',
+          'Construire la notion de quantité et d\'unité',
+          'Estimer globalement : beaucoup/peu, trop/assez/pas assez',
+          'Reconnaître visuellement des objets de même forme'
+        ],
+        'Langage oral': [
+          'Enrichir son vocabulaire : école/classe, automne',
+          'Oser parler pour exprimer un besoin',
+          'Se nommer, nommer certains enfants',
+          'Utiliser les pronoms il-elle/ils-elles'
+        ],
+        'Découvrir l\'écrit': [
+          'Discriminer des sons familiers',
+          'Reconnaître son prénom avec photo',
+          'Manipuler un album dans le bon sens',
+          'Écouter et comprendre un texte lu'
+        ],
+        'Activité physique': [
+          'Découvrir différents objets (ballons, cerceaux, cordes)',
+          'Expérimenter différents modes de déplacement',
+          'Connaître différentes positions (assis, debout, couché)'
+        ],
+        'Activités artistiques': [
+          'Dessiner librement',
+          'Laisser des traces en occupant l\'espace',
+          'Mémoriser des comptines et chansons'
+        ],
+        'Explorer le monde': [
+          'Distinguer matin et après-midi',
+          'Explorer l\'espace de la classe',
+          'S\'intéresser à son corps et ses besoins',
+          'Distinguer fille/garçon'
+        ]
+      }
+    },
+    'P2': {
+      titre: 'Période 2 - Novembre/Décembre',
+      domaines: {
+        'Mathématiques': [
+          'Réaliser une collection de 1 à 3 (objets différents)',
+          'Comprendre qu\'ajouter un objet donne le nombre suivant',
+          'Utiliser doigts ou dé pour indiquer une quantité (1 à 2)',
+          'Dénombrer 1 puis 2 objets en les déplaçant'
+        ],
+        'Langage oral': [
+          'Enrichir son vocabulaire : vêtements, émotions, Noël',
+          'Nommer les enfants de la classe',
+          'Utiliser le verbe au présent',
+          'Expliquer ce qu\'on fait en classe'
+        ],
+        'Découvrir l\'écrit': [
+          'Repérer son prénom sans photo',
+          'Reconnaître des lettres de son prénom',
+          'Identifier la couverture d\'un album',
+          'Reformuler dans ses mots une histoire'
+        ],
+        'Activité physique': [
+          'Reproduire des déplacements simples',
+          'Sauter à pieds joints',
+          'Se déplacer en rondes et farandoles'
+        ],
+        'Activités artistiques': [
+          'Réaliser des tracés continus',
+          'Nommer et utiliser les couleurs primaires',
+          'Reconnaître des instruments et des sonorités'
+        ],
+        'Explorer le monde': [
+          'Ordonner chronologiquement 2 images d\'activité',
+          'Utiliser les locutions spatiales : devant/derrière, sur/sous',
+          'Observer le vivant et sa diversité'
+        ]
+      }
+    },
+    'P3': {
+      titre: 'Période 3 - Janvier/Février',
+      domaines: {
+        'Mathématiques': [
+          'Réaliser une collection de 1 à 3 (organisation spatiale différente)',
+          'Réaliser une collection +1 (2→3)',
+          'Dénombrer jusqu\'à 3 objets',
+          'Comparer globalement (plus que, moins que)'
+        ],
+        'Langage oral': [
+          'Enrichir son vocabulaire : corps, alimentation',
+          'Participer à des échanges collectifs',
+          'Utiliser phrases simples',
+          'Raconter un événement vécu'
+        ],
+        'Découvrir l\'écrit': [
+          'Distinguer sons longs/courts',
+          'Identifier son prénom dans différentes graphies',
+          'Suivre le texte du doigt',
+          'Reformuler le début d\'une histoire'
+        ],
+        'Activité physique': [
+          'Ramper en avant',
+          'Faire du tricycle ou vélos',
+          'Participer à des jeux collectifs simples'
+        ],
+        'Activités artistiques': [
+          'Tracer des cercles fermés',
+          'Décrire une œuvre d\'art',
+          'Reproduire une formule rythmique simple'
+        ],
+        'Explorer le monde': [
+          'Repérer la succession jour/nuit dans la semaine',
+          'Se repérer sur une page',
+          'Nommer les principales parties du corps'
+        ]
+      }
+    },
+    'P4': {
+      titre: 'Période 4 - Mars/Avril',
+      domaines: {
+        'Mathématiques': [
+          'Réaliser des collections (représentation analogique)',
+          'Nommer les nombres avant et après ajout (1 à 4)',
+          'Comparer par correspondance terme à terme',
+          'Classer selon un critère (forme, taille, couleur)'
+        ],
+        'Langage oral': [
+          'Enrichir son vocabulaire : animaux, nature',
+          'Poser des questions',
+          'Utiliser le futur',
+          'Décrire une image'
+        ],
+        'Découvrir l\'écrit': [
+          'Scander les syllabes d\'un mot',
+          'Écrire son prénom en capitales',
+          'Tourner les pages une à une',
+          'Anticiper la suite d\'une histoire'
+        ],
+        'Activité physique': [
+          'S\'adapter à des contraintes variées',
+          'Danser sur une musique',
+          'Comprendre et respecter les règles d\'opposition'
+        ],
+        'Activités artistiques': [
+          'Dessiner avec un but précis',
+          'Donner son avis sur des images',
+          'Jouer avec sa voix'
+        ],
+        'Explorer le monde': [
+          'Utiliser hier/aujourd\'hui/demain',
+          'Se repérer dans un parcours',
+          'Utiliser des ustensiles (cuillère, fourchette)'
+        ]
+      }
+    },
+    'P5': {
+      titre: 'Période 5 - Mai/Juin',
+      domaines: {
+        'Mathématiques': [
+          'Réaliser des collections (cardinalité par nom du nombre)',
+          'Comprendre que chaque nombre = précédent +1',
+          'Dénombrer jusqu\'à 4 objets',
+          'Associer quantité et écriture chiffrée (1 à 4)'
+        ],
+        'Langage oral': [
+          'Enrichir son vocabulaire : été, vacances',
+          'Raconter spontanément',
+          'Utiliser passé composé',
+          'Participer à un projet de classe'
+        ],
+        'Découvrir l\'écrit': [
+          'Frapper les syllabes',
+          'Reconnaître quelques lettres',
+          'Manipuler un livre seul',
+          'Inventer une suite d\'histoire'
+        ],
+        'Activité physique': [
+          'Lancer précisément vers une cible',
+          'Coordonner ses actions',
+          'Coopérer dans des jeux'
+        ],
+        'Activités artistiques': [
+          'Dessiner un bonhomme',
+          'Réaliser une production personnelle',
+          'Chanter en groupe'
+        ],
+        'Explorer le monde': [
+          'Repérer les mois et l\'année',
+          'Décrire un environnement proche',
+          'Prendre soin de son corps'
+        ]
+      }
+    }
+  };
+
+  
+  // Générer chaque période
+  periodesSelectionnees.forEach((periodeId, index) => {
+    const periode = programmations[periodeId];
+    if (!periode) return;
+    
+    if (index > 0) html += `<div class="page">`;
+    
+    html += `
+      <div class="periode-section">
+        <h2 class="periode-title">${periode.titre}</h2>
+    `;
+    
+    // Générer chaque domaine
+    Object.entries(periode.domaines).forEach(([domaine, competences]) => {
+      html += `
+        <div class="domaine-section">
+          <h3 class="domaine-title">${domaine}</h3>
+      `;
+      
+      // Générer chaque compétence
+      competences.forEach((competence, compIndex) => {
+        // Utiliser la compétence comme clé (cohérent avec le système de sauvegarde)
+        const key = `${periodeId}_${competence.substring(0, 50)}`;
+        const progression = progressions[key];
+        
+        html += `
+          <div class="competence-block">
+            <div class="competence-title">📌 ${competence}</div>
+        `;
+        
+        // Ajouter les progressions si demandé
+        if (inclureProgressions && progression && progression.semaines && progression.semaines.length > 0) {
+          html += `<div class="progression-detail">`;
+          html += `<p style="font-weight: 600; margin-bottom: 10px; color: #27ae60;">Progression sur ${progression.semaines.length} semaine(s) :</p>`;
+          
+          progression.semaines.forEach((semaine, semaineIndex) => {
+            // Les semaines sont stockées comme des strings
+            const contenu = typeof semaine === 'string' ? semaine : (semaine.activites || semaine);
+            if (contenu && contenu.trim()) {
+              html += `
+                <div class="semaine-item">
+                  <h4>Semaine ${semaineIndex + 1}</h4>
+                  <p>${contenu}</p>
+                </div>
+              `;
+            }
+          });
+          
+          html += `</div>`;
+        } else if (inclureProgressions) {
+          html += `<p style="color: #95a5a6; font-style: italic; margin-top: 10px;">Progression non renseignée</p>`;
+        }
+        
+        html += `</div>`;
+      });
+      
+      html += `</div>`;
+    });
+    
+    html += `</div>`;
+    
+    if (index < periodesSelectionnees.length - 1) {
+      html += `<div class="footer-page">Page ${index + 1}</div></div>`;
+    }
+  });
+  
+  html += `
+      <div class="footer-page">
+        Document généré le ${new Date().toLocaleDateString('fr-FR')} - ${nomEcole}
+      </div>
+    </div>
+  `;
+  
+  // Afficher et imprimer
+  document.getElementById('documentPreview').innerHTML = html;
+  
+  setTimeout(() => {
+    window.print();
+  }, 500);
+}
+</script>
+
+</body>
+</html>

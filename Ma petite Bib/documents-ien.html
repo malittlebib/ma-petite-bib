@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📑 Générateur Documents IEN - Ma Petite Bib</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style-global.css">
+<!-- Synchronisation des données -->
+<script src="sync-data.js"></script>
+<!-- Export PDF -->
+<script src="pdf-exporter.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.header {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 2rem;
+  color: #8b6f47;
+  margin-bottom: 10px;
+}
+
+.header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.header-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-secondary {
+  background: #7f8c8d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5f6c6d;
+}
+
+/* DOCUMENTS GRID */
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.document-card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.document-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.document-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  color: white;
+}
+
+.document-card h3 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.document-card p {
+  color: #7f8c8d;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.document-card .btn-generate {
+  width: 100%;
+  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.document-card .btn-generate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #8b6f47;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #7f8c8d;
+  transition: all 0.3s;
+}
+
+.modal-close:hover {
+  color: #e74c3c;
+  transform: rotate(90deg);
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.form-group select,
+.form-group textarea,
+.form-group input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-group select:focus,
+.form-group textarea:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: #8b6f47;
+  box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  color: white;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+}
+
+.info-box {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  border-left: 4px solid #8b6f47;
+}
+
+.info-box h4 {
+  color: #8b6f47;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.info-box ul {
+  margin-left: 20px;
+  color: #7f8c8d;
+  line-height: 1.8;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- HEADER -->
+  <div class="header">
+    <h1><i class="fas fa-file-alt"></i> Générateur de Documents IEN</h1>
+    <p>Créez automatiquement vos documents administratifs conformes</p>
+    <div class="header-actions">
+      <a href="index.html" class="btn btn-secondary">
+        <i class="fas fa-home"></i> Accueil
+      </a>
+      <a href="tableau-de-bord.html" class="btn btn-secondary">
+        <i class="fas fa-chart-line"></i> Tableau de bord
+      </a>
+    </div>
+  </div>
+
+  <!-- DOCUMENTS -->
+  <div class="documents-grid">
+    
+    <!-- Livret scolaire -->
+    <div class="document-card">
+      <div class="document-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <h3>Livret scolaire & Évaluations</h3>
+      <p>Évaluez les 703 compétences officielles et générez les bulletins</p>
+      <button class="btn-generate" onclick="window.location.href='evaluations.html'" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <i class="fas fa-clipboard-check"></i> Accéder aux évaluations
+      </button>
+    </div>
+
+    <!-- Compte-rendu entretien -->
+    <div class="document-card">
+      <div class="document-icon">
+        <i class="fas fa-comments"></i>
+      </div>
+      <h3>Entretien parents</h3>
+      <p>Compte-rendu d'entretien avec les familles</p>
+      <button class="btn-generate" onclick="ouvrirModal('entretien')">
+        <i class="fas fa-file-pdf"></i> Générer le document
+      </button>
+    </div>
+
+    <!-- Bilan de période -->
+    <div class="document-card">
+      <div class="document-icon">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+      <h3>Bilan de période</h3>
+      <p>Bilan détaillé des apprentissages sur une période</p>
+      <button class="btn-generate" onclick="ouvrirModal('bilan')">
+        <i class="fas fa-file-pdf"></i> Générer le document
+      </button>
+    </div>
+
+    <!-- Projet personnalisé -->
+    <div class="document-card">
+      <div class="document-icon">
+        <i class="fas fa-user-edit"></i>
+      </div>
+      <h3>Projet personnalisé</h3>
+      <p>PPRE, PAP, PAI - Projet d'accompagnement personnalisé</p>
+      <button class="btn-generate" onclick="ouvrirModal('projet')">
+        <i class="fas fa-file-pdf"></i> Générer le document
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODALS -->
+
+<!-- Modal Livret -->
+<div class="modal" id="modalLivret">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">📄 Livret scolaire</div>
+      <button class="modal-close" onclick="fermerModal('livret')">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="info-box">
+      <h4>Contenu du document</h4>
+      <ul>
+        <li>Informations élève et école</li>
+        <li>Compétences acquises par domaine</li>
+        <li>Observations et progressions</li>
+        <li>Synthèse globale</li>
+      </ul>
+    </div>
+    
+    <div class="form-group">
+      <label>Élève</label>
+      <select id="livretEleve"></select>
+    </div>
+    
+    <div class="form-group">
+      <label>Période</label>
+      <select id="livretPeriode">
+        <option value="P1">Période 1 - Septembre/Octobre</option>
+        <option value="P2">Période 2 - Novembre/Décembre</option>
+        <option value="P3">Période 3 - Janvier/Février</option>
+        <option value="P4">Période 4 - Mars/Avril</option>
+        <option value="P5">Période 5 - Mai/Juin</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Appréciation générale</label>
+      <textarea id="livretAppreciation" placeholder="Ex: Élève sérieux et appliqué..."></textarea>
+    </div>
+    
+    <button class="btn-primary" onclick="genererLivret()">
+      <i class="fas fa-file-pdf"></i> Générer le PDF
+    </button>
+  </div>
+</div>
+
+<!-- Modal Entretien -->
+<div class="modal" id="modalEntretien">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">💬 Compte-rendu entretien</div>
+      <button class="modal-close" onclick="fermerModal('entretien')">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="info-box">
+      <h4>Contenu du document</h4>
+      <ul>
+        <li>Date et participants</li>
+        <li>Points abordés</li>
+        <li>Progression de l'élève</li>
+        <li>Axes de travail</li>
+      </ul>
+    </div>
+    
+    <div class="form-group">
+      <label>Élève</label>
+      <select id="entretienEleve"></select>
+    </div>
+    
+    <div class="form-group">
+      <label>Date de l'entretien</label>
+      <input type="date" id="entretienDate" />
+    </div>
+    
+    <div class="form-group">
+      <label>Points positifs</label>
+      <textarea id="entretienPositifs" placeholder="Ex: Bonne participation, progrès en mathématiques..."></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>Points à travailler</label>
+      <textarea id="entretienTravailler" placeholder="Ex: Concentration, écriture..."></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>Engagement famille</label>
+      <textarea id="entretienFamille" placeholder="Ex: Lecture quotidienne à la maison..."></textarea>
+    </div>
+    
+    <button class="btn-primary" onclick="genererEntretien()">
+      <i class="fas fa-file-pdf"></i> Générer le PDF
+    </button>
+  </div>
+</div>
+
+<!-- Modal Bilan -->
+<div class="modal" id="modalBilan">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">📊 Bilan de période</div>
+      <button class="modal-close" onclick="fermerModal('bilan')">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="info-box">
+      <h4>Contenu du document</h4>
+      <ul>
+        <li>Synthèse par domaine</li>
+        <li>Compétences travaillées</li>
+        <li>Évolution de l'élève</li>
+        <li>Perspectives</li>
+      </ul>
+    </div>
+    
+    <div class="form-group">
+      <label>Élève</label>
+      <select id="bilanEleve"></select>
+    </div>
+    
+    <div class="form-group">
+      <label>Période</label>
+      <select id="bilanPeriode">
+        <option value="P1">Période 1</option>
+        <option value="P2">Période 2</option>
+        <option value="P3">Période 3</option>
+        <option value="P4">Période 4</option>
+        <option value="P5">Période 5</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Comportement et attitude</label>
+      <textarea id="bilanComportement" placeholder="Ex: Élève respectueux des règles..."></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>Conseils pour la suite</label>
+      <textarea id="bilanConseils" placeholder="Ex: Continuer les efforts en..."></textarea>
+    </div>
+    
+    <button class="btn-primary" onclick="genererBilan()">
+      <i class="fas fa-file-pdf"></i> Générer le PDF
+    </button>
+  </div>
+</div>
+
+<!-- Modal Projet -->
+<div class="modal" id="modalProjet">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">📋 Projet personnalisé</div>
+      <button class="modal-close" onclick="fermerModal('projet')">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="info-box">
+      <h4>Contenu du document</h4>
+      <ul>
+        <li>Type de projet (PPRE/PAP/PAI)</li>
+        <li>Besoins identifiés</li>
+        <li>Aménagements prévus</li>
+        <li>Objectifs et échéances</li>
+      </ul>
+    </div>
+    
+    <div class="form-group">
+      <label>Élève</label>
+      <select id="projetEleve"></select>
+    </div>
+    
+    <div class="form-group">
+      <label>Type de projet</label>
+      <select id="projetType">
+        <option value="PPRE">PPRE - Programme Personnalisé de Réussite Éducative</option>
+        <option value="PAP">PAP - Plan d'Accompagnement Personnalisé</option>
+        <option value="PAI">PAI - Projet d'Accueil Individualisé</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Difficultés/Besoins identifiés</label>
+      <textarea id="projetBesoins" placeholder="Ex: Difficultés de concentration, dyslexie..."></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>Aménagements et adaptations</label>
+      <textarea id="projetAmenagements" placeholder="Ex: Temps supplémentaire, support visuel..."></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>Objectifs</label>
+      <textarea id="projetObjectifs" placeholder="Ex: Améliorer la concentration, renforcer la lecture..."></textarea>
+    </div>
+    
+    <button class="btn-primary" onclick="genererProjet()">
+      <i class="fas fa-file-pdf"></i> Générer le PDF
+    </button>
+  </div>
+</div>
+
+<script>
+// === DONNÉES ===
+let eleves = [];
+let evaluations = {};
+let observations = {};
+
+// === INIT ===
+document.addEventListener('DOMContentLoaded', function() {
+  chargerDonnees();
+  remplirSelectsEleves();
+  
+  // Définir la date d'aujourd'hui pour l'entretien
+  document.getElementById('entretienDate').valueAsDate = new Date();
+});
+
+function chargerDonnees() {
+  eleves = window.SyncData.getEleves();
+  
+  const savedEval = localStorage.getItem('evaluations_eleves');
+  if (savedEval) evaluations = JSON.parse(savedEval);
+  
+  const savedObs = localStorage.getItem('observations_eleves');
+  if (savedObs) observations = JSON.parse(savedObs);
+}
+
+function remplirSelectsEleves() {
+  const selects = [
+    'livretEleve',
+    'entretienEleve',
+    'bilanEleve',
+    'projetEleve'
+  ];
+  
+  selects.forEach(selectId => {
+    const select = document.getElementById(selectId);
+    select.innerHTML = eleves.map(e => 
+      `<option value="${e.id}">${e.nom}</option>`
+    ).join('');
+  });
+}
+
+// === MODALS ===
+function ouvrirModal(type) {
+  document.getElementById('modal' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
+}
+
+function fermerModal(type) {
+  document.getElementById('modal' + type.charAt(0).toUpperCase() + type.slice(1)).classList.remove('active');
+}
+
+// === GÉNÉRATION LIVRET ===
+async function genererLivret() {
+  const eleveId = parseInt(document.getElementById('livretEleve').value);
+  const periode = document.getElementById('livretPeriode').value;
+  const appreciation = document.getElementById('livretAppreciation').value;
+  
+  const eleve = eleves.find(e => e.id === eleveId);
+  if (!eleve) return;
+  
+  const niveauInfo = window.SyncData.getNiveauInfo();
+  
+  // Créer le contenu
+  const content = `
+    <div style="font-family: Arial, sans-serif; padding: 20mm;">
+      <!-- En-tête officiel -->
+      <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #8b6f47; padding-bottom: 20px;">
+        <h1 style="color: #8b6f47; margin: 0; font-size: 24px;">LIVRET SCOLAIRE</h1>
+        <p style="color: #7f8c8d; margin: 10px 0 0 0; font-size: 14px;">Synthèse des acquis - ${niveauInfo.nom}</p>
+      </div>
+      
+      <!-- Informations élève -->
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+        <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 18px;">Informations de l'élève</h3>
+        <table style="width: 100%; font-size: 14px;">
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600; width: 150px;">Nom et prénom :</td>
+            <td style="padding: 8px 0;">${eleve.nom}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600;">Classe :</td>
+            <td style="padding: 8px 0;">${niveauInfo.emoji} ${niveauInfo.nom}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600;">Période :</td>
+            <td style="padding: 8px 0;">${periode}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600;">Année scolaire :</td>
+            <td style="padding: 8px 0;">2025-2026</td>
+          </tr>
+        </table>
+      </div>
+      
+      <!-- Compétences -->
+      ${genererCompetencesLivret(eleveId, periode)}
+      
+      <!-- Appréciation -->
+      <div style="margin-top: 30px; padding: 20px; background: #FFF9E6; border-left: 4px solid #FFD93D; border-radius: 8px;">
+        <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 18px;">Appréciation générale</h3>
+        <p style="line-height: 1.8; color: #2c3e50; font-size: 14px;">${appreciation || 'Aucune appréciation renseignée.'}</p>
+      </div>
+      
+      <!-- Signature -->
+      <div style="margin-top: 40px; display: flex; justify-content: space-between; font-size: 13px;">
+        <div>
+          <p style="margin-bottom: 50px; font-weight: 600;">L'enseignant(e)</p>
+          <p>Date : ${new Date().toLocaleDateString('fr-FR')}</p>
+        </div>
+        <div>
+          <p style="margin-bottom: 50px; font-weight: 600;">Le directeur/La directrice</p>
+          <p>Signature et cachet :</p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = content;
+  tempDiv.style.cssText = 'position: absolute; left: -9999px; width: 210mm; background: #ffffff;';
+  document.body.appendChild(tempDiv);
+  
+  await window.PDFExporter.exporterHTML(tempDiv, {
+    nomFichier: `Livret_Scolaire_${eleve.nom.replace(/\s/g, '_')}_${periode}.pdf`,
+    orientation: 'portrait'
+  });
+  
+  document.body.removeChild(tempDiv);
+  fermerModal('livret');
+}
+
+function genererCompetencesLivret(eleveId, periode) {
+  const evalEleve = evaluations[eleveId]?.[periode] || {};
+  
+  // Regrouper par domaine
+  const parDomaine = {};
+  Object.keys(evalEleve).forEach(key => {
+    const [domaine] = key.split('_');
+    if (!parDomaine[domaine]) parDomaine[domaine] = { acquis: 0, total: 0 };
+    parDomaine[domaine].total++;
+    if (evalEleve[key]) parDomaine[domaine].acquis++;
+  });
+  
+  let html = '<div style="margin-bottom: 25px;"><h3 style="color: #8b6f47; margin-bottom: 15px; font-size: 18px;">Compétences par domaine</h3>';
+  
+  Object.entries(parDomaine).forEach(([domaine, stats]) => {
+    const pourcentage = Math.round((stats.acquis / stats.total) * 100);
+    let appreciation = 'En cours d\'acquisition';
+    let couleur = '#f39c12';
+    
+    if (pourcentage >= 75) {
+      appreciation = 'Acquis';
+      couleur = '#27ae60';
+    } else if (pourcentage >= 50) {
+      appreciation = 'En voie d\'acquisition';
+      couleur = '#3498db';
+    }
+    
+    html += `
+      <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <strong style="color: #2c3e50; font-size: 15px;">${domaine}</strong>
+          <span style="background: ${couleur}; color: white; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">${appreciation}</span>
+        </div>
+        <div style="background: #dee2e6; height: 10px; border-radius: 5px; overflow: hidden;">
+          <div style="background: ${couleur}; height: 100%; width: ${pourcentage}%; border-radius: 5px;"></div>
+        </div>
+        <p style="margin-top: 5px; font-size: 12px; color: #7f8c8d;">${stats.acquis}/${stats.total} compétences acquises (${pourcentage}%)</p>
+      </div>
+    `;
+  });
+  
+  html += '</div>';
+  return html;
+}
+
+// === GÉNÉRATION ENTRETIEN ===
+async function genererEntretien() {
+  const eleveId = parseInt(document.getElementById('entretienEleve').value);
+  const date = document.getElementById('entretienDate').value;
+  const positifs = document.getElementById('entretienPositifs').value;
+  const travailler = document.getElementById('entretienTravailler').value;
+  const famille = document.getElementById('entretienFamille').value;
+  
+  const eleve = eleves.find(e => e.id === eleveId);
+  if (!eleve) return;
+  
+  const niveauInfo = window.SyncData.getNiveauInfo();
+  
+  const content = `
+    <div style="font-family: Arial, sans-serif; padding: 20mm;">
+      <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #8b6f47; padding-bottom: 20px;">
+        <h1 style="color: #8b6f47; margin: 0; font-size: 24px;">COMPTE-RENDU D'ENTRETIEN</h1>
+        <p style="color: #7f8c8d; margin: 10px 0 0 0; font-size: 14px;">Rencontre avec la famille</p>
+      </div>
+      
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+        <table style="width: 100%; font-size: 14px;">
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600; width: 150px;">Élève :</td>
+            <td style="padding: 8px 0;">${eleve.nom}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600;">Classe :</td>
+            <td style="padding: 8px 0;">${niveauInfo.nom}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600;">Date :</td>
+            <td style="padding: 8px 0;">${new Date(date).toLocaleDateString('fr-FR')}</td>
+          </tr>
+        </table>
+      </div>
+      
+      <div style="margin-bottom: 25px;">
+        <h3 style="color: #27ae60; margin-bottom: 15px; font-size: 18px;">✅ Points positifs</h3>
+        <div style="padding: 15px; background: #d4edda; border-left: 4px solid #27ae60; border-radius: 8px;">
+          <p style="line-height: 1.8; color: #2c3e50; font-size: 14px;">${positifs || 'Aucun point renseigné.'}</p>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 25px;">
+        <h3 style="color: #3498db; margin-bottom: 15px; font-size: 18px;">🎯 Points à travailler</h3>
+        <div style="padding: 15px; background: #d1ecf1; border-left: 4px solid #3498db; border-radius: 8px;">
+          <p style="line-height: 1.8; color: #2c3e50; font-size: 14px;">${travailler || 'Aucun point renseigné.'}</p>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 25px;">
+        <h3 style="color: #f39c12; margin-bottom: 15px; font-size: 18px;">🏠 Engagement de la famille</h3>
+        <div style="padding: 15px; background: #fff3cd; border-left: 4px solid #f39c12; border-radius: 8px;">
+          <p style="line-height: 1.8; color: #2c3e50; font-size: 14px;">${famille || 'Aucun engagement renseigné.'}</p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 40px; font-size: 13px;">
+        <p style="margin-bottom: 50px; font-weight: 600;">Signature de l'enseignant(e) :</p>
+        <p style="margin-bottom: 50px; font-weight: 600;">Signature des parents :</p>
+        <p>Date : ${new Date().toLocaleDateString('fr-FR')}</p>
+      </div>
+    </div>
+  `;
+  
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = content;
+  tempDiv.style.cssText = 'position: absolute; left: -9999px; width: 210mm; background: #ffffff;';
+  document.body.appendChild(tempDiv);
+  
+  await window.PDFExporter.exporterHTML(tempDiv, {
+    nomFichier: `Entretien_${eleve.nom.replace(/\s/g, '_')}_${new Date(date).toLocaleDateString('fr-FR').replace(/\//g, '-')}.pdf`,
+    orientation: 'portrait'
+  });
+  
+  document.body.removeChild(tempDiv);
+  fermerModal('entretien');
+}
+
+// === GÉNÉRATION BILAN ===
+async function genererBilan() {
+  const eleveId = parseInt(document.getElementById('bilanEleve').value);
+  const periode = document.getElementById('bilanPeriode').value;
+  const comportement = document.getElementById('bilanComportement').value;
+  const conseils = document.getElementById('bilanConseils').value;
+  
+  const eleve = eleves.find(e => e.id === eleveId);
+  if (!eleve) return;
+  
+  const niveauInfo = window.SyncData.getNiveauInfo();
+  
+  const content = `
+    <div style="font-family: Arial, sans-serif; padding: 20mm;">
+      <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #8b6f47; padding-bottom: 20px;">
+        <h1 style="color: #8b6f47; margin: 0; font-size: 24px;">BILAN DE PÉRIODE</h1>
+        <p style="color: #7f8c8d; margin: 10px 0 0 0; font-size: 14px;">${eleve.nom} - ${niveauInfo.nom} - ${periode}</p>
+      </div>
+      
+      ${genererCompetencesLivret(eleveId, periode)}
+      
+      <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+        <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 18px;">Comportement et attitude</h3>
+        <p style="line-height: 1.8; color: #2c3e50; font-size: 14px;">${comportement || 'Aucune remarque.'}</p>
+      </div>
+      
+      <div style="padding: 20px; background: #d1ecf1; border-left: 4px solid #3498db; border-radius: 8px;">
+        <h3 style="color: #3498db; margin-bottom: 15px; font-size: 18px;">Conseils pour la période suivante</h3>
+        <p style="line-height: 1.8; color: #2c3e50; font-size: 14px;">${conseils || 'Aucun conseil.'}</p>
+      </div>
+      
+      <div style="margin-top: 40px; font-size: 13px;">
+        <p>Date : ${new Date().toLocaleDateString('fr-FR')}</p>
+        <p style="margin-top: 50px; font-weight: 600;">Signature de l'enseignant(e)</p>
+      </div>
+    </div>
+  `;
+  
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = content;
+  tempDiv.style.cssText = 'position: absolute; left: -9999px; width: 210mm; background: #ffffff;';
+  document.body.appendChild(tempDiv);
+  
+  await window.PDFExporter.exporterHTML(tempDiv, {
+    nomFichier: `Bilan_${eleve.nom.replace(/\s/g, '_')}_${periode}.pdf`,
+    orientation: 'portrait'
+  });
+  
+  document.body.removeChild(tempDiv);
+  fermerModal('bilan');
+}
+
+// === GÉNÉRATION PROJET ===
+async function genererProjet() {
+  const eleveId = parseInt(document.getElementById('projetEleve').value);
+  const type = document.getElementById('projetType').value;
+  const besoins = document.getElementById('projetBesoins').value;
+  const amenagements = document.getElementById('projetAmenagements').value;
+  const objectifs = document.getElementById('projetObjectifs').value;
+  
+  const eleve = eleves.find(e => e.id === eleveId);
+  if (!eleve) return;
+  
+  const niveauInfo = window.SyncData.getNiveauInfo();
+  
+  const content = `
+    <div style="font-family: Arial, sans-serif; padding: 20mm;">
+      <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #8b6f47; padding-bottom: 20px;">
+        <h1 style="color: #8b6f47; margin: 0; font-size: 24px;">${type}</h1>
+        <p style="color: #7f8c8d; margin: 10px 0 0 0; font-size: 14px;">Projet personnalisé d'accompagnement</p>
+      </div>
+      
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+        <table style="width: 100%; font-size: 14px;">
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600; width: 200px;">Élève concerné :</td>
+            <td style="padding: 8px 0;">${eleve.nom}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600;">Classe :</td>
+            <td style="padding: 8px 0;">${niveauInfo.nom}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; font-weight: 600;">Date d'élaboration :</td>
+            <td style="padding: 8px 0;">${new Date().toLocaleDateString('fr-FR')}</td>
+          </tr>
+        </table>
+      </div>
+      
+      <div style="margin-bottom: 25px; padding: 20px; background: #fff3cd; border-left: 4px solid #f39c12; border-radius: 8px;">
+        <h3 style="color: #f39c12; margin-bottom: 15px; font-size: 18px;">Difficultés / Besoins identifiés</h3>
+        <p style="line-height: 1.8; color: #2c3e50; font-size: 14px;">${besoins || 'Aucun besoin renseigné.'}</p>
+      </div>
+      
+      <div style="margin-bottom: 25px; padding: 20px; background: #d1ecf1; border-left: 4px solid #3498db; border-radius: 8px;">
+        <h3 style="color: #3498db; margin-bottom: 15px; font-size: 18px;">Aménagements et adaptations</h3>
+        <p style="line-height: 1.8; color: #2c3e50; font-size: 14px;">${amenagements || 'Aucun aménagement renseigné.'}</p>
+      </div>
+      
+      <div style="margin-bottom: 25px; padding: 20px; background: #d4edda; border-left: 4px solid #27ae60; border-radius: 8px;">
+        <h3 style="color: #27ae60; margin-bottom: 15px; font-size: 18px;">Objectifs visés</h3>
+        <p style="line-height: 1.8; color: #2c3e50; font-size: 14px;">${objectifs || 'Aucun objectif renseigné.'}</p>
+      </div>
+      
+      <div style="margin-top: 40px; font-size: 13px;">
+        <p style="font-weight: 600; margin-bottom: 5px;">Signatures :</p>
+        <p style="margin: 30px 0;">L'enseignant(e) : </p>
+        <p style="margin: 30px 0;">Les parents : </p>
+        <p style="margin: 30px 0;">Le directeur/La directrice : </p>
+      </div>
+    </div>
+  `;
+  
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = content;
+  tempDiv.style.cssText = 'position: absolute; left: -9999px; width: 210mm; background: #ffffff;';
+  document.body.appendChild(tempDiv);
+  
+  await window.PDFExporter.exporterHTML(tempDiv, {
+    nomFichier: `${type}_${eleve.nom.replace(/\s/g, '_')}.pdf`,
+    orientation: 'portrait'
+  });
+  
+  document.body.removeChild(tempDiv);
+  fermerModal('projet');
+}
+</script>
+
+</body>
+</html>

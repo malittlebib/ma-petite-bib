@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ma Petite Bib - Outils Pédagogiques Professionnels</title>
+  
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#8b6f47">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Synchronisation des données -->
+  <script src="sync-data.js"></script>
+  <!-- PWA Manager -->
+  <script src="pwa-manager.js"></script>
+  
+  <style>
+    :root {
+      /* Palette Beige Premium - Minimaliste Chic */
+      --primary: #8b6f47;
+      --primary-dark: #6b5435;
+      --primary-light: #a68a5e;
+      --secondary: #d4b896;
+      --accent: #8b6f47;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      
+      --bg-cream: #faf8f5;
+      --bg-beige-light: #f5f1eb;
+      --bg-beige: #e8dfd3;
+      --bg-card: #ffffff;
+      --bg-card-hover: #fefdfb;
+      
+      --bg-gradient: linear-gradient(135deg, #faf8f5 0%, #f5f1eb 100%);
+      --brown-gradient: linear-gradient(135deg, #a68a5e 0%, #8b6f47 100%);
+      --card-shadow: 0 4px 20px rgba(139, 111, 71, 0.08);
+      --card-shadow-hover: 0 12px 40px rgba(139, 111, 71, 0.15);
+      
+      --text-primary: #2d2520;
+      --text-secondary: #6b5d52;
+      --text-muted: #9b8d7e;
+      
+      --border-color: #e8dfd3;
+      --border-brown: #d4b896;
+      
+      --border-radius: 24px;
+      --border-radius-sm: 16px;
+      --border-radius-lg: 32px;
+      
+      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-cream);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(212, 184, 150, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(139, 111, 71, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+    
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 60px;
+      position: relative;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(139, 111, 71, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .logo-container {
+      width: 200px;
+      margin: 0 auto 30px;
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(139, 111, 71, 0.15);
+      border: 2px solid var(--border-brown);
+      transition: var(--transition);
+    }
+    
+    .logo-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(139, 111, 71, 0.25);
+    }
+    
+    .logo-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      background: var(--brown-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    
+    .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    
+    .niveau-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1rem;
+      border: 2px solid var(--border-brown);
+      margin-top: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 16px rgba(139, 111, 71, 0.12);
+    }
+    
+    .niveau-badge:hover {
+      background: var(--bg-beige-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(139, 111, 71, 0.2);
+      border-color: var(--primary);
+    }
+    
+    /* CONTAINER */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    /* SECTION TITLES */
+    .section {
+      margin-bottom: 60px;
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    
+    .section-title i {
+      color: var(--primary);
+      background: var(--bg-beige-light);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+    
+    .section-description {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* APPS GRID */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    
+    /* APP CARD */
+    .app-card {
+      position: relative;
+      background: var(--bg-card);
+      border-radius: var(--border-radius);
+      padding: 32px;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+    
+    .app-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--brown-gradient);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .app-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 111, 71, 0.06), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .app-card:hover::after {
+      opacity: 1;
+    }
+    
+    .app-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--card-shadow-hover);
+      background: var(--bg-card-hover);
+      border-color: var(--border-brown);
+    }
+    
+    .app-card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .app-card.featured {
+      grid-column: 1 / -1;
+      background: var(--brown-gradient);
+      color: white;
+      border: none;
+      box-shadow: 0 8px 32px rgba(139, 111, 71, 0.25);
+    }
+    
+    .app-card.featured::before {
+      display: none;
+    }
+    
+    .app-card.featured .app-icon {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: white;
+    }
+    
+    .app-card.featured h2,
+    .app-card.featured p {
+      color: white;
+    }
+    
+    .app-icon {
+      width: 72px;
+      height: 72px;
+      background: white;
+      border: 2px solid var(--border-brown);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      color: var(--primary);
+      transition: var(--transition);
+      box-shadow: 0 4px 16px rgba(139, 111, 71, 0.1);
+    }
+    
+    .app-card:hover .app-icon {
+      transform: scale(1.15) rotate(-5deg);
+      background: var(--bg-beige-light);
+      border-color: var(--primary);
+      box-shadow: 0 8px 24px rgba(139, 111, 71, 0.2);
+    }
+    
+    .app-card h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .app-card p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    
+    .app-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--brown-gradient);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+    }
+    
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-color);
+      margin-top: 60px;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .footer-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+    
+    .footer-link:hover {
+      background: var(--bg-beige-light);
+      color: var(--primary);
+    }
+    
+    .copyright {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 40px 20px 40px;
+      }
+      
+      .apps-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .app-card.featured {
+        grid-column: 1;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+      }
+    }
+    
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .app-card {
+      animation: fadeInUp 0.6s ease backwards;
+    }
+    
+    .app-card:nth-child(1) { animation-delay: 0.05s; }
+    .app-card:nth-child(2) { animation-delay: 0.1s; }
+    .app-card:nth-child(3) { animation-delay: 0.15s; }
+    .app-card:nth-child(4) { animation-delay: 0.2s; }
+    .app-card:nth-child(5) { animation-delay: 0.25s; }
+    .app-card:nth-child(6) { animation-delay: 0.3s; }
+    .app-card:nth-child(7) { animation-delay: 0.35s; }
+    .app-card:nth-child(8) { animation-delay: 0.4s; }
+    .app-card:nth-child(9) { animation-delay: 0.45s; }
+    .app-card:nth-child(10) { animation-delay: 0.5s; }
+    .app-card:nth-child(11) { animation-delay: 0.55s; }
+    
+    /* Mouse tracking effect */
+    .app-card {
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="logo-container">
+        <img src="logo.png" alt="Ma Petite Bib">
+      </div>
+      <h1>Ma Petite Bib</h1>
+      <p class="subtitle">Outils pédagogiques professionnels pour enseignants de maternelle</p>
+      <div class="niveau-badge" onclick="window.location.href='gestion-classe.html'">
+        <span id="niveauIcon">🎓</span>
+        <span id="niveauNom">Grande Section</span>
+      </div>
+      
+      <!-- Boutons de sauvegarde -->
+      <div style="display: flex; gap: 15px; margin-top: 25px; justify-content: center; flex-wrap: wrap;">
+        <button onclick="exporterToutesDonnees()" style="
+          background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+          transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(39, 174, 96, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(39, 174, 96, 0.3)'">
+          <i class="fas fa-download"></i>
+          💾 Exporter sauvegarde
+        </button>
+        
+        <button onclick="document.getElementById('importFile').click()" style="
+          background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+          transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(52, 152, 219, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(52, 152, 219, 0.3)'">
+          <i class="fas fa-upload"></i>
+          📥 Importer sauvegarde
+        </button>
+        
+        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importerToutesDonnees(event)">
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <!-- OUTILS ESSENTIELS -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-star"></i>
+          Outils Essentiels
+        </h2>
+        <p class="section-description">
+          Vos outils quotidiens pour une gestion de classe optimale
+        </p>
+      </div>
+      
+      <div class="apps-grid">
+        
+        <!-- Tableau de bord -->
+        <a href="tableau-de-bord.html" class="app-card featured">
+          <div class="app-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h2>📊 Tableau de bord</h2>
+          <p>Vue d'ensemble complète : statistiques en temps réel, actions rapides et aperçu de vos données</p>
+        </a>
+        
+        <!-- Mode Classe en Direct -->
+        <a href="classe-en-direct.html" class="app-card">
+          <span class="app-badge">Nouveau</span>
+          <div class="app-icon">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <h2>🎬 Mode Classe en Direct</h2>
+          <p>Interface optimisée pour utilisation en classe : timer, notes rapides et présences express</p>
+        </a>
+        
+        <!-- Gestion de Classe -->
+        <a href="gestion-classe.html" class="app-card">
+          <div class="app-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h2>👥 Gestion de Classe</h2>
+          <p>Élèves, groupes, responsabilités, présences, APC et emploi du temps</p>
+        </a>
+        
+      </div>
+    </div>
+
+    <!-- PRÉPARATION & SUIVI -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-clipboard-check"></i>
+          Préparation & Suivi
+        </h2>
+      </div>
+      
+      <div class="apps-grid">
+        
+        <!-- Fiche de Préparation -->
+        <a href="fiche-preparation.html" class="app-card">
+          <div class="app-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <h2>📝 Fiche de Préparation</h2>
+          <p>Créez vos fiches de préparation conformes et exportez-les en PDF</p>
+        </a>
+        
+        <!-- Cahier Journal -->
+        <a href="cahier-journal-simple.html" class="app-card">
+          <div class="app-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <h2>📓 Cahier Journal</h2>
+          <p>Planifiez votre journée de classe avec un outil complet et intuitif</p>
+        </a>
+        
+        <!-- Programmations -->
+        <a href="programmations.html" class="app-card">
+          <div class="app-icon">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <h2>📅 Programmations</h2>
+          <p>Programmations annuelles par domaine conformes aux programmes officiels</p>
+        </a>
+        
+        <!-- Planning Annuel -->
+        <a href="planning-annuel.html" class="app-card">
+          <div class="app-icon">
+            <i class="fas fa-calendar"></i>
+          </div>
+          <h2>🗓️ Planning Annuel</h2>
+          <p>Calendrier interactif avec événements et visualisation sur toute l'année</p>
+        </a>
+        
+      </div>
+    </div>
+
+    <!-- ÉVALUATION & OBSERVATIONS -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-chart-bar"></i>
+          Évaluation & Observations
+        </h2>
+      </div>
+      
+      <div class="apps-grid">
+        
+        <!-- Suivi Comportement -->
+        <a href="suivi-comportement.html" class="app-card">
+          <div class="app-icon">
+            <i class="fas fa-smile"></i>
+          </div>
+          <h2>😊 Suivi Comportement</h2>
+          <p>Tableau hebdomadaire des comportements avec statistiques et notes</p>
+        </a>
+        
+        <!-- Évaluation & Observations -->
+        <a href="evaluation-observations.html" class="app-card">
+          <div class="app-icon">
+            <i class="fas fa-clipboard-check"></i>
+          </div>
+          <h2>✅ Évaluation & Observations</h2>
+          <p>Carnet d'observations et grilles d'évaluation par élève (724 compétences PS/MS/GS)</p>
+        </a>
+        
+        <!-- Évaluations (703 compétences officielles) -->
+        <a href="evaluations.html" class="app-card">
+          <div class="app-icon" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
+            <i class="fas fa-award"></i>
+          </div>
+          <h2>🏅 Évaluations (703 compétences)</h2>
+          <p>Module d'évaluation avec les 703 compétences officielles PS/MS/GS et export bulletin</p>
+        </a>
+        
+        <!-- Tableau de bord classe -->
+        <a href="tableau-bord-classe.html" class="app-card">
+          <div class="app-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h2>📊 Tableau de Bord Classe</h2>
+          <p>Vue d'ensemble, heatmap éditable, suivi par domaine et identification des besoins</p>
+        </a>
+        
+      </div>
+    </div>
+
+    <!-- ADMINISTRATIF -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-file-signature"></i>
+          Documents Administratifs
+        </h2>
+      </div>
+      
+      <div class="apps-grid">
+        
+        <!-- Documents IEN -->
+        <a href="documents-ien.html" class="app-card">
+          <span class="app-badge">Nouveau</span>
+          <div class="app-icon">
+            <i class="fas fa-file-signature"></i>
+          </div>
+          <h2>📑 Documents IEN</h2>
+          <p>Générateur de documents conformes : livrets, bilans, entretiens et projets personnalisés</p>
+        </a>
+        
+        <!-- Import Fichiers -->
+        <a href="import-fichiers.html" class="app-card">
+          <span class="app-badge">Nouveau</span>
+          <div class="app-icon">
+            <i class="fas fa-file-import"></i>
+          </div>
+          <h2>📥 Import Fichiers</h2>
+          <p>Importez vos listes d'élèves depuis Excel ou CSV en quelques secondes</p>
+        </a>
+        
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="diagnostic.html" class="footer-link">
+        <i class="fas fa-stethoscope"></i> Diagnostic
+      </a>
+      <a href="mentions-legales.html" class="footer-link">
+        <i class="fas fa-gavel"></i> Mentions légales
+      </a>
+      <a href="README.md" class="footer-link">
+        <i class="fas fa-question-circle"></i> Aide
+      </a>
+    </div>
+    <p class="copyright">
+      © 2025 Ma Petite Bib - Outils pédagogiques pour enseignants
+    </p>
+  </footer>
+
+  <script>
+    // Afficher le niveau actuel
+    document.addEventListener('DOMContentLoaded', function() {
+      const niveauInfo = window.SyncData.getNiveauInfo();
+      document.getElementById('niveauIcon').textContent = niveauInfo.emoji;
+      document.getElementById('niveauNom').textContent = niveauInfo.nom;
+      
+      // Effet de suivi de souris sur les cartes
+      const cards = document.querySelectorAll('.app-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          card.style.setProperty('--mouse-x', `${x}%`);
+          card.style.setProperty('--mouse-y', `${y}%`);
+        });
+      });
+    });
+  </script>
+
+<script>
+// ========================================
+// SYSTÈME D'EXPORT/IMPORT COMPLET
+// ========================================
+
+function exporterToutesDonnees() {
+  try {
+    // Récupérer TOUTES les données du localStorage
+    const sauvegarde = {
+      meta: {
+        date_export: new Date().toISOString(),
+        version: "1.0",
+        application: "Ma Petite Bib",
+        description: "Sauvegarde complète de toutes vos données"
+      },
+      donnees: {
+        // Données élèves et classe
+        eleves: localStorage.getItem('eleves') || '[]',
+        niveau_classe: localStorage.getItem('niveau_classe') || '',
+        nom_classe: localStorage.getItem('nom_classe') || '',
+        
+        // Évaluations
+        evaluations: localStorage.getItem('evaluations') || '{}',
+        evaluations_competences: localStorage.getItem('evaluations_competences') || '{}',
+        
+        // Fiches de préparation
+        fiches_preparation: localStorage.getItem('fiches_preparation') || '[]',
+        templates_custom: localStorage.getItem('templates_custom') || '[]',
+        
+        // Cahiers journal
+        cahier_journal: getAllCahierJournal(),
+        
+        // Programmations par niveau
+        progressions_ps: localStorage.getItem('progressions_ps') || '{}',
+        progressions_ms: localStorage.getItem('progressions_ms') || '{}',
+        progressions_gs: localStorage.getItem('progressions_gs') || '{}',
+        
+        // Emplois du temps
+        emploi_du_temps: localStorage.getItem('emploiDuTemps') || '[]',
+        
+        // Calendrier
+        calendrier_events: localStorage.getItem('calendrier_events') || '[]',
+        
+        // Autres données
+        groupes: localStorage.getItem('groupes') || '[]',
+        responsabilites: localStorage.getItem('responsabilites') || '[]'
+      }
+    };
+    
+    // Convertir en JSON
+    const json = JSON.stringify(sauvegarde, null, 2);
+    
+    // Créer un nom de fichier avec la date
+    const dateStr = new Date().toISOString().split('T')[0];
+    const nomFichier = `ma-petite-bib-sauvegarde-${dateStr}.json`;
+    
+    // Créer le blob et télécharger
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = nomFichier;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    // Afficher confirmation
+    afficherNotificationSauvegarde('✅ Sauvegarde exportée !', `Fichier téléchargé : ${nomFichier}`, 'success');
+    
+  } catch (error) {
+    console.error('Erreur lors de l\'export:', error);
+    afficherNotificationSauvegarde('❌ Erreur', 'Impossible d\'exporter les données', 'error');
+  }
+}
+
+function getAllCahierJournal() {
+  const cahiers = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('cahier_journal_')) {
+      cahiers[key] = localStorage.getItem(key);
+    }
+  }
+  return cahiers;
+}
+
+function importerToutesDonnees(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  
+  reader.onload = function(e) {
+    try {
+      const sauvegarde = JSON.parse(e.target.result);
+      
+      // Vérifier que c'est bien une sauvegarde valide
+      if (!sauvegarde.meta || !sauvegarde.donnees) {
+        throw new Error('Format de sauvegarde invalide');
+      }
+      
+      // Demander confirmation
+      const dateExport = new Date(sauvegarde.meta.date_export).toLocaleDateString('fr-FR');
+      const message = `Voulez-vous restaurer la sauvegarde du ${dateExport} ?\n\n⚠️ ATTENTION : Cela remplacera TOUTES vos données actuelles !\n\n💡 Conseil : Exportez d'abord vos données actuelles par sécurité.`;
+      
+      if (!confirm(message)) {
+        afficherNotificationSauvegarde('ℹ️ Import annulé', 'Vos données n\'ont pas été modifiées', 'info');
+        return;
+      }
+      
+      // Restaurer toutes les données
+      const donnees = sauvegarde.donnees;
+      
+      // Données principales
+      if (donnees.eleves) localStorage.setItem('eleves', donnees.eleves);
+      if (donnees.niveau_classe) localStorage.setItem('niveau_classe', donnees.niveau_classe);
+      if (donnees.nom_classe) localStorage.setItem('nom_classe', donnees.nom_classe);
+      
+      // Évaluations
+      if (donnees.evaluations) localStorage.setItem('evaluations', donnees.evaluations);
+      if (donnees.evaluations_competences) localStorage.setItem('evaluations_competences', donnees.evaluations_competences);
+      
+      // Fiches de prep
+      if (donnees.fiches_preparation) localStorage.setItem('fiches_preparation', donnees.fiches_preparation);
+      if (donnees.templates_custom) localStorage.setItem('templates_custom', donnees.templates_custom);
+      
+      // Cahiers journal
+      if (donnees.cahier_journal) {
+        Object.keys(donnees.cahier_journal).forEach(key => {
+          localStorage.setItem(key, donnees.cahier_journal[key]);
+        });
+      }
+      
+      // Programmations
+      if (donnees.progressions_ps) localStorage.setItem('progressions_ps', donnees.progressions_ps);
+      if (donnees.progressions_ms) localStorage.setItem('progressions_ms', donnees.progressions_ms);
+      if (donnees.progressions_gs) localStorage.setItem('progressions_gs', donnees.progressions_gs);
+      
+      // Emploi du temps
+      if (donnees.emploi_du_temps) localStorage.setItem('emploiDuTemps', donnees.emploi_du_temps);
+      
+      // Calendrier
+      if (donnees.calendrier_events) localStorage.setItem('calendrier_events', donnees.calendrier_events);
+      
+      // Autres
+      if (donnees.groupes) localStorage.setItem('groupes', donnees.groupes);
+      if (donnees.responsabilites) localStorage.setItem('responsabilites', donnees.responsabilites);
+      
+      // Réinitialiser le input file
+      event.target.value = '';
+      
+      // Afficher confirmation et recharger
+      afficherNotificationSauvegarde('✅ Restauration réussie !', 'La page va se recharger pour appliquer les changements', 'success');
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Erreur lors de l\'import:', error);
+      afficherNotificationSauvegarde('❌ Erreur', 'Fichier de sauvegarde invalide ou corrompu', 'error');
+      event.target.value = '';
+    }
+  };
+  
+  reader.readAsText(file);
+}
+
+function afficherNotificationSauvegarde(titre, message, type = 'success') {
+  // Créer la notification
+  const notif = document.createElement('div');
+  notif.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${type === 'success' ? '#27ae60' : type === 'error' ? '#e74c3c' : '#3498db'};
+    color: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    z-index: 10000;
+    max-width: 400px;
+    animation: slideIn 0.3s;
+  `;
+  
+  notif.innerHTML = `
+    <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 5px;">${titre}</div>
+    <div style="font-size: 0.9rem; opacity: 0.95;">${message}</div>
+  `;
+  
+  document.body.appendChild(notif);
+  
+  // Supprimer après 4 secondes
+  setTimeout(() => {
+    notif.style.animation = 'slideOut 0.3s';
+    setTimeout(() => notif.remove(), 300);
+  }, 4000);
+}
+
+// Ajouter les animations
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+
+console.log('✅ Système de sauvegarde chargé');
+</script>
+
+</body>
+</html>
