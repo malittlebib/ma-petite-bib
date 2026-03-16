@@ -1,0 +1,2482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📅 Calendrier Annuel – Ma Petite Bib 2025–2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose-deep:    #b57c84;
+    --rose-mid:     #c9909a;
+    --rose-light:   #e8b4bc;
+    --rose-pale:    #f5dde0;
+    --rose-blush:   #fdf0f1;
+    --terracotta:   #996055;
+    --brown-dark:   #745252;
+    --cream:        #fffaf6;
+    --cream-dark:   #f5ede6;
+    --gold:         #dda83f;
+    --gold-light:   #f0d080;
+    --forest:       #2b4743;
+    --forest-light: #3d6b63;
+    --text-dark:    #3a2a2a;
+    --text-mid:     #6b4848;
+    --text-light:   #a07070;
+    --white:        #ffffff;
+  }
+
+  /* Thème alternatif : Beige Classic */
+  [data-theme="beige"] {
+    --rose-deep:    #8b6f47;
+    --rose-mid:     #a68a5e;
+    --rose-light:   #d4b896;
+    --rose-pale:    #e8dfd3;
+    --rose-blush:   #f5f1eb;
+    --terracotta:   #8b6f47;
+    --brown-dark:   #6b5435;
+    --cream:        #faf8f5;
+    --cream-dark:   #f5ede6;
+    --gold:         #d4a574;
+    --gold-light:   #e8c9a0;
+    --forest:       #2b4743;
+    --forest-light: #3d6b63;
+    --text-dark:    #2d2520;
+    --text-mid:     #6b5d52;
+    --text-light:   #9b8d7e;
+    --white:        #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  /* ── NAVIGATION ─────────────────────────────── */
+  .nav-wrapper {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--white);
+    border-bottom: 1.5px solid var(--rose-pale);
+    box-shadow: 0 2px 20px rgba(181,124,132,0.10);
+  }
+
+  .nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--brown-dark);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-brand span {
+    color: var(--rose-deep);
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+  }
+
+  .nav-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--text-mid);
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+
+  .nav-tab:hover {
+    background: var(--rose-pale);
+    color: var(--rose-deep);
+  }
+
+  .nav-tab.active {
+    background: var(--rose-deep);
+    color: var(--white);
+    box-shadow: 0 3px 12px rgba(181,124,132,0.4);
+  }
+
+  .nav-year {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── PAGES ───────────────────────────────────── */
+  .page {
+    display: none;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 88px 28px 60px;
+  }
+  .page.active { display: block; }
+
+  /* ── SECTION HEADER ─────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    line-height: 1;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--rose-deep);
+  }
+
+  .section-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--text-light);
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .title-line {
+    flex: 1;
+    height: 1.5px;
+    background: linear-gradient(to right, var(--rose-light), transparent);
+    margin-bottom: 10px;
+  }
+
+  /* ── CARDS ───────────────────────────────────── */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 16px rgba(181,124,132,0.09);
+    border: 1px solid rgba(181,124,132,0.12);
+    transition: box-shadow 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 28px rgba(181,124,132,0.17);
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--brown-dark);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rose-deep);
+    flex-shrink: 0;
+  }
+
+  /* ── PAGE: COUVERTURE ───────────────────────── */
+  .cover {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(181,124,132,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(221,168,63,0.07) 0%, transparent 60%),
+      linear-gradient(135deg, var(--cream) 0%, var(--rose-blush) 100%);
+  }
+
+  .cover-deco-1 {
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    border: 2px solid rgba(181,124,132,0.15);
+  }
+
+  .cover-deco-2 {
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(181,124,132,0.20);
+  }
+
+  .cover-deco-3 {
+    position: absolute;
+    bottom: 60px; left: 40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    border: 1px solid rgba(221,168,63,0.18);
+  }
+
+  .cover-corner-bl {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 160px; height: 140px;
+    background: linear-gradient(135deg, rgba(181,124,132,0.10), transparent);
+    border-top-right-radius: 100%;
+  }
+
+  .cover-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 700px;
+    padding: 60px 40px;
+  }
+
+  .cover-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--rose-mid);
+    margin-bottom: 24px;
+  }
+
+  .cover-main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 7vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1.0;
+    color: var(--brown-dark);
+    margin-bottom: 12px;
+  }
+
+  .cover-main-title em {
+    display: block;
+    font-style: italic;
+    color: var(--rose-deep);
+    font-size: 0.85em;
+  }
+
+  .cover-divider {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 28px auto;
+  }
+
+  .cover-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--text-mid);
+    font-style: italic;
+    letter-spacing: 0.06em;
+    margin-bottom: 40px;
+  }
+
+  .cover-owner-area {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(181,124,132,0.2);
+    border-radius: 16px;
+    padding: 20px 32px;
+    display: inline-block;
+    min-width: 280px;
+  }
+
+  .cover-owner-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+
+  .cover-owner-input {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--brown-dark);
+    border: none;
+    background: transparent;
+    text-align: center;
+    width: 100%;
+    outline: none;
+    border-bottom: 1px solid rgba(181,124,132,0.3);
+  }
+
+  .cover-owner-input::placeholder {
+    color: rgba(181,124,132,0.4);
+  }
+
+  .cover-nav-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 36px;
+  }
+
+  .cover-chip {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(181,124,132,0.3);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .cover-chip:hover {
+    background: var(--rose-deep);
+    border-color: var(--rose-deep);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(181,124,132,0.3);
+  }
+
+  /* ── PAGE: CALENDRIER ANNUEL ─────────────────── */
+  .annual-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .month-mini {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(181,124,132,0.09);
+    border: 1px solid rgba(181,124,132,0.12);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .month-mini:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(181,124,132,0.2);
+  }
+
+  .month-mini-header {
+    background: var(--rose-deep);
+    color: var(--white);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .month-mini-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .month-mini-tag {
+    font-size: 0.65rem;
+    background: rgba(255,255,255,0.2);
+    padding: 2px 6px;
+    border-radius: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .month-mini-body {
+    padding: 10px 12px;
+  }
+
+  .mini-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    font-size: 0.7rem;
+  }
+
+  .mini-cal-day-label {
+    text-align: center;
+    font-weight: 500;
+    color: var(--text-light);
+    padding: 3px 0;
+    font-size: 0.65rem;
+  }
+
+  .mini-cal-day {
+    text-align: center;
+    padding: 3px 2px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+    color: var(--text-dark);
+    font-size: 0.68rem;
+  }
+
+  .mini-cal-day:hover { background: var(--rose-pale); }
+  .mini-cal-day.today { background: var(--rose-deep); color: var(--white); font-weight: 600; border-radius: 50%; }
+  .mini-cal-day.weekend { color: var(--rose-mid); }
+  .mini-cal-day.vacation { background: rgba(221,168,63,0.15); }
+  .mini-cal-day.has-event { position: relative; }
+  .mini-cal-day.has-event::after {
+    content: ''; position: absolute; bottom: 2px; left: 50%;
+    transform: translateX(-50%); width: 4px; height: 4px;
+    border-radius: 50%; background: var(--rose-deep);
+  }
+
+  /* ── PAGE: MOIS DÉTAILLÉ ─────────────────────── */
+  .month-page-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .month-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .month-nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--rose-light);
+    background: var(--white);
+    color: var(--rose-deep);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .month-nav-btn:hover {
+    background: var(--rose-deep);
+    color: var(--white);
+    border-color: var(--rose-deep);
+  }
+
+  .month-display-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    min-width: 200px;
+  }
+
+  .month-cal-big {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(181,124,132,0.09);
+    border: 1px solid rgba(181,124,132,0.12);
+  }
+
+  .month-cal-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: var(--rose-pale);
+    border-bottom: 1.5px solid rgba(181,124,132,0.2);
+  }
+
+  .cal-header-day {
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+  }
+
+  .cal-header-day:nth-child(6), .cal-header-day:nth-child(7) {
+    color: var(--rose-mid);
+  }
+
+  .month-cal-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .cal-day-cell {
+    min-height: 90px;
+    padding: 8px 10px;
+    border-right: 1px solid rgba(181,124,132,0.08);
+    border-bottom: 1px solid rgba(181,124,132,0.08);
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .cal-day-cell:hover { background: var(--rose-blush); }
+
+  .cal-day-cell.other-month { opacity: 0.35; }
+
+  .cal-day-cell.today {
+    background: linear-gradient(135deg, var(--rose-pale), var(--rose-blush));
+  }
+
+  .cal-day-cell.today .cal-day-num {
+    background: var(--rose-deep);
+    color: var(--white);
+  }
+
+  .cal-day-cell.weekend .cal-day-num { color: var(--rose-mid); }
+
+  .cal-day-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+
+  .cal-event-pill {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+  }
+
+  .cal-event-pill.prof {
+    background: rgba(181,124,132,0.18);
+    color: var(--brown-dark);
+  }
+
+  .cal-event-pill.perso {
+    background: rgba(43,71,67,0.14);
+    color: var(--forest);
+  }
+
+  .cal-event-pill.exam {
+    background: rgba(221,168,63,0.2);
+    color: #7a5a00;
+  }
+
+  /* Sidebar du mois */
+  .month-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .notes-area {
+    resize: none;
+    width: 100%;
+    min-height: 120px;
+    border: 1.5px solid rgba(181,124,132,0.2);
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background: var(--cream);
+    outline: none;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+
+  .notes-area:focus { border-color: var(--rose-deep); }
+
+  .notes-area::placeholder { color: rgba(181,124,132,0.45); font-style: italic; }
+
+  /* Priority list */
+  .priority-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .priority-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--cream);
+    border-radius: 10px;
+    border: 1.5px solid rgba(181,124,132,0.15);
+    cursor: grab;
+    transition: all 0.2s;
+  }
+
+  .priority-item:hover {
+    border-color: var(--rose-mid);
+    box-shadow: 0 2px 8px rgba(181,124,132,0.12);
+  }
+
+  .priority-checkbox {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--rose-light);
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .priority-checkbox.checked {
+    background: var(--rose-deep);
+    border-color: var(--rose-deep);
+    color: white;
+    font-size: 0.65rem;
+  }
+
+  .priority-text {
+    flex: 1;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .priority-text.done {
+    text-decoration: line-through;
+    color: var(--text-light);
+  }
+
+  .priority-tag {
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+
+  .priority-tag.prof { background: var(--rose-pale); color: var(--rose-deep); }
+  .priority-tag.perso { background: rgba(43,71,67,0.1); color: var(--forest); }
+
+  /* ── PAGE: EMPLOI DU TEMPS ───────────────────── */
+  .edt-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .edt-grid {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(181,124,132,0.09);
+    border: 1px solid rgba(181,124,132,0.12);
+  }
+
+  .edt-header {
+    display: grid;
+    grid-template-columns: 72px repeat(5, 1fr);
+    background: var(--rose-deep);
+    color: var(--white);
+  }
+
+  .edt-header-cell {
+    padding: 14px 10px;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .edt-header-cell:first-child { background: rgba(0,0,0,0.12); }
+
+  .edt-row {
+    display: grid;
+    grid-template-columns: 72px repeat(5, 1fr);
+    border-bottom: 1px solid rgba(181,124,132,0.09);
+    min-height: 64px;
+  }
+
+  .edt-row:last-child { border-bottom: none; }
+  .edt-row:nth-child(even) { background: rgba(245, 221, 224, 0.12); }
+
+  .edt-time-cell {
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-light);
+    border-right: 1px solid rgba(181,124,132,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rose-blush);
+    letter-spacing: 0.04em;
+  }
+
+  .edt-cell {
+    padding: 6px 8px;
+    border-right: 1px solid rgba(181,124,132,0.09);
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-height: 64px;
+  }
+
+  .edt-cell:hover { background: var(--rose-blush); }
+
+  .edt-class-block {
+    border-radius: 8px;
+    padding: 6px 9px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .edt-class-block:hover { opacity: 0.85; }
+
+  .edt-class-block.niveau-6e { background: rgba(181,124,132,0.20); color: var(--brown-dark); border-left: 3px solid var(--rose-deep); }
+  .edt-class-block.niveau-5e { background: rgba(43,71,67,0.14); color: var(--forest); border-left: 3px solid var(--forest); }
+  .edt-class-block.niveau-4e { background: rgba(221,168,63,0.18); color: #6a4a00; border-left: 3px solid var(--gold); }
+  .edt-class-block.niveau-3e { background: rgba(153,96,85,0.15); color: var(--terracotta); border-left: 3px solid var(--terracotta); }
+  .edt-class-block.reunion { background: rgba(116,82,82,0.12); color: var(--brown-dark); border-left: 3px solid var(--brown-dark); }
+  .edt-class-block.pause { background: var(--rose-pale); color: var(--text-light); border-left: 3px solid var(--rose-light); }
+
+  .edt-class-name { font-weight: 700; font-size: 0.78rem; }
+  .edt-class-room { font-size: 0.66rem; opacity: 0.75; }
+
+  /* EDT Legend */
+  .edt-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--text-mid);
+  }
+
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── PAGE: CLASSES ───────────────────────────── */
+  .classes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .classe-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(181,124,132,0.09);
+    border: 1px solid rgba(181,124,132,0.12);
+  }
+
+  .classe-header {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .classe-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .classe-count {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.05em;
+  }
+
+  .classe-header.sixieme { background: linear-gradient(135deg, var(--rose-deep), var(--rose-mid)); }
+  .classe-header.cinquieme { background: linear-gradient(135deg, var(--forest), var(--forest-light)); }
+  .classe-header.quatrieme { background: linear-gradient(135deg, #b8872a, var(--gold)); }
+  .classe-header.troisieme { background: linear-gradient(135deg, var(--terracotta), #c07a6b); }
+
+  .classe-body { padding: 20px 24px; }
+
+  .classe-section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    margin-top: 16px;
+  }
+
+  .classe-section-label:first-child { margin-top: 0; }
+
+  .eleve-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(181,124,132,0.09);
+    font-size: 0.84rem;
+  }
+
+  .eleve-row:last-child { border-bottom: none; }
+
+  .eleve-name {
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+
+  .eleve-badges {
+    display: flex;
+    gap: 4px;
+  }
+
+  .badge {
+    font-size: 0.62rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .badge.pao { background: rgba(221,168,63,0.2); color: #7a5a00; }
+  .badge.dys { background: rgba(181,124,132,0.18); color: var(--brown-dark); }
+  .badge.pp { background: rgba(43,71,67,0.14); color: var(--forest); }
+  .badge.abv { background: rgba(153,96,85,0.15); color: var(--terracotta); }
+
+  /* Progress bar */
+  .prog-bar-wrap {
+    background: var(--rose-pale);
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+
+  .prog-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(to right, var(--rose-deep), var(--rose-mid));
+    transition: width 0.8s ease;
+  }
+
+  /* ── PAGE: VIE PERSO ─────────────────────────── */
+  .perso-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+  }
+
+  .perso-left { display: flex; flex-direction: column; gap: 20px; }
+  .perso-right { display: flex; flex-direction: column; gap: 20px; }
+
+  /* Mood tracker */
+  .mood-tracker {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  .mood-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mood-day-label {
+    font-size: 0.65rem;
+    color: var(--text-light);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .mood-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 100%;
+  }
+
+  .mood-btn {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: var(--cream-dark);
+    opacity: 0.45;
+  }
+
+  .mood-btn:hover { opacity: 0.8; transform: scale(1.05); }
+  .mood-btn.selected { opacity: 1; border-color: var(--rose-deep); box-shadow: 0 2px 8px rgba(181,124,132,0.3); }
+
+  /* Habits */
+  .habits-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .habit-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .habit-name {
+    width: 130px;
+    font-size: 0.82rem;
+    color: var(--text-dark);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .habit-days {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .habit-check {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(181,124,132,0.25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    transition: all 0.2s;
+    background: var(--white);
+    color: transparent;
+  }
+
+  .habit-check.done {
+    background: var(--rose-deep);
+    border-color: var(--rose-deep);
+    color: white;
+  }
+
+  /* Objectifs */
+  .obj-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .obj-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .obj-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    background: var(--rose-pale);
+  }
+
+  .obj-content { flex: 1; }
+  .obj-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+
+  .obj-prog-bar {
+    height: 5px;
+    background: var(--rose-pale);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .obj-prog-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(to right, var(--rose-deep), var(--rose-mid));
+  }
+
+  .obj-percent {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    margin-top: 3px;
+  }
+
+  /* Reading list */
+  .reading-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(181,124,132,0.09);
+  }
+
+  .reading-item:last-child { border-bottom: none; }
+
+  .reading-book-icon {
+    width: 36px; height: 48px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .reading-info { flex: 1; }
+
+  .reading-title {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  .reading-author {
+    font-size: 0.74rem;
+    color: var(--text-light);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .reading-status {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .reading-status.en-cours { background: rgba(221,168,63,0.2); color: #7a5a00; }
+  .reading-status.lu { background: rgba(43,71,67,0.14); color: var(--forest); }
+  .reading-status.a-lire { background: var(--rose-pale); color: var(--rose-deep); }
+
+  /* ── PAGE: COMPÉTENCES ───────────────────────── */
+  .comp-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .comp-classe-section {
+    margin-bottom: 20px;
+  }
+
+  .comp-classe-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--rose-pale);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+
+  .comp-table th {
+    padding: 8px 10px;
+    background: var(--rose-pale);
+    color: var(--text-mid);
+    font-weight: 600;
+    text-align: left;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .comp-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(181,124,132,0.08);
+    color: var(--text-dark);
+  }
+
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table tr:hover td { background: var(--rose-blush); }
+
+  .comp-level {
+    display: flex;
+    gap: 3px;
+  }
+
+  .comp-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid var(--rose-light);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .comp-dot.filled { background: var(--rose-deep); border-color: var(--rose-deep); }
+  .comp-dot.partial { background: var(--rose-light); border-color: var(--rose-light); }
+
+  /* ── PAGE: INFOS GÉNÉRALES ───────────────────── */
+  .infos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .info-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .info-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+
+  .info-input {
+    padding: 9px 12px;
+    border: 1.5px solid rgba(181,124,132,0.2);
+    border-radius: 10px;
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .info-input:focus { border-color: var(--rose-deep); background: var(--white); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .contact-card {
+    padding: 14px;
+    background: var(--cream);
+    border-radius: 10px;
+    border: 1px solid rgba(181,124,132,0.15);
+  }
+
+  .contact-card-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+
+  .contact-card-role {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+
+  .contact-card-phone {
+    font-size: 0.78rem;
+    color: var(--rose-deep);
+    font-weight: 500;
+  }
+
+  /* ── MODAL EVENT ─────────────────────────────── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(58,42,42,0.35);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 32px 36px;
+    width: 440px;
+    max-width: 90vw;
+    box-shadow: 0 20px 60px rgba(58,42,42,0.2);
+    position: relative;
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { transform: translateY(20px) scale(0.97); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-bottom: 24px;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--rose-light);
+    background: var(--white);
+    color: var(--text-mid);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { background: var(--rose-deep); color: white; border-color: var(--rose-deep); }
+
+  .modal-form-group {
+    margin-bottom: 16px;
+  }
+
+  .modal-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .modal-input, .modal-select, .modal-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid rgba(181,124,132,0.2);
+    border-radius: 10px;
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .modal-input:focus, .modal-select:focus, .modal-textarea:focus {
+    border-color: var(--rose-deep);
+    background: var(--white);
+  }
+
+  .modal-textarea { resize: vertical; min-height: 80px; }
+
+  .modal-type-btns {
+    display: flex;
+    gap: 8px;
+  }
+
+  .modal-type-btn {
+    flex: 1;
+    padding: 9px;
+    border-radius: 10px;
+    border: 2px solid rgba(181,124,132,0.2);
+    background: var(--cream);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-mid);
+  }
+
+  .modal-type-btn:hover { border-color: var(--rose-mid); }
+  .modal-type-btn.active-prof { border-color: var(--rose-deep); background: var(--rose-pale); color: var(--rose-deep); }
+  .modal-type-btn.active-perso { border-color: var(--forest); background: rgba(43,71,67,0.1); color: var(--forest); }
+  .modal-type-btn.active-exam { border-color: var(--gold); background: rgba(221,168,63,0.12); color: #7a5a00; }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .btn-primary {
+    flex: 1;
+    padding: 12px;
+    background: var(--rose-deep);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+
+  .btn-primary:hover {
+    background: var(--brown-dark);
+    box-shadow: 0 4px 16px rgba(181,124,132,0.35);
+  }
+
+  .btn-secondary {
+    padding: 12px 20px;
+    background: var(--cream);
+    color: var(--text-mid);
+    border: 1.5px solid rgba(181,124,132,0.2);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--rose-mid); color: var(--rose-deep); }
+
+  /* ── STATS BAR ───────────────────────────────── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 12px rgba(181,124,132,0.09);
+    border: 1px solid rgba(181,124,132,0.12);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .stat-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .stat-icon.rose { background: var(--rose-pale); }
+  .stat-icon.forest { background: rgba(43,71,67,0.1); }
+  .stat-icon.gold { background: rgba(221,168,63,0.15); }
+  .stat-icon.terra { background: rgba(153,96,85,0.1); }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    margin-top: 2px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── ADD BUTTON ──────────────────────────────── */
+  .add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px dashed rgba(181,124,132,0.4);
+    background: transparent;
+    color: var(--rose-mid);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .add-btn:hover {
+    background: var(--rose-pale);
+    border-color: var(--rose-deep);
+    color: var(--rose-deep);
+  }
+
+  /* ── SCROLLBAR ───────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--rose-light); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--rose-mid); }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<div class="nav-wrapper">
+  <div class="nav-inner">
+    <div class="nav-brand">Mon <span>Planner</span></div>
+    <ul class="nav-tabs" id="navTabs">
+      <li class="nav-tab active" data-page="calendrier">📅 Calendrier</li>
+      <li class="nav-tab" data-page="mois">🗓 Ce mois</li>
+      <li class="nav-tab" data-page="perso">✨ Vie perso</li>
+    </ul>
+    <a href="index-planner.html" class="nav-year" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+      <i class="fas fa-home"></i> Accueil
+    </a>
+  </div>
+</div>
+
+<!-- ════════════ PAGE: COUVERTURE ════════════ -->
+<div class="page" id="page-couverture" style="display: none;">
+  <div class="cover">
+    <div class="cover-bg"></div>
+    <div class="cover-deco-1"></div>
+    <div class="cover-deco-2"></div>
+    <div class="cover-deco-3"></div>
+    <div class="cover-corner-bl"></div>
+    <div class="cover-content">
+      <div class="cover-eyebrow">✦ Agenda scolaire & personnel ✦</div>
+      <div class="cover-main-title">
+        Mon
+        <em>Planner</em>
+      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-subtitle">Prof de Maternelle — Année 2025 · 2026</div>
+      <div class="cover-owner-area">
+        <div class="cover-owner-label">Ce planner appartient à</div>
+        <input class="cover-owner-input" type="text" placeholder="Votre prénom..." />
+      </div>
+      <div class="cover-nav-chips">
+        <div class="cover-chip" onclick="goToPage('calendrier')">📅 Calendrier annuel</div>
+        <div class="cover-chip" onclick="goToPage('mois')">🗓 Planificateur mensuel</div>
+        <div class="cover-chip" onclick="goToPage('edt')">📋 Emploi du temps</div>
+        <div class="cover-chip" onclick="goToPage('classes')">👩‍🏫 Mes classes</div>
+        <div class="cover-chip" onclick="goToPage('perso')">✨ Vie personnelle</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PAGE: CALENDRIER ANNUEL ════════════ -->
+<div class="page active" id="page-calendrier">
+  <div class="section-header">
+    <div>
+      <div class="section-subtitle">Vue d'ensemble</div>
+      <div class="section-title">Calendrier <em>Annuel</em></div>
+    </div>
+    <div class="title-line"></div>
+    <button class="add-btn" onclick="openModal()">+ Ajouter un événement</button>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-icon rose">🎓</div>
+      <div><div class="stat-num" id="stat-cours">36</div><div class="stat-label">Semaines de cours</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon gold">📝</div>
+      <div><div class="stat-num" id="stat-events">12</div><div class="stat-label">Événements planifiés</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon forest">🌿</div>
+      <div><div class="stat-num">5</div><div class="stat-label">Périodes de vacances</div></div>
+    </div>
+  </div>
+
+  <div class="annual-grid" id="annualGrid"></div>
+</div>
+
+<!-- ════════════ PAGE: MOIS DÉTAILLÉ ════════════ -->
+<div class="page" id="page-mois">
+  <div class="section-header">
+    <div>
+      <div class="section-subtitle">Planificateur</div>
+      <div class="section-title">Vue <em>Mensuelle</em></div>
+    </div>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="month-selector">
+    <button class="month-nav-btn" onclick="changeMonth(-1)">‹</button>
+    <div class="month-display-name" id="monthDisplayName">Septembre 2025</div>
+    <button class="month-nav-btn" onclick="changeMonth(1)">›</button>
+  </div>
+
+  <div class="month-page-layout">
+    <div>
+      <div class="month-cal-big" id="bigCal"></div>
+    </div>
+    <div class="month-sidebar">
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot"></span> Priorités du mois</div>
+        <ul class="priority-list" id="priorityList">
+          <li class="priority-item" data-done="false">
+            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
+            <input class="priority-text" value="Préparer ateliers Toussaint" />
+            <span class="priority-tag prof">PROF</span>
+          </li>
+          <li class="priority-item" data-done="false">
+            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
+            <input class="priority-text" value="Réunion parents PS — 18 sept." />
+            <span class="priority-tag prof">PROF</span>
+          </li>
+          <li class="priority-item" data-done="false">
+            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
+            <input class="priority-text" value="Renouveler abonnement salle" />
+            <span class="priority-tag perso">PERSO</span>
+          </li>
+          <li class="priority-item" data-done="false">
+            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
+            <input class="priority-text" value="Préparer projet arts plastiques" />
+            <span class="priority-tag prof">PROF</span>
+          </li>
+          <li class="priority-item" data-done="false">
+            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
+            <input class="priority-text" value="Week-end en famille" />
+            <span class="priority-tag perso">PERSO</span>
+          </li>
+        </ul>
+        <button class="add-btn" style="margin-top:12px" onclick="addPriority()">+ Ajouter</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--gold)"></span> Notes du mois</div>
+        <textarea class="notes-area" placeholder="Observations, projets pédagogiques, idées d'ateliers…&#10;&#10;Ce mois, je veux me concentrer sur…"></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--forest)"></span> À ne pas oublier</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(221,168,63,0.12);border-radius:8px;font-size:0.82rem;color:#7a5a00">
+            📅 Conseil de cycle — 16 oct.
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(181,124,132,0.12);border-radius:8px;font-size:0.82rem;color:var(--brown-dark)">
+            📝 PPRE à finaliser — 20 oct.
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(43,71,67,0.1);border-radius:8px;font-size:0.82rem;color:var(--forest)">
+            🌿 Vacances Toussaint — 26 oct.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PAGE: EMPLOI DU TEMPS ════════════ -->
+<div class="page" id="page-edt" style="display: none;">
+  <div class="section-header">
+    <div>
+      <div class="section-subtitle">Organisation hebdomadaire</div>
+      <div class="section-title">Emploi <em>du Temps</em></div>
+    </div>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="edt-layout">
+    <div class="edt-grid" id="edtGrid"></div>
+    <div class="edt-legend" id="edtLegend">
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(181,124,132,0.6);border-left:3px solid var(--rose-deep)"></div>PS (Petite Section)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(43,71,67,0.5);border-left:3px solid var(--forest)"></div>MS (Moyenne Section)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(221,168,63,0.5);border-left:3px solid var(--gold)"></div>GS (Grande Section)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(153,96,85,0.5);border-left:3px solid var(--terracotta)"></div>Regroupement / Accueil</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(116,82,82,0.4)"></div>Réunion</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--rose-pale)"></div>Pause</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PAGE: CLASSES ════════════ -->
+<div class="page" id="page-classes" style="display: none;">
+  <div class="section-header">
+    <div>
+      <div class="section-subtitle">Gestion des élèves</div>
+      <div class="section-title">Ma <em>Classe</em></div>
+    </div>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="classes-grid" style="display: none;">
+    <!-- Cartes de classes supprimées -->
+  </div>
+</div>
+
+<!-- ════════════ PAGE: COMPÉTENCES ════════════ -->
+<div class="page" id="page-competences" style="display: none;">
+  <div class="section-header">
+    <div>
+      <div class="section-subtitle">Suivi pédagogique</div>
+      <div class="section-title">Suivi des <em>Compétences</em></div>
+    </div>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="comp-layout">
+    <div>
+      <div class="comp-classe-section">
+        <div class="comp-classe-title">
+          <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--rose-deep)"></span>
+          Petite Section (PS)
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="comp-table">
+            <thead>
+              <tr><th>Compétence</th><th>T1</th><th>T2</th><th>T3</th><th>Bilan</th></tr>
+            </thead>
+            <tbody id="compTable6e"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="comp-classe-section">
+        <div class="comp-classe-title">
+          <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--forest)"></span>
+          Moyenne Section (MS)
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="comp-table">
+            <thead>
+              <tr><th>Compétence</th><th>T1</th><th>T2</th><th>T3</th><th>Bilan</th></tr>
+            </thead>
+            <tbody id="compTable5e"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="comp-classe-section">
+        <div class="comp-classe-title">
+          <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--gold)"></span>
+          Grande Section (GS)
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="comp-table">
+            <thead>
+              <tr><th>Compétence</th><th>T1</th><th>T2</th><th>T3</th><th>Bilan</th></tr>
+            </thead>
+            <tbody id="compTable4e"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="comp-classe-section">
+        <div class="comp-classe-title">
+          <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--terracotta)"></span>
+          Suivi transversal PS/MS/GS
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="comp-table">
+            <thead>
+              <tr><th>Compétence</th><th>T1</th><th>T2</th><th>T3</th><th>Bilan</th></tr>
+            </thead>
+            <tbody id="compTable3e"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" style="margin-top:0">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--gold)"></span>Légende</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.8rem">
+            <div style="display:flex;gap:3px">
+              <div class="comp-dot filled"></div><div class="comp-dot filled"></div><div class="comp-dot filled"></div>
+            </div>
+            <span>Maîtrise satisfaisante</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.8rem">
+            <div style="display:flex;gap:3px">
+              <div class="comp-dot filled"></div><div class="comp-dot filled"></div><div class="comp-dot" style="border-color:var(--rose-light)"></div>
+            </div>
+            <span>En cours d'acquisition</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.8rem">
+            <div style="display:flex;gap:3px">
+              <div class="comp-dot filled"></div><div class="comp-dot" style="border-color:var(--rose-light)"></div><div class="comp-dot" style="border-color:var(--rose-light)"></div>
+            </div>
+            <span>Non acquis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PAGE: VIE PERSO ════════════ -->
+<div class="page" id="page-perso">
+  <div class="section-header">
+    <div>
+      <div class="section-subtitle">Équilibre & bien-être</div>
+      <div class="section-title">Vie <em>Personnelle</em></div>
+    </div>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="perso-grid">
+    <div class="perso-left">
+      <!-- Mood -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--rose-mid)"></span>Suivi de l'humeur — cette semaine</div>
+        <div class="mood-tracker" id="moodTracker"></div>
+      </div>
+
+      <!-- Habitudes -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--forest)"></span>Habitudes de la semaine</div>
+        <div class="habits-grid" id="habitsGrid"></div>
+        <button class="add-btn" style="margin-top:12px" onclick="addHabit()">+ Ajouter une habitude</button>
+      </div>
+
+      <!-- Lecture -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--terracotta)"></span>Mes lectures</div>
+        <div id="readingList">
+          <div class="reading-item">
+            <div class="reading-book-icon" style="background:rgba(181,124,132,0.15)">📖</div>
+            <div class="reading-info">
+              <div class="reading-title">La Tresse</div>
+              <div class="reading-author">Laetitia Colombani</div>
+            </div>
+            <span class="reading-status en-cours">En cours</span>
+          </div>
+          <div class="reading-item">
+            <div class="reading-book-icon" style="background:rgba(43,71,67,0.1)">📗</div>
+            <div class="reading-info">
+              <div class="reading-title">L'Anomalie</div>
+              <div class="reading-author">Hervé Le Tellier</div>
+            </div>
+            <span class="reading-status lu">Lu ✓</span>
+          </div>
+          <div class="reading-item">
+            <div class="reading-book-icon" style="background:rgba(221,168,63,0.15)">📙</div>
+            <div class="reading-info">
+              <div class="reading-title">Tout est Accompli</div>
+              <div class="reading-author">Claire Castillon</div>
+            </div>
+            <span class="reading-status a-lire">À lire</span>
+          </div>
+        </div>
+        <button class="add-btn" style="margin-top:10px">+ Ajouter un livre</button>
+      </div>
+    </div>
+
+    <div class="perso-right">
+      <!-- Objectifs -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--gold)"></span>Objectifs personnels</div>
+        <ul class="obj-list" id="objList">
+          <li class="obj-item">
+            <div class="obj-icon">🏃</div>
+            <div class="obj-content">
+              <div class="obj-title">Courir 3x/semaine</div>
+              <div class="obj-prog-bar"><div class="obj-prog-fill" style="width:66%"></div></div>
+              <div class="obj-percent">66% — 2 sur 3 cette semaine</div>
+            </div>
+          </li>
+          <li class="obj-item">
+            <div class="obj-icon">🧘</div>
+            <div class="obj-content">
+              <div class="obj-title">Méditation quotidienne</div>
+              <div class="obj-prog-bar"><div class="obj-prog-fill" style="width:43%"></div></div>
+              <div class="obj-percent">43% — 3 sur 7 jours</div>
+            </div>
+          </li>
+          <li class="obj-item">
+            <div class="obj-icon">📚</div>
+            <div class="obj-content">
+              <div class="obj-title">Lire 12 livres cette année</div>
+              <div class="obj-prog-bar"><div class="obj-prog-fill" style="width:42%"></div></div>
+              <div class="obj-percent">5 / 12 livres lus</div>
+            </div>
+          </li>
+          <li class="obj-item">
+            <div class="obj-icon">🌿</div>
+            <div class="obj-content">
+              <div class="obj-title">Week-ends sans écrans</div>
+              <div class="obj-prog-bar"><div class="obj-prog-fill" style="width:60%;background:linear-gradient(to right, var(--forest), var(--forest-light))"></div></div>
+              <div class="obj-percent">3 sur 5 derniers week-ends</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Budget perso -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--terracotta)"></span>Dépenses matériel pédagogique</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(181,124,132,0.09);font-size:0.82rem">
+            <span style="color:var(--text-dark)">Marqueurs & feutres</span>
+            <span style="font-weight:600;color:var(--rose-deep)">18,50 €</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(181,124,132,0.09);font-size:0.82rem">
+            <span style="color:var(--text-dark)">Photocopies classe</span>
+            <span style="font-weight:600;color:var(--rose-deep)">12,00 €</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(181,124,132,0.09);font-size:0.82rem">
+            <span style="color:var(--text-dark)">Jeux pédagogiques</span>
+            <span style="font-weight:600;color:var(--rose-deep)">35,00 €</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 0;font-size:0.88rem;font-weight:600">
+            <span style="color:var(--text-dark)">Total ce trimestre</span>
+            <span style="color:var(--brown-dark)">65,50 €</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wishlist -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--rose-light)"></span>Wishlist & envies</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:0.82rem;padding:7px 10px;background:var(--rose-blush);border-radius:8px;border-left:3px solid var(--rose-light)">
+            🌸 Weekend Spa avec les amies
+          </div>
+          <div style="font-size:0.82rem;padding:7px 10px;background:rgba(43,71,67,0.07);border-radius:8px;border-left:3px solid var(--forest)">
+            ✈️ Voyage en Bretagne cet été
+          </div>
+          <div style="font-size:0.82rem;padding:7px 10px;background:rgba(221,168,63,0.1);border-radius:8px;border-left:3px solid var(--gold)">
+            🎨 Cours de peinture aquarelle
+          </div>
+          <div style="font-size:0.82rem;padding:7px 10px;background:var(--cream-dark);border-radius:8px;border-left:3px solid var(--rose-pale)">
+            🌱 Créer un jardin de plantes aromatiques
+          </div>
+        </div>
+        <button class="add-btn" style="margin-top:10px">+ Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PAGE: INFOS ════════════ -->
+<div class="page" id="page-infos" style="display: none;">
+  <div class="section-header">
+    <div>
+      <div class="section-subtitle">Mon carnet de bord</div>
+      <div class="section-title">Informations <em>Générales</em></div>
+    </div>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="infos-grid">
+    <div>
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot"></span>Mon profil</div>
+        <div class="info-field">
+          <label class="info-label">Nom complet</label>
+          <input class="info-input" type="text" placeholder="Prénom Nom" />
+        </div>
+        <div class="info-field">
+          <label class="info-label">Établissement</label>
+          <input class="info-input" type="text" placeholder="École maternelle..." />
+        </div>
+        <div class="info-field">
+          <label class="info-label">Niveaux de classe</label>
+          <input class="info-input" type="text" placeholder="PS / MS / GS..." />
+        </div>
+        <div class="info-field">
+          <label class="info-label">Adresse e-mail professionnelle</label>
+          <input class="info-input" type="email" placeholder="prenom.nom@ac-xxx.fr" />
+        </div>
+        <div class="info-field">
+          <label class="info-label">Téléphone établissement</label>
+          <input class="info-input" type="tel" placeholder="01 23 45 67 89" />
+        </div>
+        <div class="info-field">
+          <label class="info-label">Salle de référence</label>
+          <input class="info-input" type="text" placeholder="Numéro de salle" />
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--gold)"></span>Dates importantes 2025–2026</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--cream);border-radius:10px;border:1px solid rgba(181,124,132,0.15);font-size:0.82rem">
+            <span>🍂 Rentrée scolaire</span><span style="font-weight:600;color:var(--rose-deep)">1 sept. 2025</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--cream);border-radius:10px;border:1px solid rgba(181,124,132,0.15);font-size:0.82rem">
+            <span>🍁 Vacances Toussaint</span><span style="font-weight:600;color:var(--rose-deep)">25 oct. – 3 nov. 2025</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--cream);border-radius:10px;border:1px solid rgba(181,124,132,0.15);font-size:0.82rem">
+            <span>⛄ Vacances Noël</span><span style="font-weight:600;color:var(--rose-deep)">20 déc. – 5 jan. 2026</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--cream);border-radius:10px;border:1px solid rgba(181,124,132,0.15);font-size:0.82rem">
+            <span>❄️ Vacances Hiver</span><span style="font-weight:600;color:var(--rose-deep)">21 fév. – 8 mars 2026</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--cream);border-radius:10px;border:1px solid rgba(181,124,132,0.15);font-size:0.82rem">
+            <span>🌸 Vacances Printemps</span><span style="font-weight:600;color:var(--rose-deep)">18 avr. – 4 mai 2026</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:rgba(221,168,63,0.1);border-radius:10px;border:1px solid rgba(221,168,63,0.25);font-size:0.82rem">
+            <span>🎓 Fin d'année scolaire</span><span style="font-weight:600;color:#7a5a00">3 juillet 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--forest)"></span>Contacts utiles</div>
+        <div class="contact-grid">
+          <div class="contact-card">
+            <div class="contact-card-name">Direction</div>
+            <div class="contact-card-role">Directeur(trice) école</div>
+            <input class="info-input" type="text" placeholder="Nom..." style="margin-bottom:4px;font-size:0.78rem;padding:6px 10px" />
+            <input class="info-input" type="tel" placeholder="Tél..." style="font-size:0.78rem;padding:6px 10px" />
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-name">CPE</div>
+            <div class="contact-card-role">Conseiller Pédagogique</div>
+            <input class="info-input" type="text" placeholder="Nom..." style="margin-bottom:4px;font-size:0.78rem;padding:6px 10px" />
+            <input class="info-input" type="tel" placeholder="Tél..." style="font-size:0.78rem;padding:6px 10px" />
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-name">Infirmière</div>
+            <div class="contact-card-role">Infirmerie scolaire</div>
+            <input class="info-input" type="text" placeholder="Nom..." style="margin-bottom:4px;font-size:0.78rem;padding:6px 10px" />
+            <input class="info-input" type="tel" placeholder="Tél..." style="font-size:0.78rem;padding:6px 10px" />
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-name">Secrétariat</div>
+            <div class="contact-card-role">Administration</div>
+            <input class="info-input" type="text" placeholder="Nom..." style="margin-bottom:4px;font-size:0.78rem;padding:6px 10px" />
+            <input class="info-input" type="tel" placeholder="Tél..." style="font-size:0.78rem;padding:6px 10px" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--rose-deep)"></span>Notes & réflexions pédagogiques</div>
+        <textarea class="notes-area" style="min-height:160px" placeholder="Idées pour améliorer mes cours…&#10;&#10;Ce qui fonctionne bien avec mes classes…&#10;&#10;À tester le prochain trimestre…"></textarea>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="card-title"><span class="card-title-dot" style="background:var(--terracotta)"></span>Formations & développement</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="padding:10px 12px;background:var(--rose-blush);border-radius:10px;border-left:3px solid var(--rose-deep)">
+            <div style="font-size:0.82rem;font-weight:600;color:var(--brown-dark)">Formation numérique EN</div>
+            <div style="font-size:0.72rem;color:var(--text-light);margin-top:2px">Oct. 2025 · 6h</div>
+          </div>
+          <div style="padding:10px 12px;background:rgba(43,71,67,0.07);border-radius:10px;border-left:3px solid var(--forest)">
+            <div style="font-size:0.82rem;font-weight:600;color:var(--forest)">Journée pédagogique</div>
+            <div style="font-size:0.72rem;color:var(--text-light);margin-top:2px">Janv. 2026 · À planifier</div>
+          </div>
+          <button class="add-btn" style="margin-top:4px">+ Ajouter une formation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-title">Nouvel événement</div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-form-group">
+      <label class="modal-label">Titre</label>
+      <input class="modal-input" id="modalTitle" placeholder="Ex: Conseil de classe, Anniversaire..." />
+    </div>
+    <div class="modal-form-group">
+      <label class="modal-label">Type</label>
+      <div class="modal-type-btns">
+        <button class="modal-type-btn active-prof" onclick="setType(this, 'prof')">🎓 Prof</button>
+        <button class="modal-type-btn" onclick="setType(this, 'perso')">🌸 Perso</button>
+        <button class="modal-type-btn" onclick="setType(this, 'exam')">📝 Examen</button>
+      </div>
+    </div>
+    <div class="modal-form-group">
+      <label class="modal-label">Date</label>
+      <input class="modal-input" id="modalDate" type="date" />
+    </div>
+    <div class="modal-form-group">
+      <label class="modal-label">Note (optionnel)</label>
+      <textarea class="modal-textarea" id="modalNote" placeholder="Détails..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Annuler</button>
+      <button class="btn-primary" onclick="saveEvent()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// CHARGER LE THÈME
+// ══════════════════════════════════════════════════
+function chargerTheme() {
+  const savedTheme = localStorage.getItem('app_theme') || 'rose';
+  if (savedTheme === 'beige') {
+    document.documentElement.setAttribute('data-theme', 'beige');
+  }
+}
+chargerTheme();
+
+// ══════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════
+
+// ── NAVIGATION ────────────────────────────────────────────
+function goToPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + pageId)?.classList.add('active');
+  document.querySelector(`.nav-tab[data-page="${pageId}"]`)?.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => goToPage(tab.dataset.page));
+});
+
+// ── DATA ──────────────────────────────────────────────────
+const events = [
+  { date: '2025-09-05', title: 'Réunion de prérentrée', type: 'prof' },
+  { date: '2025-09-18', title: 'Réunion parents PS', type: 'prof' },
+  { date: '2025-10-07', title: 'Sortie ferme pédagogique', type: 'prof' },
+  { date: '2025-10-16', title: 'Conseil de cycle', type: 'prof' },
+  { date: '2025-10-26', title: 'Vacances Toussaint', type: 'perso' },
+  { date: '2025-11-20', title: 'Éval. langage MS/GS', type: 'exam' },
+  { date: '2025-12-04', title: 'Spectacle de Noël', type: 'prof' },
+  { date: '2025-12-21', title: 'Vacances Noël', type: 'perso' },
+  { date: '2026-01-15', title: 'Éval. motricité PS', type: 'exam' },
+  { date: '2026-02-22', title: 'Vacances Hiver', type: 'perso' },
+  { date: '2026-04-19', title: 'Vacances Printemps', type: 'perso' },
+  { date: '2026-06-11', title: "Fête de fin d'année", type: 'prof' },
+];
+
+const months = [
+  { name: 'Septembre', year: 2025, abbr: 'SEPT' },
+  { name: 'Octobre',   year: 2025, abbr: 'OCT'  },
+  { name: 'Novembre',  year: 2025, abbr: 'NOV'  },
+  { name: 'Décembre',  year: 2025, abbr: 'DÉC'  },
+  { name: 'Janvier',   year: 2026, abbr: 'JAN'  },
+  { name: 'Février',   year: 2026, abbr: 'FÉV'  },
+  { name: 'Mars',      year: 2026, abbr: 'MARS' },
+  { name: 'Avril',     year: 2026, abbr: 'AVR'  },
+  { name: 'Mai',       year: 2026, abbr: 'MAI'  },
+  { name: 'Juin',      year: 2026, abbr: 'JUIN' },
+  { name: 'Juillet',   year: 2026, abbr: 'JUIL' },
+  { name: 'Août',      year: 2026, abbr: 'AOÛT' },
+];
+
+const today = new Date();
+let currentMonthIdx = 0;
+
+// ── MINI CALENDRIERS ──────────────────────────────────────
+function buildMiniCal(monthIdx) {
+  const m = months[monthIdx];
+  const date = new Date(m.year, getMonthNum(m.name), 1);
+  const mn = date.getMonth();
+  const yr = date.getFullYear();
+  const firstDay = (new Date(yr, mn, 1).getDay() + 6) % 7;
+  const daysInMonth = new Date(yr, mn + 1, 0).getDate();
+
+  const dayLabels = ['L','M','M','J','V','S','D'];
+  let html = '<div class="mini-cal-grid">';
+  dayLabels.forEach(d => html += `<div class="mini-cal-day-label">${d}</div>`);
+
+  for (let i = 0; i < firstDay; i++) html += '<div></div>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${yr}-${String(mn+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dow = (firstDay + d - 1) % 7;
+    const isToday = today.getFullYear() === yr && today.getMonth() === mn && today.getDate() === d;
+    const hasEvent = events.some(e => e.date === dateStr);
+    const isWeekend = dow >= 5;
+    let cls = 'mini-cal-day';
+    if (isToday) cls += ' today';
+    if (isWeekend) cls += ' weekend';
+    if (hasEvent) cls += ' has-event';
+    html += `<div class="${cls}" onclick="goMonthDay(${monthIdx},${d})">${d}</div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function getMonthNum(name) {
+  const map = {Septembre:8,Octobre:9,Novembre:10,Décembre:11,Janvier:0,Février:1,Mars:2,Avril:3,Mai:4,Juin:5,Juillet:6,Août:7};
+  return map[name];
+}
+
+function buildAnnualGrid() {
+  const grid = document.getElementById('annualGrid');
+  grid.innerHTML = '';
+  months.forEach((m, idx) => {
+    const div = document.createElement('div');
+    div.className = 'month-mini';
+    div.innerHTML = `
+      <div class="month-mini-header">
+        <div class="month-mini-name">${m.name}</div>
+        <div class="month-mini-tag">${m.year}</div>
+      </div>
+      <div class="month-mini-body">${buildMiniCal(idx)}</div>
+    `;
+    div.addEventListener('click', () => { currentMonthIdx = idx; goToPage('mois'); renderBigCal(); });
+    grid.appendChild(div);
+  });
+}
+
+function goMonthDay(monthIdx, day) {
+  currentMonthIdx = monthIdx;
+  goToPage('mois');
+  renderBigCal();
+}
+
+// ── BIG CALENDAR ──────────────────────────────────────────
+function renderBigCal() {
+  const m = months[currentMonthIdx];
+  document.getElementById('monthDisplayName').textContent = `${m.name} ${m.year}`;
+
+  const mn = getMonthNum(m.name);
+  const yr = m.year;
+  const firstDay = (new Date(yr, mn, 1).getDay() + 6) % 7;
+  const daysInMonth = new Date(yr, mn + 1, 0).getDate();
+  const prevDays = new Date(yr, mn, 0).getDate();
+
+  const dayLabels = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+  let html = `<div class="month-cal-header">`;
+  dayLabels.forEach(d => html += `<div class="cal-header-day">${d}</div>`);
+  html += '</div><div class="month-cal-body">';
+
+  for (let i = 0; i < firstDay; i++) {
+    html += `<div class="cal-day-cell other-month"><div class="cal-day-num">${prevDays - firstDay + 1 + i}</div></div>`;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${yr}-${String(mn+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dow = (firstDay + d - 1) % 7;
+    const isToday = today.getFullYear() === yr && today.getMonth() === mn && today.getDate() === d;
+    const isWeekend = dow >= 5;
+    const dayEvents = events.filter(e => e.date === dateStr);
+    let cls = 'cal-day-cell';
+    if (isToday) cls += ' today';
+    if (isWeekend) cls += ' weekend';
+
+    let eventHtml = '';
+    dayEvents.forEach(e => {
+      eventHtml += `<div class="cal-event-pill ${e.type}">${e.title}</div>`;
+    });
+
+    html += `<div class="${cls}" onclick="openModalDate('${dateStr}')">
+      <div class="cal-day-num">${d}</div>
+      ${eventHtml}
+    </div>`;
+  }
+
+  const remaining = 42 - firstDay - daysInMonth;
+  for (let d = 1; d <= remaining; d++) {
+    html += `<div class="cal-day-cell other-month"><div class="cal-day-num">${d}</div></div>`;
+  }
+
+  html += '</div>';
+  document.getElementById('bigCal').innerHTML = html;
+}
+
+function changeMonth(dir) {
+  currentMonthIdx = Math.max(0, Math.min(11, currentMonthIdx + dir));
+  renderBigCal();
+}
+
+// ── EMPLOI DU TEMPS ───────────────────────────────────────
+const edt = [
+  ['08:30','Accueil\nPS/MS/GS','Accueil\nPS/MS/GS','Accueil\nPS/MS/GS','Accueil\nPS/MS/GS','Accueil\nPS/MS/GS'],
+  ['09:00','Atelier GS\nLangage','Atelier MS\nMaths','Regroupement\nPS/MS/GS','Atelier GS\nÉcrit','Atelier MS\nArts'],
+  ['09:45','Atelier MS\nLecture','Atelier GS\nSciences','Atelier MS\nLangage','Atelier PS\nFin motrice','Atelier GS\nMaths'],
+  ['10:30','PAUSE','PAUSE','PAUSE','PAUSE','PAUSE'],
+  ['10:45','Regroupement\nPS/MS/GS','Motricité\nGS','Regroupement\nPS/MS/GS','Motricité\nMS','Regroupement\nPS/MS/GS'],
+  ['11:15','Atelier PS\nManipulation','Atelier PS\nLangage','Atelier GS\nMaths','Atelier MS\nÉcrit','Atelier PS\nArts'],
+  ['13:30','Sieste PS\nLecture MS/GS','Sieste PS\nAtelier GS','Sieste PS\nLecture MS/GS','Sieste PS\nAtelier MS','Sieste PS\nAtelier GS'],
+  ['14:30','Motricité PS\nRécréation','Atelier MS\nSci. & Monde','Motricité GS\nRécréation','Regroupement\nPS/MS/GS','Réunion\nÉquipe'],
+  ['15:15','Accueil parents\nPS/MS/GS','Accueil parents\nPS/MS/GS','Accueil parents\nPS/MS/GS','Accueil parents\nPS/MS/GS','Accueil parents\nPS/MS/GS'],
+];
+
+const classTypes = {
+  'PS': 'niveau-6e', 'MS': 'niveau-5e', 'GS': 'niveau-4e',
+  'Regroupement': 'niveau-3e', 'Sieste': 'pause', 'Accueil': 'niveau-3e',
+  'Motricité': 'niveau-4e', 'Atelier': 'niveau-5e',
+  'Réunion': 'reunion', 'PAUSE': 'pause'
+};
+
+function getClassType(str) {
+  for (const [key, cls] of Object.entries(classTypes)) {
+    if (str.includes(key)) return cls;
+  }
+  return '';
+}
+
+function buildEDT() {
+  const grid = document.getElementById('edtGrid');
+  const days = ['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI'];
+  let html = `<div class="edt-header">
+    <div class="edt-header-cell">Heure</div>`;
+  days.forEach(d => html += `<div class="edt-header-cell">${d}</div>`);
+  html += '</div>';
+
+  edt.forEach(row => {
+    html += `<div class="edt-row"><div class="edt-time-cell">${row[0]}</div>`;
+    for (let i = 1; i <= 5; i++) {
+      const content = row[i];
+      html += `<div class="edt-cell">`;
+      if (content) {
+        const lines = content.split('\n');
+        const cls = getClassType(content);
+        html += `<div class="edt-class-block ${cls}">
+          <div class="edt-class-name">${lines[0]}</div>
+          ${lines[1] ? `<div class="edt-class-room">${lines[1]}</div>` : ''}
+        </div>`;
+      }
+      html += `</div>`;
+    }
+    html += '</div>';
+  });
+
+  grid.innerHTML = html;
+}
+
+// ── COMPÉTENCES ───────────────────────────────────────────
+const competences = [
+  'Langage oral',
+  'Graphisme & Écriture',
+  'Nombres & Quantités',
+  'Motricité fine & globale',
+  'Arts & Créativité',
+  'Explorer le monde',
+];
+
+const compData = {
+  '6e': [[2,0,0],[1,0,0],[2,0,0],[2,0,0],[3,0,0],[1,0,0]],
+  '5e': [[3,2,0],[2,2,0],[3,2,0],[3,2,0],[3,2,0],[2,1,0]],
+  '4e': [[3,3,0],[3,2,0],[3,3,0],[3,3,0],[3,3,0],[3,2,0]],
+  '3e': [[3,3,3],[3,3,2],[3,3,3],[3,3,2],[3,3,3],[3,3,3]],
+};
+
+function renderDots(val) {
+  let html = '<div class="comp-level">';
+  for (let i = 1; i <= 3; i++) {
+    html += `<div class="comp-dot ${i <= val ? 'filled' : ''}" onclick="this.classList.toggle('filled')"></div>`;
+  }
+  return html + '</div>';
+}
+
+function buildCompTables() {
+  const tableIds = { '6e':'compTable6e', '5e':'compTable5e', '4e':'compTable4e', '3e':'compTable3e' };
+  for (const [key, id] of Object.entries(tableIds)) {
+    const data = compData[key];
+    let html = '';
+    competences.forEach((comp, i) => {
+      const row = data[i];
+      html += `<tr>
+        <td style="font-weight:500">${comp}</td>
+        <td>${renderDots(row[0])}</td>
+        <td>${renderDots(row[1])}</td>
+        <td>${renderDots(row[2])}</td>
+        <td><span style="font-size:0.75rem;padding:2px 8px;border-radius:6px;background:var(--rose-pale);color:var(--rose-deep);font-weight:600">
+          ${row[0]>=3 ? 'TB' : row[0]>=2 ? 'B' : 'En cours'}
+        </span></td>
+      </tr>`;
+    });
+    document.getElementById(id).innerHTML = html;
+  }
+}
+
+// ── MOOD TRACKER ──────────────────────────────────────────
+const dayLabels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+const moods = ['😊', '😐', '😔'];
+
+function buildMoodTracker() {
+  const container = document.getElementById('moodTracker');
+  let html = '';
+  dayLabels.forEach((day, idx) => {
+    html += `<div class="mood-day">
+      <div class="mood-day-label">${day}</div>
+      <div class="mood-btn-group">`;
+    moods.forEach(m => {
+      html += `<button class="mood-btn" onclick="selectMood(this, ${idx})">${m}</button>`;
+    });
+    html += `</div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function selectMood(btn, dayIdx) {
+  const group = btn.closest('.mood-btn-group');
+  group.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// ── HABITUDES ─────────────────────────────────────────────
+const defaultHabits = [
+  { name: '🏃 Sport', days: [1,0,1,0,1,0,0] },
+  { name: '📖 Lecture', days: [1,1,0,1,0,1,1] },
+  { name: '🧘 Méditation', days: [1,0,1,0,0,0,1] },
+  { name: '🌿 Promenade', days: [0,1,0,1,1,1,1] },
+  { name: '✍️ Journal', days: [1,1,1,0,1,0,0] },
+];
+
+function buildHabits() {
+  const container = document.getElementById('habitsGrid');
+  let html = '';
+  defaultHabits.forEach(h => {
+    html += `<div class="habit-row">
+      <div class="habit-name">${h.name}</div>
+      <div class="habit-days">`;
+    h.days.forEach((done, i) => {
+      html += `<div class="habit-check ${done ? 'done' : ''}" onclick="toggleHabit(this)">${done ? '✓' : ''}</div>`;
+    });
+    html += `</div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function toggleHabit(el) {
+  el.classList.toggle('done');
+  el.textContent = el.classList.contains('done') ? '✓' : '';
+}
+
+function addHabit() {
+  const name = prompt('Nom de l\'habitude :');
+  if (!name) return;
+  defaultHabits.push({ name: '🌟 ' + name, days: [0,0,0,0,0,0,0] });
+  buildHabits();
+}
+
+// ── PRIORITIES ────────────────────────────────────────────
+function togglePriority(el) {
+  el.classList.toggle('checked');
+  el.textContent = el.classList.contains('checked') ? '✓' : '';
+  const input = el.nextElementSibling;
+  if (input) input.classList.toggle('done', el.classList.contains('checked'));
+}
+
+function addPriority() {
+  const list = document.getElementById('priorityList');
+  const li = document.createElement('li');
+  li.className = 'priority-item';
+  li.dataset.done = 'false';
+  li.innerHTML = `
+    <div class="priority-checkbox" onclick="togglePriority(this)"></div>
+    <input class="priority-text" placeholder="Nouvelle tâche..." />
+    <span class="priority-tag prof">PROF</span>
+  `;
+  list.appendChild(li);
+  li.querySelector('input').focus();
+}
+
+// ── MODAL ─────────────────────────────────────────────────
+let selectedType = 'prof';
+
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('modalTitle').value = '';
+  document.getElementById('modalNote').value = '';
+  document.getElementById('modalDate').value = '';
+}
+
+function openModalDate(dateStr) {
+  openModal();
+  document.getElementById('modalDate').value = dateStr;
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function setType(btn, type) {
+  selectedType = type;
+  document.querySelectorAll('.modal-type-btn').forEach(b => {
+    b.classList.remove('active-prof', 'active-perso', 'active-exam');
+  });
+  btn.classList.add('active-' + type);
+}
+
+function saveEvent() {
+  const title = document.getElementById('modalTitle').value.trim();
+  const date = document.getElementById('modalDate').value;
+  if (!title || !date) { alert('Veuillez remplir le titre et la date.'); return; }
+  events.push({ date, title, type: selectedType });
+  closeModal();
+  buildAnnualGrid();
+  renderBigCal();
+  document.getElementById('stat-events').textContent = events.length;
+}
+
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+
+// ── INIT ──────────────────────────────────────────────────
+buildAnnualGrid();
+
+// Set current month
+months.forEach((m, i) => {
+  const mn = getMonthNum(m.name);
+  if (m.year === today.getFullYear() && mn === today.getMonth()) currentMonthIdx = i;
+});
+
+renderBigCal();
+buildEDT();
+buildCompTables();
+buildMoodTracker();
+buildHabits();
+</script>
+</body>
+</html>

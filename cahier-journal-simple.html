@@ -8,22 +8,43 @@
   <script src="progressions-completes-data.js"></script>
   <script src="competences-officielles-data.js"></script>
   <style>
+    /* ══════════════════════════════════════════════════
+       SYSTÈME DE THÈMES - Rose Planner vs Beige Classic
+       ══════════════════════════════════════════════════ */
+    
+    /* Thème par défaut : Rose Planner */
     :root {
+      --primary: #b57c84;
+      --primary-dark: #745252;
+      --success: #27ae60;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --info: #3498db;
+      --light: #fdf0f1;
+      --dark: #3a2a2a;
+      --cream: #fffaf6;
+      --rose-pale: #f5dde0;
+    }
+
+    /* Thème alternatif : Beige Classic */
+    [data-theme="beige"] {
       --primary: #8b6f47;
       --primary-dark: #6b5435;
       --success: #27ae60;
       --warning: #f39c12;
       --danger: #e74c3c;
       --info: #3498db;
-      --light: #f8f9fa;
-      --dark: #2c3e50;
+      --light: #f5f1eb;
+      --dark: #2d2520;
+      --cream: #faf8f5;
+      --rose-pale: #e8dfd3;
     }
     
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--cream);
       min-height: 100vh;
       padding: 20px;
     }
@@ -158,19 +179,42 @@
     }
     
     .seance-card {
-      background: #f8f9fa;
+      background: rgba(255, 255, 255, 0.9);
       border-left: 4px solid var(--primary);
       padding: 12px;
       margin-bottom: 10px;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .seance-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.12;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .seance-card > * {
+      position: relative;
+      z-index: 1;
     }
     
     .seance-card:hover {
-      background: #e9ecef;
+      background: rgba(255, 255, 255, 0.95);
       transform: translateX(5px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .seance-card:hover::before {
+      opacity: 0.18;
     }
     
     .seance-horaire {
@@ -399,7 +443,7 @@
 <div class="container">
   <div class="header">
     <h1><i class="fas fa-book"></i> Cahier Journal</h1>
-    <button class="btn btn-light" onclick="window.location.href='index.html'">
+    <button class="btn btn-light" onclick="window.location.href='index-planner.html'">
       <i class="fas fa-home"></i> Accueil
     </button>
   </div>
@@ -836,15 +880,18 @@ function afficherTableauHebdomadaire() {
     if (parJour[jour].length === 0) {
       html += '<div style="text-align: center; color: #adb5bd; padding: 20px;"><i class="fas fa-calendar-day"></i><br>Aucune séance</div>';
     } else {
-      parJour[jour].forEach(seance => {
-        const couleur = COULEURS_DOMAINES[seance.domaine] || COULEURS_DOMAINES['Autres'];
+      parJour[jour].forEach((seance, idx) => {
+        // Utiliser la couleur de l'emploi du temps si disponible, sinon couleur par domaine
+        const couleur = seance.couleur || COULEURS_DOMAINES[seance.domaine] || COULEURS_DOMAINES['Autres'];
+        const cardId = `seance-${seance.id}`;
         
         // Récupérer les compétences officielles associées (si fiche de prep liée)
         const competencesOfficielles = getCompetencesOfficiellesPourSeance(seance);
         
-        html += `<div class="seance-card" onclick="ouvrirModalSeance('${seance.id}')">`;
+        html += `<style>#${cardId}::before { background: ${couleur}; }</style>`;
+        html += `<div id="${cardId}" class="seance-card" onclick="ouvrirModalSeance('${seance.id}')" style="border-left-color: ${couleur};">`;
         html += `<div class="seance-horaire"><i class="fas fa-clock"></i> ${seance.horaire}</div>`;
-        html += `<div class="seance-titre">${seance.titre || 'Activité'}</div>`;
+        html += `<div class="seance-titre" style="font-weight: 600; color: #2c3e50;">${seance.titre || 'Activité'}</div>`;
         html += `<span class="seance-domaine" style="background: ${couleur}">${seance.domaine}</span>`;
         
         if (seance.niveaux || seance.lieu) {
@@ -865,12 +912,12 @@ function afficherTableauHebdomadaire() {
               : 'background: #f39c12; color: white;';
             const badgeTexte = estEvalue ? '✓ Évaluée' : '⚠ À évaluer';
             
-            html += `<div style="font-size: 0.7rem; padding: 4px 8px; margin: 3px 0; background: #f8f9fa; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">`;
+            html += `<div style="font-size: 0.7rem; padding: 4px 8px; margin: 3px 0; background: rgba(255,255,255,0.7); border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">`;
             html += `<span style="flex: 1;">${comp.competence.substring(0, 60)}${comp.competence.length > 60 ? '...' : ''}</span>`;
             html += `<span style="${badgeStyle} padding: 2px 6px; border-radius: 8px; font-size: 0.65rem; white-space: nowrap; margin-left: 5px;">${badgeTexte}</span>`;
             html += `</div>`;
           });
-          html += `<a href="evaluations.html" style="display: inline-block; margin-top: 5px; font-size: 0.7rem; color: #667eea; text-decoration: none;" onclick="event.stopPropagation();"><i class="fas fa-clipboard-check"></i> Évaluer maintenant</a>`;
+          html += `<a href="evaluations.html" style="display: inline-block; margin-top: 5px; font-size: 0.7rem; color: #667eea; text-decoration: none; font-weight: 600;" onclick="event.stopPropagation();"><i class="fas fa-clipboard-check"></i> Évaluer maintenant</a>`;
           html += `</div>`;
         }
         

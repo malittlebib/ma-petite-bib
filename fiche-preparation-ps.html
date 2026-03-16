@@ -12,13 +12,26 @@
 
 <style>
 :root {
-  --primary: #FFD93D;
-  --primary-dark: #FFA500;
-  --bg: #f5f7fa;
+  --primary: #b57c84;
+  --primary-dark: #745252;
+  --bg: #fffaf6;
   --panel: #ffffff;
   --text: #2c3e50;
-  --border: #dfe6e9;
+  --border: #f5dde0;
   --shadow: 0 4px 12px rgba(0,0,0,0.1);
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+}
+
+[data-theme="beige"] {
+  --primary: #8b6f47;
+  --primary-dark: #6b5435;
+  --bg: #faf8f5;
+  --border: #e8dfd3;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -520,7 +533,7 @@ body {
   }
 }
 </style>
-<a href="index.html" class="btn-retour-hub-float">
+<a href="index-planner.html" class="btn-retour-hub-float">
   <i class="fas fa-home"></i> Hub
 </a>
 
@@ -1153,6 +1166,17 @@ body {
 }</script>
 
 <script>
+// Charger le thème sauvegardé
+function chargerTheme() {
+  const savedTheme = localStorage.getItem('app_theme') || 'rose';
+  if (savedTheme === 'beige') {
+    document.documentElement.setAttribute('data-theme', 'beige');
+  }
+}
+chargerTheme();
+
+// CODE ORIGINAL
+
 // Variables globales
 var phases = [];
 var ficheEnCours = null;

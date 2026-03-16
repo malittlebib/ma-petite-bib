@@ -6,17 +6,30 @@
 <title>Programmations MS 2025-2026 - Par Période</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
+/* Système de thèmes */
+:root {
+  --primary: #b57c84;
+  --primary-dark: #745252;
+  --bg: #fffaf6;
+}
+
+[data-theme="beige"] {
+  --primary: #8b6f47;
+  --primary-dark: #6b5435;
+  --bg: #faf8f5;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body { 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #FFE5F0 0%, #FFD1E3 100%);
+  font-family: 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
   color: #2c3e50;
   line-height: 1.6;
 }
 
 .header {
-  background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   padding: 25px 20px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -82,7 +95,7 @@ body {
 }
 
 .tab.active {
-  background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
 }
@@ -148,7 +161,7 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
 }
 
 .btn-primary:hover {
@@ -203,7 +216,7 @@ body {
 }
 
 .modal-header {
-  background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   padding: 25px;
   border-radius: 20px 20px 0 0;
@@ -491,7 +504,7 @@ body {
   
   <div class="actions">
     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-      <a href="index.html" class="btn btn-secondary">
+      <a href="index-planner.html" class="btn btn-secondary">
         <i class="fas fa-home"></i> Retour au hub
       </a>
       <a href="gestion-classe.html" class="btn btn-secondary">
@@ -1309,6 +1322,15 @@ body {
 </div>
 
 <script>
+// Charger le thème
+function chargerTheme() {
+  const savedTheme = localStorage.getItem('app_theme') || 'rose';
+  if (savedTheme === 'beige') {
+    document.documentElement.setAttribute('data-theme', 'beige');
+  }
+}
+chargerTheme();
+
 let currentCompetence = null;
 let currentPeriode = null;
 let currentDomaine = null;
@@ -1409,12 +1431,11 @@ function supprimerSemaine(btn) {
 
 function sauvegarderProgression() {
   const semaines = [];
-  document.querySelectorAll('.semaine-block textarea').forEach(textarea => {
+  document.querySelectorAll('#semainesContainer textarea').forEach(textarea => {
     semaines.push(textarea.value);
   });
   
-  // Utiliser la compétence elle-même comme partie de la clé (plus stable que l'index)
-  const key = `${currentPeriode}_${currentCompetence.substring(0, 50)}`;
+  const key = `${currentPeriode}_${currentIndex}`;
   progressions[key] = {
     periode: currentPeriode,
     domaine: currentDomaine,
@@ -1426,12 +1447,7 @@ function sauvegarderProgression() {
   afficherBadges();
   fermerModal();
   
-  // Notification
-  const notif = document.createElement('div');
-  notif.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #27ae60; color: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10000; animation: slideIn 0.3s;';
-  notif.innerHTML = '<i class="fas fa-check-circle"></i> Progression sauvegardée !';
-  document.body.appendChild(notif);
-  setTimeout(() => notif.remove(), 3000);
+  alert('✅ Progression sauvegardée !');
 }
 
 function afficherBadges() {
@@ -1439,13 +1455,8 @@ function afficherBadges() {
     const periode = item.closest('.tab-content')?.id;
     if (!periode) return;
     
-    const competence = item.querySelector('span')?.textContent.trim();
-    if (!competence) return;
-    
-    // Utiliser la compétence comme clé
     const key = `${periode}_${competence.substring(0, 50)}`;
-    
-    if (progressions[key]) {
+    if (progressions[key] && progressions[key].semaines) {
       item.classList.add('has-progression');
     } else {
       item.classList.remove('has-progression');
@@ -1462,11 +1473,6 @@ function switchPeriod(periodId) {
   event.target.classList.add('active');
   document.getElementById(periodId).classList.add('active');
 }
-
-// Animation
-const style = document.createElement('style');
-style.textContent = '@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
-document.head.appendChild(style);
 </script>
 
 </body>

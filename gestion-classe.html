@@ -7,15 +7,40 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style-global.css">
 <style>
+/* ══════════════════════════════════════════════════
+   SYSTÈME DE THÈMES - Rose Planner vs Beige Classic
+   ══════════════════════════════════════════════════ */
+
+/* Thème par défaut : Rose Planner */
 :root {
-  --primary: #8b6f47;
-  --primary-dark: #6b5435;
+  --primary: #b57c84;
+  --primary-dark: #745252;
+  --primary-light: #c9909a;
   --success: #27ae60;
   --warning: #f39c12;
   --danger: #e74c3c;
   --info: #3498db;
-  --light: #f8f9fa;
-  --dark: #2c3e50;
+  --light: #fdf0f1;
+  --dark: #3a2a2a;
+  --cream: #fffaf6;
+  --rose-pale: #f5dde0;
+  --text-mid: #6b4848;
+}
+
+/* Thème alternatif : Beige Classic */
+[data-theme="beige"] {
+  --primary: #8b6f47;
+  --primary-dark: #6b5435;
+  --primary-light: #a68a5e;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --info: #3498db;
+  --light: #f5f1eb;
+  --dark: #2d2520;
+  --cream: #faf8f5;
+  --rose-pale: #e8dfd3;
+  --text-mid: #6b5d52;
 }
 
 * {
@@ -25,8 +50,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: var(--cream);
   min-height: 100vh;
   padding: 20px;
 }
@@ -1290,7 +1315,7 @@ body {
       <button onclick="afficherChoixNiveau()" class="btn-home" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
         <i class="fas fa-exchange-alt"></i> Changer de niveau
       </button>
-      <a href="index.html" class="btn-home">
+      <a href="index-planner.html" class="btn-home">
         <i class="fas fa-home"></i> Retour au Hub
       </a>
     </div>
@@ -2363,6 +2388,19 @@ body {
 </script>
 
 <script>
+// Charger le thème sauvegardé
+function chargerTheme() {
+  const savedTheme = localStorage.getItem('app_theme') || 'rose';
+  if (savedTheme === 'beige') {
+    document.documentElement.setAttribute('data-theme', 'beige');
+  }
+}
+chargerTheme();
+
+// ═══════════════════════════════════════════
+// CODE ORIGINAL
+// ═══════════════════════════════════════════
+
 // DONNÉES
 let eleves = [];
 let currentEleveId = null;
@@ -2789,31 +2827,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function afficherSelectionNiveau() {
   document.body.innerHTML = `
-    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%); padding: 20px;">
-      <div style="background: white; border-radius: 30px; padding: 50px; max-width: 900px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;">
+    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--cream); padding: 20px;">
+      <div style="background: white; border-radius: 30px; padding: 50px; max-width: 900px; box-shadow: 0 20px 60px rgba(181,124,132,0.2); text-align: center;">
         <div style="margin-bottom: 40px;">
-          <h1 style="color: #8b6f47; font-size: 2.5rem; margin-bottom: 10px;">🎨 Ma Petite Bib - Cycle 1</h1>
+          <h1 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 10px;">🎨 Ma Petite Bib - Cycle 1</h1>
           <p style="color: #7f8c8d; font-size: 1.2rem;">Bienvenue dans Ma Petite Bib !</p>
           <p style="color: #7f8c8d; font-size: 1rem; margin-top: 10px;">Choisissez votre niveau de classe :</p>
         </div>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 40px;">
           
-          <div onclick="choisirNiveau('PS')" style="cursor: pointer; background: linear-gradient(135deg, #FFD93D 0%, #FFA500 100%); border-radius: 20px; padding: 40px 20px; transition: transform 0.3s, box-shadow 0.3s; border: 3px solid transparent;">
+          <div onclick="choisirNiveau('PS')" style="cursor: pointer; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 20px; padding: 40px 20px; transition: transform 0.3s, box-shadow 0.3s; border: 3px solid transparent;">
             <div style="font-size: 4rem; margin-bottom: 15px;">🐣</div>
             <h2 style="color: white; font-size: 1.8rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">PS</h2>
             <p style="color: white; font-size: 1.1rem; margin-bottom: 5px;">Petite Section</p>
             <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">2-3 ans</p>
           </div>
           
-          <div onclick="choisirNiveau('MS')" style="cursor: pointer; background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%); border-radius: 20px; padding: 40px 20px; transition: transform 0.3s, box-shadow 0.3s; border: 3px solid transparent;">
+          <div onclick="choisirNiveau('MS')" style="cursor: pointer; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 20px; padding: 40px 20px; transition: transform 0.3s, box-shadow 0.3s; border: 3px solid transparent;">
             <div style="font-size: 4rem; margin-bottom: 15px;">🦋</div>
             <h2 style="color: white; font-size: 1.8rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">MS</h2>
             <p style="color: white; font-size: 1.1rem; margin-bottom: 5px;">Moyenne Section</p>
             <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">4-5 ans</p>
           </div>
           
-          <div onclick="choisirNiveau('GS')" style="cursor: pointer; background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%); border-radius: 20px; padding: 40px 20px; transition: transform 0.3s, box-shadow 0.3s; border: 3px solid transparent;">
+          <div onclick="choisirNiveau('GS')" style="cursor: pointer; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 20px; padding: 40px 20px; transition: transform 0.3s, box-shadow 0.3s; border: 3px solid transparent;">
             <div style="font-size: 4rem; margin-bottom: 15px;">🎓</div>
             <h2 style="color: white; font-size: 1.8rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">GS</h2>
             <p style="color: white; font-size: 1.1rem; margin-bottom: 5px;">Grande Section</p>
@@ -2862,16 +2900,16 @@ function afficherChoixNiveau() {
         <p style="color: #7f8c8d; font-size: 1rem;">Sélectionnez votre niveau (simple ou multiple)</p>
       </div>
       
-      <h3 style="color: #8b6f47; margin-bottom: 15px; font-size: 1.1rem;">Niveaux simples</h3>
+      <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 1.1rem;">Niveaux simples</h3>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px;">
         
-        <div onclick="choisirNiveau('PS')" style="cursor: pointer; background: linear-gradient(135deg, #FFD93D 0%, #FFA500 100%); border-radius: 16px; padding: 25px 15px; transition: transform 0.3s; text-align: center;">
+        <div onclick="choisirNiveau('PS')" style="cursor: pointer; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 16px; padding: 25px 15px; transition: transform 0.3s; text-align: center;">
           <h2 style="color: white; font-size: 1.6rem; margin-bottom: 8px;">PS</h2>
           <p style="color: white; font-size: 1rem; margin-bottom: 3px;">Petite Section</p>
           <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem;">2-3 ans</p>
         </div>
         
-        <div onclick="choisirNiveau('MS')" style="cursor: pointer; background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%); border-radius: 16px; padding: 25px 15px; transition: transform 0.3s; text-align: center;">
+        <div onclick="choisirNiveau('MS')" style="cursor: pointer; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 16px; padding: 25px 15px; transition: transform 0.3s; text-align: center;">
           <h2 style="color: white; font-size: 1.6rem; margin-bottom: 8px;">MS</h2>
           <p style="color: white; font-size: 1rem; margin-bottom: 3px;">Moyenne Section</p>
           <p style="color: rgba(255,255,255,0.9); font-size: 0.85rem;">4-5 ans</p>
@@ -2885,7 +2923,7 @@ function afficherChoixNiveau() {
         
       </div>
       
-      <h3 style="color: #8b6f47; margin-bottom: 15px; font-size: 1.1rem;">Doubles niveaux</h3>
+      <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 1.1rem;">Doubles niveaux</h3>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px;">
         
         <div onclick="choisirNiveau('TPS-PS')" style="cursor: pointer; background: linear-gradient(135deg, #FFA726 0%, #FB8C00 100%); border-radius: 16px; padding: 25px 15px; transition: transform 0.3s; text-align: center;">
@@ -2905,7 +2943,7 @@ function afficherChoixNiveau() {
         
       </div>
       
-      <h3 style="color: #8b6f47; margin-bottom: 15px; font-size: 1.1rem;">Triple niveau</h3>
+      <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 1.1rem;">Triple niveau</h3>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 30px;">
         
         <div onclick="choisirNiveau('PS-MS-GS')" style="cursor: pointer; background: linear-gradient(135deg, #7E57C2 0%, #673AB7 100%); border-radius: 16px; padding: 25px 15px; transition: transform 0.3s; text-align: center;">
@@ -5333,13 +5371,16 @@ function validerSelectionDate() {
         date: dateStr,
         horaire: `${act.debut} - ${act.fin}`,
         domaine: act.domaine || 'Autre',
+        sousDomaine: act.sousDomaine || '',
+        competence: act.competence || '',
         titre: titre,
         niveaux: niveauxStr,
         lieu: act.lieu || '',
         objectif: '',
         deroulement: '',
         materiel: '',
-        observations: ''
+        observations: '',
+        couleur: act.couleur || '#8b6f47'
       });
     });
   });

@@ -11,13 +11,26 @@
 
 <style>
 :root {
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
   --primary: #4FC3F7;
   --primary-dark: #0288D1;
-  --bg: #f5f7fa;
+  --bg: #fffaf6;
   --panel: #ffffff;
   --text: #2c3e50;
-  --border: #dfe6e9;
+  --border: #f5dde0;
   --shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+[data-theme="beige"] {
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --primary: #8b6f47;
+  --primary-dark: #6b5435;
+  --bg: #faf8f5;
+  --border: #e8dfd3;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -519,7 +532,7 @@ body {
   }
 }
 </style>
-<a href="index.html" class="btn-retour-hub-float">
+<a href="index-planner.html" class="btn-retour-hub-float">
   <i class="fas fa-home"></i> Hub
 </a>
 
@@ -1152,6 +1165,17 @@ body {
 }</script>
 
 <script>
+// Charger le thème sauvegardé
+function chargerTheme() {
+  const savedTheme = localStorage.getItem('app_theme') || 'rose';
+  if (savedTheme === 'beige') {
+    document.documentElement.setAttribute('data-theme', 'beige');
+  }
+}
+chargerTheme();
+
+// CODE ORIGINAL
+
 // Variables globales
 var phases = [];
 var ficheEnCours = null;

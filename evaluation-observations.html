@@ -10,14 +10,52 @@
 <script src="sync-data.js"></script>
 <!-- Export PDF -->
 <script src="pdf-exporter.js"></script>
-<!-- Compétences PS/MS externes -->
+<!-- Compétences PS/MS/GS -->
 <script src="competences-data.js"></script>
 <style>
+/* ══════════════════════════════════════════════════
+   SYSTÈME DE THÈMES - Rose Planner vs Beige Classic
+   ══════════════════════════════════════════════════ */
+
+/* Thème par défaut : Rose Planner */
+:root {
+  --primary: #b57c84;
+  --primary-dark: #745252;
+  --primary-light: #c9909a;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --info: #3498db;
+  --light: #fdf0f1;
+  --dark: #3a2a2a;
+  --cream: #fffaf6;
+  --rose-pale: #f5dde0;
+  --text-mid: #6b4848;
+  --white: #ffffff;
+}
+
+/* Thème alternatif : Beige Classic */
+[data-theme="beige"] {
+  --primary: #8b6f47;
+  --primary-dark: #6b5435;
+  --primary-light: #a68a5e;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --info: #3498db;
+  --light: #f5f1eb;
+  --dark: #2d2520;
+  --cream: #faf8f5;
+  --rose-pale: #e8dfd3;
+  --text-mid: #6b5d52;
+  --white: #ffffff;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--cream);
   min-height: 100vh;
   padding: 20px;
 }
@@ -53,7 +91,7 @@ body {
 
 .header-title h1 {
   font-size: 2rem;
-  color: #8b6f47;
+  color: var(--primary);
   margin-bottom: 5px;
 }
 
@@ -83,7 +121,7 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
 }
 
@@ -138,20 +176,20 @@ body {
 .student-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(102,126,234,0.2);
-  border-color: #8b6f47;
+  border-color: var(--primary);
 }
 
 .student-card.active {
-  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
-  border-color: #8b6f47;
+  border-color: var(--primary);
 }
 
 .student-avatar {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,7 +201,7 @@ body {
 
 .student-card.active .student-avatar {
   background: #ffffff;
-  color: #8b6f47;
+  color: var(--primary);
 }
 
 .student-name {
@@ -200,12 +238,12 @@ body {
 
 .tab:hover {
   background: #f8f9fa;
-  color: #8b6f47;
+  color: var(--primary);
 }
 
 .tab.active {
-  color: #8b6f47;
-  border-bottom-color: #8b6f47;
+  color: var(--primary);
+  border-bottom-color: var(--primary);
   background: #f8f9fa;
 }
 
@@ -333,7 +371,7 @@ body {
 }
 
 .competences-section h3 {
-  color: #8b6f47;
+  color: var(--primary);
   font-size: 1.5rem;
   margin-bottom: 20px;
   display: flex;
@@ -402,7 +440,7 @@ body {
 
 /* PROGRESS BAR */
 .progress-section {
-  background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   padding: 25px;
   border-radius: 15px;
   margin-bottom: 30px;
@@ -478,7 +516,7 @@ body {
 .modal-title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #8b6f47;
+  color: var(--primary);
 }
 
 .modal-close {
@@ -528,7 +566,7 @@ body {
 .form-group textarea:focus,
 .form-group input:focus {
   outline: none;
-  border-color: #8b6f47;
+  border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
 }
 
@@ -579,7 +617,10 @@ body {
       </div>
     </div>
     <div class="header-actions">
-      <a href="index.html" class="btn btn-secondary">
+      <a href="evaluations.html" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <i class="fas fa-clipboard-check"></i> Évaluer les compétences (703)
+      </a>
+      <a href="index-planner.html" class="btn btn-secondary">
         <i class="fas fa-home"></i> Accueil
       </a>
       <a href="gestion-classe.html" class="btn btn-secondary">
@@ -601,10 +642,10 @@ body {
       <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
         <!-- Sélecteur de niveau -->
         <div style="display: flex; gap: 10px; align-items: center;">
-          <label style="font-weight: 700; color: #8b6f47; font-size: 1.1rem;">
+          <label style="font-weight: 700; color: var(--primary); font-size: 1.1rem;">
             <i class="fas fa-graduation-cap"></i> Niveau :
           </label>
-          <select id="niveauSelect" onchange="changerNiveau()" style="padding: 10px 20px; border: 2px solid #8b6f47; border-radius: 10px; font-size: 1rem; font-weight: 600; background: #ffffff; cursor: pointer;">
+          <select id="niveauSelect" onchange="changerNiveau()" style="padding: 10px 20px; border: 2px solid var(--primary); border-radius: 10px; font-size: 1rem; font-weight: 600; background: #ffffff; cursor: pointer;">
             <option value="PS">🟡 Petite Section (PS)</option>
             <option value="MS">🔴 Moyenne Section (MS)</option>
             <option value="GS" selected>🔵 Grande Section (GS)</option>
@@ -613,10 +654,10 @@ body {
         
         <!-- Sélecteur de période -->
         <div style="display: flex; gap: 10px; align-items: center;">
-          <label style="font-weight: 700; color: #8b6f47; font-size: 1.1rem;">
+          <label style="font-weight: 700; color: var(--primary); font-size: 1.1rem;">
             <i class="fas fa-calendar-alt"></i> Période :
           </label>
-          <select id="periodeSelect" onchange="changerPeriode()" style="padding: 10px 20px; border: 2px solid #8b6f47; border-radius: 10px; font-size: 1rem; font-weight: 600; background: #ffffff; cursor: pointer;">
+          <select id="periodeSelect" onchange="changerPeriode()" style="padding: 10px 20px; border: 2px solid var(--primary); border-radius: 10px; font-size: 1rem; font-weight: 600; background: #ffffff; cursor: pointer;">
             <option value="annee">📊 Vue annuelle</option>
             <option value="P1">Période 1 - Sept/Oct</option>
             <option value="P2">Période 2 - Nov/Déc</option>
@@ -627,7 +668,7 @@ body {
         </div>
       </div>
       
-      <div id="periodeInfo" style="background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%); color: white; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">
+      <div id="periodeInfo" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">
         <i class="fas fa-info-circle"></i> Vue complète de l'année
       </div>
     </div>
@@ -638,51 +679,18 @@ body {
   </div>
 
   <!-- TABS -->
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('observations')">
-      <i class="fas fa-sticky-note"></i> Carnet d'observations
-    </button>
-    <button class="tab" onclick="switchTab('evaluations')">
-      <i class="fas fa-check-square"></i> Grille d'évaluation
-    </button>
-  </div>
-
   <!-- CONTENT -->
   <div class="content-area">
     
-    <!-- TAB: OBSERVATIONS -->
-    <div class="tab-content active" id="tab-observations">
-      <div class="observation-header">
-        <h2>📒 Carnet d'observations</h2>
-        <button class="btn btn-success" onclick="ouvrirModalObservation()">
-          <i class="fas fa-plus"></i> Ajouter une observation
-        </button>
-      </div>
-      <div class="observations-list" id="observationsList">
-        <!-- Les observations seront affichées ici -->
-      </div>
+    <!-- OBSERVATIONS -->
+    <div class="observation-header">
+      <h2>📒 Carnet d'observations</h2>
+      <button class="btn btn-success" onclick="ouvrirModalObservation()">
+        <i class="fas fa-plus"></i> Ajouter une observation
+      </button>
     </div>
-
-    <!-- TAB: EVALUATIONS -->
-    <div class="tab-content" id="tab-evaluations">
-      <h2 style="color: #2c3e50; font-size: 1.8rem; margin-bottom: 30px;">
-        ✅ Grille d'évaluation
-      </h2>
-      
-      <!-- Progress -->
-      <div class="progress-section">
-        <div class="progress-header">
-          <div class="progress-title">Progression globale</div>
-          <div class="progress-percentage" id="progressPercentage">0%</div>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-        </div>
-      </div>
-      
-      <div id="competencesContainer">
-        <!-- Les compétences seront chargées ici -->
-      </div>
+    <div class="observations-list" id="observationsList">
+      <!-- Les observations seront affichées ici -->
     </div>
 
   </div>
@@ -734,6 +742,15 @@ body {
 </div>
 
 <script>
+function chargerTheme() {
+  const savedTheme = localStorage.getItem('app_theme') || 'rose';
+  if (savedTheme === 'beige') {
+    document.documentElement.setAttribute('data-theme', 'beige');
+  }
+}
+chargerTheme();
+
+
 // DONNÉES
 let eleves = [];
 let currentEleve = null;
@@ -1189,14 +1206,6 @@ function changerPeriode() {
 }
 
 // TABS
-function switchTab(tabName) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  
-  event.target.closest('.tab').classList.add('active');
-  document.getElementById('tab-' + tabName).classList.add('active');
-}
-
 // === OBSERVATIONS ===
 
 function afficherObservations() {
@@ -1300,7 +1309,7 @@ function afficherEvaluations() {
     // En vue annuelle, on montre P5 (compétences finales)
     periodeAffichage = 'P5';
     messageInfo = `
-      <div style="background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%); padding: 20px; border-radius: 15px; margin-bottom: 30px; color: white;">
+      <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 20px; border-radius: 15px; margin-bottom: 30px; color: white;">
         <h3 style="margin-bottom: 10px;"><i class="fas fa-chart-line"></i> Vue annuelle - Compétences de fin d'année</h3>
         <p style="opacity: 0.95; margin-bottom: 10px;">En vue annuelle, les compétences attendues en <strong>Période 5 (fin d'année)</strong> sont affichées.</p>
         <p style="opacity: 0.95;"><i class="fas fa-lightbulb"></i> <strong>Astuce :</strong> Sélectionnez une période spécifique (P1 à P5) pour voir les compétences progressives adaptées à chaque moment de l'année.</p>
@@ -1535,7 +1544,7 @@ function genererEvaluationsPDF(eleveId) {
   const percentage = Math.round((acquis / total) * 100);
   
   let html = `
-    <div style="background: linear-gradient(135deg, #8b6f47 0%, #6b5435 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+    <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="font-size: 18px; font-weight: 700;">Progression globale</div>
         <div style="font-size: 32px; font-weight: 800;">${percentage}%</div>
@@ -1550,7 +1559,7 @@ function genererEvaluationsPDF(eleveId) {
   Object.entries(competencesPeriode).forEach(([domaine, competences]) => {
     html += `
       <div style="margin-bottom: 25px;">
-        <h4 style="color: #8b6f47; font-size: 16px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef;">
+        <h4 style="color: var(--primary); font-size: 16px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef;">
           🎓 ${domaine}
         </h4>
         <div>
