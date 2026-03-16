@@ -1577,31 +1577,7 @@
       <div class="card">
         <div class="card-title"><span class="card-title-dot"></span> Priorités du mois</div>
         <ul class="priority-list" id="priorityList">
-          <li class="priority-item" data-done="false">
-            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
-            <input class="priority-text" value="Préparer ateliers Toussaint" />
-            <span class="priority-tag prof">PROF</span>
-          </li>
-          <li class="priority-item" data-done="false">
-            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
-            <input class="priority-text" value="Réunion parents PS — 18 sept." />
-            <span class="priority-tag prof">PROF</span>
-          </li>
-          <li class="priority-item" data-done="false">
-            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
-            <input class="priority-text" value="Renouveler abonnement salle" />
-            <span class="priority-tag perso">PERSO</span>
-          </li>
-          <li class="priority-item" data-done="false">
-            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
-            <input class="priority-text" value="Préparer projet arts plastiques" />
-            <span class="priority-tag prof">PROF</span>
-          </li>
-          <li class="priority-item" data-done="false">
-            <div class="priority-checkbox" onclick="togglePriority(this)"></div>
-            <input class="priority-text" value="Week-end en famille" />
-            <span class="priority-tag perso">PERSO</span>
-          </li>
+          <!-- Les priorités apparaîtront ici -->
         </ul>
         <button class="add-btn" style="margin-top:12px" onclick="addPriority()">+ Ajouter</button>
       </div>
@@ -1793,30 +1769,7 @@
       <div class="card">
         <div class="card-title"><span class="card-title-dot" style="background:var(--terracotta)"></span>Mes lectures</div>
         <div id="readingList">
-          <div class="reading-item">
-            <div class="reading-book-icon" style="background:rgba(181,124,132,0.15)">📖</div>
-            <div class="reading-info">
-              <div class="reading-title">La Tresse</div>
-              <div class="reading-author">Laetitia Colombani</div>
-            </div>
-            <span class="reading-status en-cours">En cours</span>
-          </div>
-          <div class="reading-item">
-            <div class="reading-book-icon" style="background:rgba(43,71,67,0.1)">📗</div>
-            <div class="reading-info">
-              <div class="reading-title">L'Anomalie</div>
-              <div class="reading-author">Hervé Le Tellier</div>
-            </div>
-            <span class="reading-status lu">Lu ✓</span>
-          </div>
-          <div class="reading-item">
-            <div class="reading-book-icon" style="background:rgba(221,168,63,0.15)">📙</div>
-            <div class="reading-info">
-              <div class="reading-title">Tout est Accompli</div>
-              <div class="reading-author">Claire Castillon</div>
-            </div>
-            <span class="reading-status a-lire">À lire</span>
-          </div>
+          <!-- Vos livres apparaîtront ici -->
         </div>
         <button class="add-btn" style="margin-top:10px">+ Ajouter un livre</button>
       </div>
@@ -1827,80 +1780,27 @@
       <div class="card">
         <div class="card-title"><span class="card-title-dot" style="background:var(--gold)"></span>Objectifs personnels</div>
         <ul class="obj-list" id="objList">
-          <li class="obj-item">
-            <div class="obj-icon">🏃</div>
-            <div class="obj-content">
-              <div class="obj-title">Courir 3x/semaine</div>
-              <div class="obj-prog-bar"><div class="obj-prog-fill" style="width:66%"></div></div>
-              <div class="obj-percent">66% — 2 sur 3 cette semaine</div>
-            </div>
-          </li>
-          <li class="obj-item">
-            <div class="obj-icon">🧘</div>
-            <div class="obj-content">
-              <div class="obj-title">Méditation quotidienne</div>
-              <div class="obj-prog-bar"><div class="obj-prog-fill" style="width:43%"></div></div>
-              <div class="obj-percent">43% — 3 sur 7 jours</div>
-            </div>
-          </li>
-          <li class="obj-item">
-            <div class="obj-icon">📚</div>
-            <div class="obj-content">
-              <div class="obj-title">Lire 12 livres cette année</div>
-              <div class="obj-prog-bar"><div class="obj-prog-fill" style="width:42%"></div></div>
-              <div class="obj-percent">5 / 12 livres lus</div>
-            </div>
-          </li>
-          <li class="obj-item">
-            <div class="obj-icon">🌿</div>
-            <div class="obj-content">
-              <div class="obj-title">Week-ends sans écrans</div>
-              <div class="obj-prog-bar"><div class="obj-prog-fill" style="width:60%;background:linear-gradient(to right, var(--forest), var(--forest-light))"></div></div>
-              <div class="obj-percent">3 sur 5 derniers week-ends</div>
-            </div>
-          </li>
+          <!-- Vos objectifs personnels apparaîtront ici -->
         </ul>
       </div>
 
       <!-- Budget perso -->
       <div class="card">
         <div class="card-title"><span class="card-title-dot" style="background:var(--terracotta)"></span>Dépenses matériel pédagogique</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(181,124,132,0.09);font-size:0.82rem">
-            <span style="color:var(--text-dark)">Marqueurs & feutres</span>
-            <span style="font-weight:600;color:var(--rose-deep)">18,50 €</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(181,124,132,0.09);font-size:0.82rem">
-            <span style="color:var(--text-dark)">Photocopies classe</span>
-            <span style="font-weight:600;color:var(--rose-deep)">12,00 €</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(181,124,132,0.09);font-size:0.82rem">
-            <span style="color:var(--text-dark)">Jeux pédagogiques</span>
-            <span style="font-weight:600;color:var(--rose-deep)">35,00 €</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 0;font-size:0.88rem;font-weight:600">
-            <span style="color:var(--text-dark)">Total ce trimestre</span>
-            <span style="color:var(--brown-dark)">65,50 €</span>
+        <div style="display:flex;flex-direction:column;gap:8px" id="budgetList">
+          <!-- Vos dépenses apparaîtront ici -->
+          <div style="text-align:center;padding:20px;color:var(--text-light);font-size:0.85rem">
+            Ajoutez vos dépenses pour suivre votre budget
           </div>
         </div>
+        <button class="add-btn" style="margin-top:10px" onclick="addDepense()">+ Ajouter une dépense</button>
       </div>
 
       <!-- Wishlist -->
       <div class="card">
         <div class="card-title"><span class="card-title-dot" style="background:var(--rose-light)"></span>Wishlist & envies</div>
         <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="font-size:0.82rem;padding:7px 10px;background:var(--rose-blush);border-radius:8px;border-left:3px solid var(--rose-light)">
-            🌸 Weekend Spa avec les amies
-          </div>
-          <div style="font-size:0.82rem;padding:7px 10px;background:rgba(43,71,67,0.07);border-radius:8px;border-left:3px solid var(--forest)">
-            ✈️ Voyage en Bretagne cet été
-          </div>
-          <div style="font-size:0.82rem;padding:7px 10px;background:rgba(221,168,63,0.1);border-radius:8px;border-left:3px solid var(--gold)">
-            🎨 Cours de peinture aquarelle
-          </div>
-          <div style="font-size:0.82rem;padding:7px 10px;background:var(--cream-dark);border-radius:8px;border-left:3px solid var(--rose-pale)">
-            🌱 Créer un jardin de plantes aromatiques
-          </div>
+          <!-- Vos envies et projets personnels apparaîtront ici -->
         </div>
         <button class="add-btn" style="margin-top:10px">+ Ajouter</button>
       </div>
@@ -2090,18 +1990,9 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
 
 // ── DATA ──────────────────────────────────────────────────
 const events = [
-  { date: '2025-09-05', title: 'Réunion de prérentrée', type: 'prof' },
-  { date: '2025-09-18', title: 'Réunion parents PS', type: 'prof' },
-  { date: '2025-10-07', title: 'Sortie ferme pédagogique', type: 'prof' },
-  { date: '2025-10-16', title: 'Conseil de cycle', type: 'prof' },
-  { date: '2025-10-26', title: 'Vacances Toussaint', type: 'perso' },
-  { date: '2025-11-20', title: 'Éval. langage MS/GS', type: 'exam' },
-  { date: '2025-12-04', title: 'Spectacle de Noël', type: 'prof' },
-  { date: '2025-12-21', title: 'Vacances Noël', type: 'perso' },
-  { date: '2026-01-15', title: 'Éval. motricité PS', type: 'exam' },
-  { date: '2026-02-22', title: 'Vacances Hiver', type: 'perso' },
-  { date: '2026-04-19', title: 'Vacances Printemps', type: 'perso' },
-  { date: '2026-06-11', title: "Fête de fin d'année", type: 'prof' },
+  // Ajoutez vos événements ici !
+  // Exemple : { date: '2025-09-05', title: 'Réunion de prérentrée', type: 'prof' },
+  // Types disponibles : 'prof', 'perso', 'exam'
 ];
 
 const months = [
@@ -2420,6 +2311,32 @@ function addPriority() {
   list.appendChild(li);
   li.querySelector('input').focus();
 }
+
+// Fonction pour ajouter une dépense
+function addDepense() {
+  const list = document.getElementById('budgetList');
+  
+  // Supprimer le message placeholder s'il existe
+  const placeholder = list.querySelector('div[style*="text-align:center"]');
+  if (placeholder) {
+    placeholder.remove();
+  }
+  
+  const libelle = prompt('Libellé de la dépense:', 'Matériel pédagogique');
+  if (!libelle) return;
+  
+  const montant = prompt('Montant (en €):', '0.00');
+  if (!montant) return;
+  
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(181,124,132,0.09);font-size:0.82rem';
+  div.innerHTML = `
+    <span style="color:var(--text-dark)">${libelle}</span>
+    <span style="font-weight:600;color:var(--rose-deep)">${parseFloat(montant).toFixed(2)} €</span>
+  `;
+  list.appendChild(div);
+}
+
 
 // ── MODAL ─────────────────────────────────────────────────
 let selectedType = 'prof';
