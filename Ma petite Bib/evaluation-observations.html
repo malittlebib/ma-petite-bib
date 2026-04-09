@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📝 Évaluation & Observations - Ma Petite Bib</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style-global.css">
+<!-- Synchronisation des données -->
+<script src="sync-data.js"></script>
+<!-- Export PDF -->
+<script src="pdf-exporter.js"></script>
+<!-- Compétences PS/MS/GS -->
+<script src="competences-data.js"></script>
+<style>
+/* ══════════════════════════════════════════════════
+   SYSTÈME DE THÈMES - Rose Planner vs Beige Classic
+   ══════════════════════════════════════════════════ */
+
+/* Thème par défaut : Rose Planner */
+:root {
+  --primary: #b57c84;
+  --primary-dark: #745252;
+  --primary-light: #c9909a;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --info: #3498db;
+  --light: #fdf0f1;
+  --dark: #3a2a2a;
+  --cream: #fffaf6;
+  --rose-pale: #f5dde0;
+  --text-mid: #6b4848;
+  --white: #ffffff;
+}
+
+/* Thème alternatif : Beige Classic */
+[data-theme="beige"] {
+  --primary: #8b6f47;
+  --primary-dark: #6b5435;
+  --primary-light: #a68a5e;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --info: #3498db;
+  --light: #f5f1eb;
+  --dark: #2d2520;
+  --cream: #faf8f5;
+  --rose-pale: #e8dfd3;
+  --text-mid: #6b5d52;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--cream);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.header {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-icon {
+  font-size: 3rem;
+}
+
+.header-title h1 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.header-title p {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+}
+
+.btn-secondary {
+  background: #7f8c8d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5f6c6d;
+}
+
+.btn-success {
+  background: #27ae60;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #229954;
+}
+
+/* STUDENTS SELECTOR */
+.students-selector {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.student-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 3px solid transparent;
+}
+
+.student-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(102,126,234,0.2);
+  border-color: var(--primary);
+}
+
+.student-card.active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border-color: var(--primary);
+}
+
+.student-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0 auto 10px;
+}
+
+.student-card.active .student-avatar {
+  background: #ffffff;
+  color: var(--primary);
+}
+
+.student-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* TABS */
+.tabs {
+  background: #ffffff;
+  padding: 0;
+  border-radius: 15px 15px 0 0;
+  display: flex;
+  gap: 5px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 20px 30px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #7f8c8d;
+  transition: all 0.3s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tab:hover {
+  background: #f8f9fa;
+  color: var(--primary);
+}
+
+.tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: #f8f9fa;
+}
+
+/* CONTENT */
+.content-area {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  min-height: 500px;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* OBSERVATIONS */
+.observation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.observation-header h2 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+}
+
+.observations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.observation-card {
+  background: #FFF9E6;
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 5px solid #FFD93D;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s;
+}
+
+.observation-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(255,217,61,0.3);
+}
+
+.observation-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.observation-date {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  font-weight: 600;
+}
+
+.observation-domaine {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #8b6f47;
+  color: white;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.observation-text {
+  color: #2c3e50;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.btn-delete {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s;
+}
+
+.btn-delete:hover {
+  background: #c0392b;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  font-size: 1.2rem;
+}
+
+/* COMPETENCES GRID */
+.competences-section {
+  margin-bottom: 40px;
+}
+
+.competences-section h3 {
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.competences-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.competence-item {
+  background: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.competence-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.competence-item.checked {
+  background: #d4edda;
+  border-color: #27ae60;
+}
+
+.competence-checkbox {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border: 3px solid #8b6f47;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+
+.competence-item.checked .competence-checkbox {
+  background: #27ae60;
+  border-color: #27ae60;
+  color: white;
+}
+
+.competence-text {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.competence-item.checked .competence-text {
+  font-weight: 600;
+}
+
+/* PROGRESS BAR */
+.progress-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.progress-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.progress-percentage {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.progress-bar {
+  background: rgba(255,255,255,0.3);
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #ffffff;
+  transition: width 0.5s ease;
+  border-radius: 10px;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #7f8c8d;
+  transition: all 0.3s;
+}
+
+.modal-close:hover {
+  color: #e74c3c;
+  transform: rotate(90deg);
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.form-group select,
+.form-group textarea,
+.form-group input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.form-group textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.form-group select:focus,
+.form-group textarea:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .students-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .competences-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    overflow-x: auto;
+  }
+}
+
+/* PRINT */
+@media print {
+  body {
+    background: #ffffff;
+  }
+  
+  .header-actions,
+  .btn,
+  .tabs {
+    display: none;
+  }
+  
+  .content-area {
+    box-shadow: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">
+      <div class="header-icon">📝</div>
+      <div>
+        <h1>Évaluation & Observations</h1>
+        <p>Carnet d'observations et grilles d'évaluation par élève</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="evaluations.html" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <i class="fas fa-clipboard-check"></i> Évaluer les compétences (703)
+      </a>
+      <a href="index-planner.html" class="btn btn-secondary">
+        <i class="fas fa-home"></i> Accueil
+      </a>
+      <a href="gestion-classe.html" class="btn btn-secondary">
+        <i class="fas fa-users"></i> Gestion classe
+      </a>
+      <button class="btn btn-success" onclick="exporterEvaluationPDF()">
+        <i class="fas fa-file-pdf"></i> Exporter PDF
+      </button>
+      <button class="btn btn-primary" onclick="window.print()">
+        <i class="fas fa-print"></i> Imprimer
+      </button>
+    </div>
+  </div>
+
+  <!-- STUDENTS SELECTOR -->
+  <div class="students-selector">
+    <!-- Sélecteur de période et niveau -->
+    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+      <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <!-- Sélecteur de niveau -->
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <label style="font-weight: 700; color: var(--primary); font-size: 1.1rem;">
+            <i class="fas fa-graduation-cap"></i> Niveau :
+          </label>
+          <select id="niveauSelect" onchange="changerNiveau()" style="padding: 10px 20px; border: 2px solid var(--primary); border-radius: 10px; font-size: 1rem; font-weight: 600; background: #ffffff; cursor: pointer;">
+            <option value="PS">🟡 Petite Section (PS)</option>
+            <option value="MS">🔴 Moyenne Section (MS)</option>
+            <option value="GS" selected>🔵 Grande Section (GS)</option>
+          </select>
+        </div>
+        
+        <!-- Sélecteur de période -->
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <label style="font-weight: 700; color: var(--primary); font-size: 1.1rem;">
+            <i class="fas fa-calendar-alt"></i> Période :
+          </label>
+          <select id="periodeSelect" onchange="changerPeriode()" style="padding: 10px 20px; border: 2px solid var(--primary); border-radius: 10px; font-size: 1rem; font-weight: 600; background: #ffffff; cursor: pointer;">
+            <option value="annee">📊 Vue annuelle</option>
+            <option value="P1">Période 1 - Sept/Oct</option>
+            <option value="P2">Période 2 - Nov/Déc</option>
+            <option value="P3">Période 3 - Jan/Fév</option>
+            <option value="P4">Période 4 - Mars/Avr</option>
+            <option value="P5">Période 5 - Mai/Juin</option>
+          </select>
+        </div>
+      </div>
+      
+      <div id="periodeInfo" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">
+        <i class="fas fa-info-circle"></i> Vue complète de l'année
+      </div>
+    </div>
+    
+    <div class="students-grid" id="studentsGrid">
+      <!-- Les élèves seront chargés ici -->
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <!-- CONTENT -->
+  <div class="content-area">
+    
+    <!-- OBSERVATIONS -->
+    <div class="observation-header">
+      <h2>📒 Carnet d'observations</h2>
+      <button class="btn btn-success" onclick="ouvrirModalObservation()">
+        <i class="fas fa-plus"></i> Ajouter une observation
+      </button>
+    </div>
+    <div class="observations-list" id="observationsList">
+      <!-- Les observations seront affichées ici -->
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL OBSERVATION -->
+<div class="modal" id="modalObservation">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">📝 Nouvelle observation</div>
+      <button class="modal-close" onclick="fermerModalObservation()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="form-group">
+      <label>Période</label>
+      <select id="observationPeriode">
+        <option value="P1">🍂 Période 1 - Septembre/Octobre</option>
+        <option value="P2">❄️ Période 2 - Novembre/Décembre</option>
+        <option value="P3">⛄ Période 3 - Janvier/Février</option>
+        <option value="P4">🌸 Période 4 - Mars/Avril</option>
+        <option value="P5">☀️ Période 5 - Mai/Juin</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Domaine</label>
+      <select id="observationDomaine">
+        <option value="Langage oral">Langage oral</option>
+        <option value="Découvrir l'écrit">Découvrir l'écrit</option>
+        <option value="Mathématiques">Mathématiques</option>
+        <option value="Graphisme/Écriture">Graphisme/Écriture</option>
+        <option value="Activité physique">Activité physique</option>
+        <option value="Activités artistiques">Activités artistiques</option>
+        <option value="Explorer le monde">Explorer le monde</option>
+        <option value="Comportement">Comportement</option>
+        <option value="Autonomie">Autonomie</option>
+        <option value="Général">Général</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Observation</label>
+      <textarea id="observationTexte" placeholder="Décrivez votre observation..."></textarea>
+    </div>
+    <button class="btn btn-primary" onclick="sauvegarderObservation()">
+      <i class="fas fa-save"></i> Sauvegarder
+    </button>
+  </div>
+</div>
+
+<script>
+function chargerTheme() {
+  const savedTheme = localStorage.getItem('app_theme') || 'rose';
+  if (savedTheme === 'beige') {
+    document.documentElement.setAttribute('data-theme', 'beige');
+  }
+}
+chargerTheme();
+
+
+// DONNÉES
+let eleves = [];
+let currentEleve = null;
+let niveauClasse = 'GS'; // Par défaut GS
+
+// Déterminer la période actuelle selon le mois
+function getPeriodeActuelle() {
+  const mois = new Date().getMonth() + 1; // 1-12
+  if (mois >= 9 && mois <= 10) return 'P1';
+  if (mois >= 11 && mois <= 12) return 'P2';
+  if (mois >= 1 && mois <= 2) return 'P3';
+  if (mois >= 3 && mois <= 4) return 'P4';
+  if (mois >= 5 && mois <= 6) return 'P5';
+  return 'P1'; // Par défaut
+}
+
+let currentPeriode = getPeriodeActuelle(); // Période actuelle automatique
+let observations = {};
+let evaluations = {};
+
+// Détecter le niveau de classe depuis localStorage via SyncData
+function detecterNiveau() {
+  niveauClasse = window.SyncData.getNiveau();
+  document.getElementById('niveauSelect').value = niveauClasse;
+}
+
+// Informations sur les périodes
+const periodesInfo = {
+  'annee': { nom: 'Vue complète de l\'année', icon: '📊' },
+  'P1': { nom: 'Période 1 - Septembre/Octobre', icon: '🍂' },
+  'P2': { nom: 'Période 2 - Novembre/Décembre', icon: '❄️' },
+  'P3': { nom: 'Période 3 - Janvier/Février', icon: '⛄' },
+  'P4': { nom: 'Période 4 - Mars/Avril', icon: '🌸' },
+  'P5': { nom: 'Période 5 - Mai/Juin', icon: '☀️' }
+};
+
+// Compétences complètes par domaine ET par période (GS)
+const competencesGS = {
+  'P1': {
+    'Langage oral': [
+      'Communique avec les adultes en se faisant comprendre',
+      'Nomme les objets usuels de la classe et de l\'école',
+      'Répond à des questions simples sur un événement vécu',
+      'Utilise le "je" pour parler de soi',
+      'Enrichit son vocabulaire : école, classe, automne, couleurs',
+      'Participe aux rituels quotidiens (date, météo, comptage)',
+      'Écoute les autres sans interrompre',
+      'Exprime ses besoins et ses émotions de base (content, triste)'
+    ],
+    'Découvrir l\'écrit': [
+      'Reconnaît son prénom écrit en capitales avec photo',
+      'Distingue lettres, chiffres et signes divers',
+      'Écoute une histoire courte sans support visuel',
+      'Identifie la couverture d\'un livre',
+      'Tient un livre à l\'endroit et tourne les pages',
+      'Repère le titre d\'un album',
+      'Discrimine des sons familiers de l\'environnement',
+      'Comprend que l\'écrit véhicule un message'
+    ],
+    'Mathématiques': [
+      'Dénombre une petite quantité (jusqu\'à 5) en pointant',
+      'Compare des collections : plus que, moins que, autant que',
+      'Reconnaît les formes géométriques simples (carré, rond, triangle)',
+      'Classe des objets selon un critère (couleur, taille)',
+      'Récite la comptine numérique jusqu\'à 10',
+      'Réalise une collection de 1, 2 ou 3 objets',
+      'Range 3 objets du plus petit au plus grand',
+      'Se repère dans la classe (devant, derrière, sur, sous)'
+    ],
+    'Graphisme et écriture': [
+      'Tient correctement un outil scripteur',
+      'Trace des traits verticaux et horizontaux',
+      'Dessine spontanément et laisse des traces variées',
+      'Remplit une surface sans dépasser',
+      'Reproduit des graphismes simples (points, traits)',
+      'Occupe tout l\'espace de la feuille'
+    ],
+    'Activités artistiques': [
+      'Dessine spontanément (dessin libre)',
+      'Nomme les trois couleurs primaires',
+      'Écoute et mémorise des comptines courtes',
+      'Suit le rythme en frappant des mains',
+      'Explore différents outils (pinceaux, éponges, doigts)',
+      'Reconnaît des bruits et sons familiers'
+    ],
+    'Activité physique': [
+      'Court sans tomber',
+      'Saute à pieds joints sur place',
+      'Lance une balle à deux mains',
+      'Grimpe sur un module en toute sécurité',
+      'Participe aux rondes et jeux dansés',
+      'Marche sur une ligne au sol',
+      'Respecte les consignes simples de déplacement'
+    ],
+    'Explorer le monde': [
+      'Distingue le matin de l\'après-midi',
+      'Explore l\'espace de la classe librement',
+      'S\'intéresse à son corps et à ses besoins (faim, soif, fatigue)',
+      'Distingue les notions fille/garçon',
+      'Observe les changements de saison (automne)',
+      'Nomme quelques parties du corps (tête, bras, jambes)'
+    ]
+  },
+  'P2': {
+    'Langage oral': [
+      'S\'exprime en phrases simples et correctes',
+      'Raconte un événement vécu en se faisant comprendre',
+      'Nomme les enfants de la classe',
+      'Utilise le verbe au présent de façon appropriée',
+      'Enrichit son vocabulaire : vêtements, Noël, hiver, animaux',
+      'Explique ce qu\'il fait en classe (activités)',
+      'Nomme et exprime ses émotions (joie, colère, peur)',
+      'Pose des questions pour obtenir des informations'
+    ],
+    'Découvrir l\'écrit': [
+      'Repère son prénom sans photo',
+      'Reconnaît 5 à 10 lettres de son prénom',
+      'Identifie la couverture, le titre et l\'auteur d\'un album',
+      'Reformule une histoire entendue dans ses propres mots',
+      'Distingue les sons longs et les sons courts',
+      'Suit le texte du doigt de gauche à droite',
+      'Comprend qu\'on lit de gauche à droite',
+      'Reconnaît des logos et pictogrammes familiers'
+    ],
+    'Mathématiques': [
+      'Dénombre une collection jusqu\'à 7 objets',
+      'Utilise les nombres pour compter (cardinalité)',
+      'Comprend qu\'ajouter 1 donne le nombre suivant',
+      'Résout des problèmes simples d\'ajout ou de retrait',
+      'Utilise ses doigts pour montrer une quantité (1 à 5)',
+      'Range 5 objets par ordre de taille',
+      'Reproduit un algorithme à 2 éléments (AB AB AB)',
+      'Se repère dans l\'espace proche : dedans/dehors, loin/près'
+    ],
+    'Graphisme et écriture': [
+      'Trace des lignes brisées et des ponts',
+      'Dessine des bonhommes "têtards" (tête + jambes)',
+      'Réalise des tracés continus sans lever l\'outil',
+      'Reproduit des motifs graphiques simples',
+      'Commence à tenir compte des limites de l\'espace graphique',
+      'Essaie d\'écrire quelques lettres de son prénom'
+    ],
+    'Activités artistiques': [
+      'Dessine des bonhommes têtards reconnaissables',
+      'Nomme et utilise les couleurs primaires + secondaires',
+      'Chante des comptines en groupe',
+      'Reconnaît quelques instruments de musique',
+      'Mélange deux couleurs primaires',
+      'S\'exprime sur ce qu\'il ressent face à une œuvre'
+    ],
+    'Activité physique': [
+      'Coordonne ses mouvements dans des déplacements',
+      'Saute à pieds joints en avançant',
+      'Rampe en avant sous un obstacle',
+      'Roule sur le côté',
+      'Coopère dans un jeu collectif simple',
+      'Lance une balle dans une direction précise',
+      'Respecte les règles simples d\'un jeu'
+    ],
+    'Explorer le monde': [
+      'Dit ce qu\'on a fait avant et après une activité',
+      'Ordonne chronologiquement 2 images d\'une activité',
+      'Utilise les locutions spatiales : devant/derrière, sur/sous',
+      'Observe le vivant : animaux, plantes',
+      'Reconnaît les caractéristiques de l\'hiver',
+      'Nomme les principales parties du visage'
+    ]
+  },
+  'P3': {
+    'Langage oral': [
+      'Raconte une histoire avec un début, un milieu et une fin',
+      'Explique une règle de jeu simple',
+      'Participe à des échanges collectifs',
+      'Pose des questions pour comprendre (Pourquoi ? Comment ?)',
+      'Utilise le futur proche (je vais...)',
+      'Enrichit son vocabulaire : corps, alimentation, métiers',
+      'Utilise des phrases de plus en plus longues',
+      'Argumente pour défendre son point de vue'
+    ],
+    'Découvrir l\'écrit': [
+      'Reconnaît toutes les lettres de l\'alphabet en capitales',
+      'Scande les syllabes d\'un mot (frappe dans les mains)',
+      'Écrit son prénom seul en capitales',
+      'Identifie son prénom dans différentes graphies',
+      'Suit le texte avec le doigt pendant la lecture',
+      'Reformule le début d\'une histoire lue',
+      'Distingue syllabe orale et syllabe écrite',
+      'Anticipe la suite d\'une histoire connue'
+    ],
+    'Mathématiques': [
+      'Dénombre jusqu\'à 10 objets de façon fiable',
+      'Associe le nom des nombres avec leur quantité',
+      'Compare des quantités par correspondance terme à terme',
+      'Reproduit un algorithme à 3 éléments',
+      'Résout des problèmes d\'ajout, de retrait, de réunion',
+      'Reconnaît les nombres de 1 à 5 en écriture chiffrée',
+      'Décompose le nombre 5 (3 et 2, 4 et 1...)',
+      'Se repère sur un quadrillage simple (jeu de l\'oie)'
+    ],
+    'Graphisme et écriture': [
+      'Trace des ronds, des spirales, des boucles',
+      'Dessine un bonhomme avec tête, corps, bras, jambes',
+      'Reproduit des motifs graphiques complexes',
+      'Respecte le sens du tracé (de gauche à droite)',
+      'Écrit quelques lettres en cursive (e, l, i)',
+      'Contrôle son geste pour tracer avec précision'
+    ],
+    'Activités artistiques': [
+      'Dessine un bonhomme complet et détaillé',
+      'Réalise une production en suivant un projet',
+      'Reproduit une formule rythmique simple',
+      'Nomme des œuvres vues en classe',
+      'Décrit ce qu\'il voit dans une œuvre d\'art',
+      'Chante en respectant la mélodie'
+    ],
+    'Activité physique': [
+      'Enchaîne plusieurs actions motrices',
+      'Vise et atteint une cible',
+      'Danse sur une musique en suivant le rythme',
+      'Respecte les règles d\'opposition dans un jeu',
+      'S\'équilibre sur un pied quelques secondes',
+      'Franchit des obstacles variés',
+      'Coopère avec ses pairs pour réussir une tâche'
+    ],
+    'Explorer le monde': [
+      'Repère la succession jour/nuit dans la semaine',
+      'Utilise un calendrier simple',
+      'Se repère sur une feuille (haut, bas, milieu)',
+      'Nomme toutes les parties du corps',
+      'Comprend les besoins du vivant (eau, nourriture)',
+      'Observe les changements de saison (hiver → printemps)',
+      'Manipule des objets techniques simples'
+    ]
+  },
+  'P4': {
+    'Langage oral': [
+      'S\'exprime clairement devant le groupe classe',
+      'Argumente ses choix de façon construite',
+      'Utilise un vocabulaire précis et varié',
+      'Raconte en utilisant le passé composé',
+      'Enrichit son vocabulaire : nature, animaux, voyages',
+      'Reformule les propos d\'autrui',
+      'Décrit une image complexe avec détails',
+      'Invente une histoire courte'
+    ],
+    'Découvrir l\'écrit': [
+      'Reconnaît des mots simples globalement (papa, maman)',
+      'Identifie des phonèmes en position initiale',
+      'Écrit des lettres en cursive (toutes les lettres rondes)',
+      'Tourne les pages d\'un livre une par une',
+      'Anticipe la suite d\'une histoire à partir d\'indices',
+      'Comprend le lien phonème/graphème pour quelques lettres',
+      'Scande et compte les syllabes d\'un mot',
+      'Invente une suite d\'histoire cohérente'
+    ],
+    'Mathématiques': [
+      'Utilise les nombres jusqu\'à 15',
+      'Résout des problèmes de partage équitable',
+      'Reproduit un assemblage de formes géométriques',
+      'Se déplace sur un quadrillage selon un code',
+      'Reconnaît l\'écriture chiffrée des nombres jusqu\'à 10',
+      'Compare des nombres (plus grand que, plus petit que)',
+      'Décompose les nombres jusqu\'à 10',
+      'Complète une collection pour atteindre une quantité donnée'
+    ],
+    'Graphisme et écriture': [
+      'Écrit son prénom en cursive',
+      'Trace toutes les lettres cursives',
+      'Dessine avec intention et détails (maison, soleil, nuages)',
+      'Respecte les interlignes',
+      'Copie des mots courts en cursive',
+      'Affine son geste graphique (pression, vitesse)'
+    ],
+    'Activités artistiques': [
+      'Dessine avec détails et cohérence',
+      'Explique et présente sa production artistique',
+      'Joue avec sa voix (grave, aigu, fort, doux)',
+      'Donne son avis argumenté sur une œuvre',
+      'Réalise des mélanges de couleurs complexes',
+      'Chante en variant l\'intensité et le rythme'
+    ],
+    'Activité physique': [
+      'S\'adapte à différentes contraintes spatiales',
+      'Coopère avec ses pairs pour gagner un jeu collectif',
+      'Lance avec précision vers une cible éloignée',
+      'S\'équilibre sur des supports en hauteur',
+      'Exerce différents rôles dans un jeu (attaquant, défenseur)',
+      'Respecte les règles complexes d\'un jeu sportif',
+      'Évalue sa propre performance'
+    ],
+    'Explorer le monde': [
+      'Utilise hier, aujourd\'hui, demain de façon appropriée',
+      'Se repère dans un parcours ou un plan simple',
+      'Utilise des outils et ustensiles (ciseaux, fourchette)',
+      'Comprend les règles d\'hygiène de base',
+      'Observe et décrit un phénomène naturel',
+      'Comprend le cycle de vie des plantes',
+      'Utilise des objets numériques simples (tablette)'
+    ]
+  },
+  'P5': {
+    'Langage oral': [
+      'Participe activement aux discussions en respectant les tours de parole',
+      'Reformule pour se faire mieux comprendre',
+      'Raconte une histoire complexe avec enrichissements',
+      'Utilise tous les temps de base (présent, passé, futur)',
+      'Enrichit son vocabulaire : été, vacances, CP',
+      'Explique un raisonnement ou une démarche',
+      'Justifie ses actions et ses choix',
+      'Écoute et comprend des textes lus longs et complexes'
+    ],
+    'Découvrir l\'écrit': [
+      'Lit quelques mots courants en entier',
+      'Écrit son prénom en cursive de façon fluide',
+      'Manipule les phonèmes (ajout, suppression)',
+      'Comprend le principe alphabétique',
+      'Connaît le nom et le son de toutes les lettres',
+      'Écrit des mots simples en utilisant ses connaissances',
+      'Segmente la chaîne orale en mots',
+      'Produit de l\'écrit avec intention (message, liste)'
+    ],
+    'Mathématiques': [
+      'Utilise les nombres jusqu\'à 20 et au-delà',
+      'Résout des problèmes variés et complexes',
+      'Reconnaît l\'écriture chiffrée jusqu\'à 20',
+      'Décompose tous les nombres jusqu\'à 10',
+      'Se repère dans l\'espace (plan, maquette)',
+      'Utilise des repères temporels précis (jours, mois)',
+      'Compare, range, encadre des nombres',
+      'Commence à comprendre les doubles et moitiés'
+    ],
+    'Graphisme et écriture': [
+      'Écrit en cursive de façon lisible et fluide',
+      'Copie des phrases courtes sans erreur',
+      'Affine son geste graphique en variant les outils',
+      'Respecte la taille des lettres',
+      'Écrit des mots simples sous dictée',
+      'Produit des écrits courts de façon autonome'
+    ],
+    'Activités artistiques': [
+      'Crée des productions artistiques personnelles et originales',
+      'Présente et explique sa démarche artistique',
+      'Chante en respectant mélodie, rythme et nuances',
+      'Compare plusieurs œuvres d\'art',
+      'Utilise différentes techniques artistiques maîtrisées',
+      'Exprime ses émotions face à une œuvre'
+    ],
+    'Activité physique': [
+      'Coordonne des actions motrices complexes',
+      'Exerce différents rôles dans des jeux collectifs',
+      'S\'oppose dans le respect des règles et de l\'adversaire',
+      'Évalue ses performances et celles des autres',
+      'Enchaîne des actions selon un parcours précis',
+      'Adapte ses déplacements à différents environnements'
+    ],
+    'Explorer le monde': [
+      'Repère les mois de l\'année et les saisons',
+      'Décrit un environnement proche (école, quartier)',
+      'Prend soin de son corps et de sa santé',
+      'Comprend des phénomènes scientifiques simples',
+      'Utilise des outils numériques de façon autonome',
+      'Respecte l\'environnement et la nature',
+      'Se prépare à l\'entrée au CP (autonomie, posture d\'élève)'
+    ]
+  }
+};
+
+// INIT
+document.addEventListener('DOMContentLoaded', function() {
+  detecterNiveau(); // Détecter le niveau au chargement
+  chargerEleves();
+  chargerDonnees();
+  
+  // Initialiser le select avec la période actuelle
+  document.getElementById('periodeSelect').value = currentPeriode;
+  
+  // Mettre à jour l'affichage initial
+  const info = periodesInfo[currentPeriode];
+  document.getElementById('periodeInfo').innerHTML = `
+    <i class="fas fa-info-circle"></i> ${info.icon} ${info.nom}
+  `;
+  
+  afficherEleves();
+});
+
+// CHANGER NIVEAU
+function changerNiveau() {
+  niveauClasse = document.getElementById('niveauSelect').value;
+  window.SyncData.setNiveau(niveauClasse);
+  
+  // Rafraîchir l'affichage des évaluations
+  afficherEvaluations();
+}
+
+// CHARGER ÉLÈVES
+function chargerEleves() {
+  // Utiliser SyncData pour charger les élèves
+  eleves = window.SyncData.getEleves();
+  
+  if (eleves.length > 0) {
+    currentEleve = eleves[0].id;
+  }
+}
+
+// CHARGER DONNÉES
+function chargerDonnees() {
+  const savedObs = localStorage.getItem('observations_eleves');
+  if (savedObs) observations = JSON.parse(savedObs);
+  
+  const savedEval = localStorage.getItem('evaluations_eleves');
+  if (savedEval) evaluations = JSON.parse(savedEval);
+}
+
+// SAUVEGARDER
+function sauvegarderDonnees() {
+  localStorage.setItem('observations_eleves', JSON.stringify(observations));
+  localStorage.setItem('evaluations_eleves', JSON.stringify(evaluations));
+}
+
+// AFFICHER ÉLÈVES
+function afficherEleves() {
+  const grid = document.getElementById('studentsGrid');
+  grid.innerHTML = eleves.map(eleve => `
+    <div class="student-card ${eleve.id === currentEleve ? 'active' : ''}" onclick="selectionnerEleve(${eleve.id})">
+      <div class="student-avatar">${eleve.nom.substring(0, 2).toUpperCase()}</div>
+      <div class="student-name">${eleve.nom}</div>
+    </div>
+  `).join('');
+  
+  afficherObservations();
+  afficherEvaluations();
+}
+
+// SÉLECTIONNER ÉLÈVE
+function selectionnerEleve(eleveId) {
+  currentEleve = eleveId;
+  afficherEleves();
+}
+
+// CHANGER PÉRIODE
+function changerPeriode() {
+  currentPeriode = document.getElementById('periodeSelect').value;
+  
+  // Mettre à jour l'info
+  const info = periodesInfo[currentPeriode];
+  document.getElementById('periodeInfo').innerHTML = `
+    <i class="fas fa-info-circle"></i> ${info.icon} ${info.nom}
+  `;
+  
+  // Rafraîchir l'affichage
+  afficherObservations();
+  afficherEvaluations();
+}
+
+// TABS
+// === OBSERVATIONS ===
+
+function afficherObservations() {
+  const container = document.getElementById('observationsList');
+  const obsEleve = observations[currentEleve] || [];
+  
+  // Filtrer par période si ce n'est pas la vue annuelle
+  let obsFiltrees = obsEleve;
+  if (currentPeriode !== 'annee') {
+    obsFiltrees = obsEleve.filter(obs => obs.periode === currentPeriode);
+  }
+  
+  if (obsFiltrees.length === 0) {
+    const message = currentPeriode === 'annee' 
+      ? 'Aucune observation pour cet élève'
+      : `Aucune observation pour la ${periodesInfo[currentPeriode].nom}`;
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-clipboard"></i>
+        <p>${message}</p>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = obsFiltrees.map((obs, index) => {
+    // Trouver l'index réel pour la suppression
+    const realIndex = obsEleve.indexOf(obs);
+    return `
+    <div class="observation-card">
+      <div class="observation-meta">
+        <div>
+          <div class="observation-date">
+            <i class="fas fa-calendar"></i> ${new Date(obs.date).toLocaleDateString('fr-FR')}
+            ${obs.periode ? ` • ${periodesInfo[obs.periode].icon} ${obs.periode}` : ''}
+          </div>
+          <div class="observation-domaine">${obs.domaine}</div>
+        </div>
+        <button class="btn-delete" onclick="supprimerObservation(${realIndex})">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+      <div class="observation-text">${obs.texte}</div>
+    </div>
+  `}).join('');
+}
+
+function ouvrirModalObservation() {
+  document.getElementById('modalObservation').classList.add('active');
+}
+
+function fermerModalObservation() {
+  document.getElementById('modalObservation').classList.remove('active');
+  document.getElementById('observationTexte').value = '';
+}
+
+function sauvegarderObservation() {
+  const periode = document.getElementById('observationPeriode').value;
+  const domaine = document.getElementById('observationDomaine').value;
+  const texte = document.getElementById('observationTexte').value.trim();
+  
+  if (!texte) {
+    alert('Veuillez saisir une observation');
+    return;
+  }
+  
+  if (!observations[currentEleve]) {
+    observations[currentEleve] = [];
+  }
+  
+  observations[currentEleve].push({
+    date: new Date().toISOString(),
+    periode: periode,
+    domaine: domaine,
+    texte: texte
+  });
+  
+  sauvegarderDonnees();
+  afficherObservations();
+  fermerModalObservation();
+}
+
+function supprimerObservation(index) {
+  if (confirm('Supprimer cette observation ?')) {
+    observations[currentEleve].splice(index, 1);
+    sauvegarderDonnees();
+    afficherObservations();
+  }
+}
+
+// === EVALUATIONS ===
+
+function afficherEvaluations() {
+  const container = document.getElementById('competencesContainer');
+  
+  // Déterminer quelle période afficher
+  let periodeAffichage = currentPeriode;
+  let messageInfo = '';
+  
+  if (currentPeriode === 'annee') {
+    // En vue annuelle, on montre P5 (compétences finales)
+    periodeAffichage = 'P5';
+    messageInfo = `
+      <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 20px; border-radius: 15px; margin-bottom: 30px; color: white;">
+        <h3 style="margin-bottom: 10px;"><i class="fas fa-chart-line"></i> Vue annuelle - Compétences de fin d'année</h3>
+        <p style="opacity: 0.95; margin-bottom: 10px;">En vue annuelle, les compétences attendues en <strong>Période 5 (fin d'année)</strong> sont affichées.</p>
+        <p style="opacity: 0.95;"><i class="fas fa-lightbulb"></i> <strong>Astuce :</strong> Sélectionnez une période spécifique (P1 à P5) pour voir les compétences progressives adaptées à chaque moment de l'année.</p>
+      </div>
+    `;
+  } else {
+    // Message pour les périodes spécifiques
+    messageInfo = `
+      <div style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); padding: 15px 20px; border-radius: 12px; margin-bottom: 25px; color: white; display: flex; align-items: center; gap: 15px;">
+        <i class="fas fa-check-circle" style="font-size: 2rem;"></i>
+        <div>
+          <strong style="font-size: 1.1rem;">${periodesInfo[currentPeriode].icon} ${periodesInfo[currentPeriode].nom}</strong>
+          <p style="opacity: 0.95; margin-top: 5px; font-size: 0.95rem;">Compétences adaptées à cette période de l'année</p>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Créer une clé unique pour la période actuelle
+  const evalKey = currentPeriode === 'annee' ? 'annee' : currentPeriode;
+  
+  if (!evaluations[currentEleve]) {
+    evaluations[currentEleve] = {};
+  }
+  
+  if (!evaluations[currentEleve][evalKey]) {
+    evaluations[currentEleve][evalKey] = {};
+  }
+  
+  // Utiliser les compétences de la période appropriée SELON LE NIVEAU
+  let toutesCompetences;
+  if (niveauClasse === 'PS') {
+    toutesCompetences = competencesPS || {};
+  } else if (niveauClasse === 'MS') {
+    toutesCompetences = competencesMS || {};
+  } else {
+    toutesCompetences = competencesGS || {};
+  }
+  
+  const competencesPeriode = toutesCompetences[periodeAffichage] || toutesCompetences['P1'] || {};
+  
+  container.innerHTML = messageInfo + Object.entries(competencesPeriode).map(([domaine, competences]) => `
+    <div class="competences-section">
+      <h3><i class="fas fa-graduation-cap"></i> ${domaine}</h3>
+      <div class="competences-grid">
+        ${competences.map(comp => {
+          const key = `${domaine}_${comp}`;
+          const checked = evaluations[currentEleve][evalKey][key] || false;
+          return `
+            <div class="competence-item ${checked ? 'checked' : ''}" onclick="toggleCompetence('${key.replace(/'/g, "\\'")}')">
+              <div class="competence-checkbox">
+                ${checked ? '<i class="fas fa-check"></i>' : ''}
+              </div>
+              <div class="competence-text">${comp}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+  
+  calculerProgression();
+}
+
+function toggleCompetence(key) {
+  const evalKey = currentPeriode === 'annee' ? 'annee' : currentPeriode;
+  
+  if (!evaluations[currentEleve]) {
+    evaluations[currentEleve] = {};
+  }
+  
+  if (!evaluations[currentEleve][evalKey]) {
+    evaluations[currentEleve][evalKey] = {};
+  }
+  
+  evaluations[currentEleve][evalKey][key] = !evaluations[currentEleve][evalKey][key];
+  sauvegarderDonnees();
+  afficherEvaluations();
+}
+
+function calculerProgression() {
+  const evalKey = currentPeriode === 'annee' ? 'annee' : currentPeriode;
+  
+  // Utiliser la période appropriée pour le calcul
+  let periodeCalc = currentPeriode === 'annee' ? 'P5' : currentPeriode;
+  
+  // Charger les compétences selon le niveau
+  let toutesCompetences;
+  if (niveauClasse === 'PS') {
+    toutesCompetences = competencesPS || {};
+  } else if (niveauClasse === 'MS') {
+    toutesCompetences = competencesMS || {};
+  } else {
+    toutesCompetences = competencesGS || {};
+  }
+  
+  const competencesPeriode = toutesCompetences[periodeCalc] || toutesCompetences['P1'] || {};
+  
+  const total = Object.values(competencesPeriode).reduce((sum, comps) => sum + comps.length, 0);
+  const acquis = Object.values(evaluations[currentEleve]?.[evalKey] || {}).filter(v => v).length;
+  const percentage = Math.round((acquis / total) * 100);
+  
+  document.getElementById('progressPercentage').textContent = percentage + '%';
+  document.getElementById('progressFill').style.width = percentage + '%';
+}
+
+// === EXPORT PDF ===
+
+async function exporterEvaluationPDF() {
+  if (!currentEleve) {
+    alert('Veuillez sélectionner un élève');
+    return;
+  }
+  
+  // Récupérer l'élève
+  const eleve = eleves.find(e => e.id === currentEleve);
+  if (!eleve) return;
+  
+  // Récupérer les infos de niveau et période
+  const niveauInfo = window.SyncData.getNiveauInfo();
+  const periodeInfo = periodesInfo[currentPeriode];
+  
+  // Générer le nom du fichier
+  const nomFichier = `Evaluation_${eleve.nom.replace(/\s/g, '_')}_${niveauInfo.code}_${currentPeriode === 'annee' ? 'Annuel' : currentPeriode}.pdf`;
+  
+  // Créer une zone d'export temporaire
+  const exportZone = document.createElement('div');
+  exportZone.style.cssText = 'position: absolute; left: -9999px; width: 210mm; background: #ffffff; padding: 20mm;';
+  
+  // Construire le contenu
+  exportZone.innerHTML = `
+    <div style="font-family: Arial, sans-serif;">
+      <!-- En-tête -->
+      <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid ${niveauInfo.couleur}; padding-bottom: 20px;">
+        <h1 style="color: ${niveauInfo.couleur}; margin: 0 0 10px 0; font-size: 28px;">
+          ${niveauInfo.emoji} Évaluation & Observations
+        </h1>
+        <h2 style="margin: 0; font-size: 22px; color: #2c3e50;">
+          ${eleve.nom}
+        </h2>
+        <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 16px;">
+          ${niveauInfo.nom} • ${periodeInfo.icon} ${periodeInfo.nom}
+        </p>
+      </div>
+      
+      <!-- Observations -->
+      <div style="margin-bottom: 40px;">
+        <h3 style="background: ${niveauInfo.couleur}; color: white; padding: 12px 20px; border-radius: 8px; font-size: 18px; margin-bottom: 20px;">
+          📒 Carnet d'observations
+        </h3>
+        ${genererObservationsPDF(eleve.id)}
+      </div>
+      
+      <!-- Évaluations -->
+      <div style="page-break-before: always;">
+        <h3 style="background: ${niveauInfo.couleur}; color: white; padding: 12px 20px; border-radius: 8px; font-size: 18px; margin-bottom: 20px;">
+          ✅ Grille d'évaluation
+        </h3>
+        ${genererEvaluationsPDF(eleve.id)}
+      </div>
+      
+      <!-- Pied de page -->
+      <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e9ecef; text-align: center; color: #7f8c8d; font-size: 12px;">
+        Document généré le ${new Date().toLocaleDateString('fr-FR')} - Ma Petite Bib
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(exportZone);
+  
+  // Exporter en PDF
+  await window.PDFExporter.exporterHTML(exportZone, {
+    nomFichier: nomFichier,
+    orientation: 'portrait',
+    format: 'a4'
+  });
+  
+  // Nettoyer
+  document.body.removeChild(exportZone);
+}
+
+function genererObservationsPDF(eleveId) {
+  const obsEleve = observations[eleveId] || [];
+  
+  // Filtrer par période si nécessaire
+  let obsFiltrees = obsEleve;
+  if (currentPeriode !== 'annee') {
+    obsFiltrees = obsEleve.filter(obs => obs.periode === currentPeriode);
+  }
+  
+  if (obsFiltrees.length === 0) {
+    return '<p style="color: #7f8c8d; font-style: italic; padding: 20px; background: #f8f9fa; border-radius: 8px;">Aucune observation pour cette période</p>';
+  }
+  
+  return obsFiltrees.map(obs => `
+    <div style="background: #FFF9E6; padding: 15px; margin-bottom: 15px; border-left: 5px solid #FFD93D; border-radius: 8px;">
+      <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">
+        <span style="color: #7f8c8d;">
+          📅 ${new Date(obs.date).toLocaleDateString('fr-FR')}
+        </span>
+        <span style="background: #8b6f47; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 12px;">
+          ${obs.domaine}
+        </span>
+      </div>
+      <p style="margin: 0; line-height: 1.6; color: #2c3e50;">
+        ${obs.texte}
+      </p>
+    </div>
+  `).join('');
+}
+
+function genererEvaluationsPDF(eleveId) {
+  const evalKey = currentPeriode === 'annee' ? 'annee' : currentPeriode;
+  const evals = evaluations[eleveId]?.[evalKey] || {};
+  
+  // Charger les compétences selon le niveau
+  let toutesCompetences;
+  if (niveauClasse === 'PS') {
+    toutesCompetences = competencesPS || {};
+  } else if (niveauClasse === 'MS') {
+    toutesCompetences = competencesMS || {};
+  } else {
+    toutesCompetences = competencesGS || {};
+  }
+  
+  const periodeAffichage = currentPeriode === 'annee' ? 'P5' : currentPeriode;
+  const competencesPeriode = toutesCompetences[periodeAffichage] || {};
+  
+  // Calculer progression
+  const total = Object.values(competencesPeriode).reduce((sum, comps) => sum + comps.length, 0);
+  const acquis = Object.values(evals).filter(v => v).length;
+  const percentage = Math.round((acquis / total) * 100);
+  
+  let html = `
+    <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 18px; font-weight: 700;">Progression globale</div>
+        <div style="font-size: 32px; font-weight: 800;">${percentage}%</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.3); height: 20px; border-radius: 10px; margin-top: 15px; overflow: hidden;">
+        <div style="background: #ffffff; height: 100%; width: ${percentage}%; border-radius: 10px;"></div>
+      </div>
+    </div>
+  `;
+  
+  // Ajouter les compétences par domaine
+  Object.entries(competencesPeriode).forEach(([domaine, competences]) => {
+    html += `
+      <div style="margin-bottom: 25px;">
+        <h4 style="color: var(--primary); font-size: 16px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef;">
+          🎓 ${domaine}
+        </h4>
+        <div>
+          ${competences.map(comp => {
+            const key = `${domaine}_${comp}`;
+            const checked = evals[key] || false;
+            return `
+              <div style="display: flex; align-items: start; margin-bottom: 10px; padding: 10px; background: ${checked ? '#d4edda' : '#f8f9fa'}; border-radius: 8px; border: 2px solid ${checked ? '#27ae60' : 'transparent'};">
+                <div style="min-width: 25px; width: 25px; height: 25px; border: 3px solid ${checked ? '#27ae60' : '#8b6f47'}; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: ${checked ? '#27ae60' : 'white'}; margin-right: 12px; flex-shrink: 0;">
+                  ${checked ? '<span style="color: white; font-size: 16px; font-weight: bold;">✓</span>' : ''}
+                </div>
+                <div style="flex: 1; font-size: 14px; line-height: 1.5; color: #2c3e50; ${checked ? 'font-weight: 600;' : ''}">
+                  ${comp}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  });
+  
+  return html;
+}
+</script>
+
+</body>
+</html>
