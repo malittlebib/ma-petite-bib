@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programmations PS 2025-2026 - Par Période</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* Système de thèmes */
+:root {
+  --primary: #b57c84;
+  --primary-dark: #745252;
+  --bg: #fffaf6;
+}
+
+[data-theme="beige"] {
+  --primary: #8b6f47;
+  --primary-dark: #6b5435;
+  --bg: #faf8f5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { 
+  font-family: 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #FFF4E6 0%, #FFE8CC 100%);
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+.header {
+  background: linear-gradient(135deg, #FFD93D 0%, #FFA500 100%);
+  color: white;
+  padding: 25px 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo { height: 60px; background: white; padding: 8px; border-radius: 10px; }
+
+.header-text h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.header-text p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  flex: 1;
+  min-width: 150px;
+  padding: 15px 20px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #FFD93D 0%, #FFA500 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 217, 61, 0.4);
+}
+
+/* CONTENT */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.domain-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  border-left: 5px solid #FFD93D;
+}
+
+.domain-card h3 {
+  color: #FFA500;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.competence-item {
+  padding: 12px 15px;
+  margin: 8px 0;
+  background: #FFF9F0;
+  border-radius: 8px;
+  border-left: 3px solid #FFD93D;
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.competence-item:hover {
+  background: #FFE5B8;
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(255, 165, 0, 0.2);
+}
+
+.competence-item i {
+  color: #FFA500;
+  margin-top: 3px;
+}
+
+.competence-item.has-progression::after {
+  content: '✓';
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #27ae60;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal {
+  background: white;
+  border-radius: 20px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #FFD93D 0%, #FFA500 100%);
+  color: white;
+  padding: 25px 30px;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.modal-close {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.modal-close:hover {
+  background: rgba(255,255,255,0.3);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.semaine-block {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-left: 4px solid #FFD93D;
+}
+
+.semaine-block h4 {
+  color: #FFA500;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.semaine-block textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: border-color 0.3s;
+}
+
+.semaine-block textarea:focus {
+  outline: none;
+  border-color: #FFD93D;
+}
+
+.btn-add-semaine {
+  background: #f8f9fa;
+  border: 2px dashed #FFD93D;
+  color: #FFA500;
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.btn-add-semaine:hover {
+  background: #FFF9F0;
+  border-color: #FFA500;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: white;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #FFD93D 0%, #FFA500 100%);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+}
+
+.btn-secondary {
+  background: #7f8c8d;
+}
+
+.btn-secondary:hover {
+  background: #6c7a7b;
+}
+
+.actions {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.modal-footer {
+  padding: 20px 30px;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* PROGRESSIONS */
+.progression-info {
+  background: #FFF9F0;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  border-left: 4px solid #FFD93D;
+}
+
+.progression-info p {
+  margin: 5px 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.progression-info strong {
+  color: #FFA500;
+}
+
+.semaine-block {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s;
+}
+
+.semaine-block:hover {
+  border-color: #FFD93D;
+}
+
+.semaine-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.semaine-header h4 {
+  color: #FFA500;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.btn-delete-semaine {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s;
+}
+
+.btn-delete-semaine:hover {
+  background: #c0392b;
+}
+
+.semaine-block textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: border-color 0.3s;
+}
+
+.semaine-block textarea:focus {
+  outline: none;
+  border-color: #FFD93D;
+}
+
+.btn-add-semaine {
+  background: #f8f9fa;
+  color: #FFA500;
+  border: 2px dashed #FFD93D;
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  margin-bottom: 20px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.btn-add-semaine:hover {
+  background: #FFF9F0;
+  border-color: #FFA500;
+}
+
+.competence-item {
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.competence-item:hover {
+  background: #FFE8B3 !important;
+  transform: translateX(5px);
+}
+
+.competence-item.has-progression::after {
+  content: '✓';
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #27ae60;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+@media print {
+  /* RESET */
+  body {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* MASQUER LES ÉLÉMENTS NON NÉCESSAIRES */
+  .header, 
+  .tabs, 
+  .actions, 
+  .btn, 
+  .btn-add,
+  .modal-overlay,
+  .nav-btn,
+  .date-nav { 
+    display: none !important; 
+  }
+  
+  /* AFFICHER TOUT LE CONTENU */
+  .tab-content { 
+    display: block !important; 
+  }
+  
+  /* CONTAINER COMPACT */
+  .container {
+    max-width: 100% !important;
+    padding: 10px 15px !important;
+    margin: 0 !important;
+  }
+  
+  /* TITRES DE PÉRIODES COMPACTS */
+  .tab-content h2 {
+    font-size: 14pt !important;
+    margin: 8px 0 6px 0 !important;
+    padding: 6px 10px !important;
+    page-break-after: avoid !important;
+  }
+  
+  /* CARTES DE DOMAINES COMPACTES */
+  .domain-card {
+    background: white !important;
+    padding: 8px 12px !important;
+    margin-bottom: 8px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+  }
+  
+  .domain-card h3 {
+    font-size: 12pt !important;
+    margin: 0 0 6px 0 !important;
+    padding-bottom: 4px !important;
+    border-bottom: 1px solid #eee !important;
+  }
+  
+  /* COMPÉTENCES ULTRA COMPACTES */
+  .competence-item {
+    padding: 4px 8px !important;
+    margin: 3px 0 !important;
+    font-size: 9pt !important;
+    line-height: 1.3 !important;
+    background: white !important;
+    border: none !important;
+    border-left: 2px solid #999 !important;
+    page-break-inside: avoid !important;
+  }
+  
+  .competence-item i {
+    font-size: 8pt !important;
+    margin-right: 4px !important;
+  }
+  
+  .competence-item span {
+    font-size: 9pt !important;
+  }
+  
+  /* MASQUER LE BADGE "HAS PROGRESSION" */
+  .competence-item::after {
+    display: none !important;
+  }
+  
+  /* OPTIMISER LES SAUTS DE PAGE */
+  .tab-content {
+    page-break-after: always !important;
+  }
+  
+  .tab-content:last-child {
+    page-break-after: auto !important;
+  }
+  
+  /* ÉVITER LES ORPHELINES */
+  h2, h3 {
+    page-break-after: avoid !important;
+  }
+  
+  /* FORCER LE FORMAT A4 */
+  @page {
+    size: A4 portrait;
+    margin: 1cm;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-content">
+    <div style="font-size: 3rem;">🐣</div>
+    <div class="header-text">
+      <h1>Programmations Petite Section</h1>
+      <p>Année scolaire 2025-2026 • Par période</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="actions">
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <a href="index-planner.html" class="btn btn-secondary">
+        <i class="fas fa-home"></i> Retour au hub
+      </a>
+      <a href="gestion-classe.html" class="btn btn-secondary">
+        <i class="fas fa-users"></i> Gestion de classe
+      </a>
+      <button onclick="exporterPourIEN()" class="btn btn-primary" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
+        <i class="fas fa-file-export"></i> Export pour l'IEN
+      </button>
+    </div>
+    <button class="btn btn-primary" onclick="window.print()">
+      <i class="fas fa-print"></i> Imprimer
+    </button>
+  </div>
+
+  <!-- TABS PÉRIODES -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchPeriod('P1')">
+      <i class="fas fa-calendar-alt"></i> Période 1
+    </button>
+    <button class="tab" onclick="switchPeriod('P2')">
+      <i class="fas fa-calendar-alt"></i> Période 2
+    </button>
+    <button class="tab" onclick="switchPeriod('P3')">
+      <i class="fas fa-calendar-alt"></i> Période 3
+    </button>
+    <button class="tab" onclick="switchPeriod('P4')">
+      <i class="fas fa-calendar-alt"></i> Période 4
+    </button>
+    <button class="tab" onclick="switchPeriod('P5')">
+      <i class="fas fa-calendar-alt"></i> Période 5
+    </button>
+  </div>
+
+  <!-- PÉRIODE 1 -->
+  <div id="P1" class="tab-content active">
+    <h2 style="margin-bottom: 20px; color: #FFA500;">📅 Période 1 - Septembre/Octobre</h2>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-calculator"></i> Mathématiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser une collection de 1 à 3 comme celle du modèle (même objet)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Construire la notion de quantité et d'unité</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Estimer de manière perceptive et globale : beaucoup/un peu, trop/assez/pas assez</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Reconnaître visuellement et tactilement des objets de même forme qu'un objet donné</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Encastrer des objets</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>A partir d'un modèle, reproduire un puzzle de 2 à 4 pièces</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Percevoir visuellement qu'un objet est plus long qu'un autre lorsque les longueurs sont très différentes</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Bande numérique : noter avec une photo son avancée dans l'apprentissage de la comptine numérique</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Motifs : reproduire un motif répétitif très simple de 2 éléments</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-comments"></i> Langage oral</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vocabulaire : École/classe / Automne — comparer, trier, catégoriser les mots introduits en les manipulant</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Reconnaître et nommer un objet</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Syntaxe : comprendre et utiliser les pronoms « il-elle/ils-elles » ; utiliser le verbe au présent</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Coordonner des propositions avec le connecteur : « et »</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Articulation : articuler distinctement les mots appris ; prononcer correctement des mots choisis</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Discours : oser parler pour exprimer un besoin à l'adulte ; se nommer, nommer certains enfants</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Mémoriser des comptines et des chants ; s'exprimer lors d'une sollicitation</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Diversité linguistique : écouter des chants, des comptines, des histoires en français et en langue étrangère</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-book"></i> Langage écrit — Lire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Phonologie : identifier les sons de la langue lors des écoutes ; discriminer des sons familiers</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Comparer et apparier les sons</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nom des lettres : utiliser l'étiquette de son prénom en lettres capitales avec photo pour marquer sa présence</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Associer sa photo à son prénom sur les étiquettes de présence ; utiliser les étiquettes prénoms pour signer son travail</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Supports de l'écrit : repérer les outils fonctionnels utilisés en classe (étiquette, emploi du temps, photos)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Reconnaître quelques écrits utilisés et produits en classe (comptines, recette)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Associer un écrit connu à son utilisation ; manipuler un album dans le bon sens, tourner les pages</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Compréhension : reconnaître un personnage, le nommer et le situer dans les illustrations</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Écouter et comprendre un texte facile lu ; participer aux échanges qui suivent l'écoute</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-pencil-alt"></i> Langage écrit — Écrire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme : contrôler et guider ses gestes par le regard ; muscler les doigts et le poignet par des jeux</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Produire des tracés continus et discontinus ; gribouiller ; manipuler de la pâte à modeler</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Oral à l'écrit : percevoir que l'écrit encode l'oral ; observer l'adulte écrire</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Demander à l'adulte d'écrire, de légender un dessin (comprendre que dessin ≠ écriture)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réciter une comptine apprise en identifiant le support écrit dont elle est issue</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Produire : mimer la posture et les gestes d'écriture de l'adulte ; tracer des signes sur une feuille en indiquant qu'on écrit</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-running"></i> Activité physique</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Agir dans l'espace : découvrir des objets de tailles, formes ou poids différents (ballons, cerceaux, cordes, sacs, anneaux)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Expérimenter les différentes actions possibles : lancer, attraper, faire rouler, glisser, tourner</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Répondre à un signal ; agir dans un temps limité</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Déplacements : expérimenter marcher, courir, ramper, sauter, rouler, grimper, glisser</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Expression : connaître les différentes positions (assis, à genoux, debout, couché) et les exécuter en musique</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Collaborer : apprendre à respecter les règles ; découvrir des jeux moteurs vécus en collectif</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-palette"></i> Activités artistiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme décoratif : laisser des traces en occupant tout l'espace avec ses mains, avec des objets</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser des tracés continus : les lignes continues, les lignes verticales</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Choisir différents outils, médiums, supports en fonction d'un projet ou d'une consigne</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Travailler autour de la couleur : mélanges, nuances, effets, ou de la matière (épais, liquide)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Mémoriser un répertoire de comptines et de chansons courtes à structure simple</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Explorer les sonorités de son corps à travers des jeux rythmiques simples</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Spectacle vivant : participer à des mises en jeux du corps (marionnettes) ; découvrir le rôle de spectateur</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-globe"></i> Explorer le monde</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Temps : distinguer « matin » et « après-midi »</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Espace : explorer et s'approprier l'espace de la classe, de la cour et de l'école ; investir les différents coins</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vivant : s'intéresser à son corps, à ses besoins (toilettes, se laver les mains, manger, dormir)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Distinguer fille/garçon ; distinguer certaines parties du corps</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Matière : explorer et agir sur la matière (pâte à modeler, papier, eau, semoule, riz, graines, sable)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Outils numériques : découvrir et commencer à utiliser tablette numérique, vidéoprojecteur</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-heart"></i> Éducation à la vie affective et relationnelle</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Corps : nommer les parties du corps (visage puis corps) en partant des dénominations spontanées vers le vocabulaire scientifique</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>S'approprier la notion d'intimité à partir de situations quotidiennes (habillage, consultation médicale)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Relations : apprendre à associer un geste à un mot simple (non, oui, d'accord, stop) en particulier lors d'un contact physique</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Société : comprendre que le choix d'une activité et les goûts ne sont pas prédéterminés par le fait d'être fille ou garçon</span></div>
+    </div>
+  </div>
+
+  <!-- PÉRIODE 2 -->
+  <div id="P2" class="tab-content">
+    <h2 style="margin-bottom: 20px; color: #FFA500;">📅 Période 2 - Novembre/Décembre</h2>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-calculator"></i> Mathématiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser une collection d'objets de 1 à 3 comme celle du modèle (objets différents entre le modèle et la collection)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser une collection contenant un objet de plus qu'une collection donnée (donner un objet → passer à 2)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Utiliser ses doigts, les points du dé ou le nom d'un nombre pour indiquer la quantité d'objets (1 à 2)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Dénombrer 1 puis 2 objets en les déplaçant un à un ; 1 puis encore 1 ça fait 2</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser une collection avec la même quantité que le modèle (1, 2 objets)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Estimer de manière perceptive et globale : pareil/pas pareil</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Composer le nombre avec les doigts de ses mains (1 doigt et encore 1 doigt cela fait 2 doigts)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nommer le nombre jusqu'à 2 correspondant à une quantité d'objets, représentation avec les doigts ou dé</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Comptine numérique : étendre la connaissance de la suite orale au travers des activités rituelles et quotidiennes</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Rang : s'initier au déplacement via des jeux de plateaux en apprenant à déplacer son pion</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Problèmes : manifester sa compréhension par un problème d'ajout avec du matériel figuratif ; faire des problèmes de logique</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Formes : encastrer des objets ; à partir d'un modèle, reproduire un puzzle de 2 à 4 pièces</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Grandeurs : déplacer un objet pour le mettre à la même origine qu'un autre afin de comparer sa longueur</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Motifs : reproduire un motif répétitif très simple de 4 éléments</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-comments"></i> Langage oral</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vocabulaire : vêtements / Émotions et Noël — comparer, trier, catégoriser les mots introduits</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Syntaxe : comprendre et utiliser les pronoms « il-elle/ils-elles » ; utiliser le verbe au présent</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Coordonner avec le connecteur : « et »</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Articulation : articuler distinctement les mots appris ; prononcer correctement des mots choisis</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Discours : oser parler pour exprimer un besoin à l'adulte ou un autre élève ; nommer les enfants de la classe</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Mémoriser des comptines et des chants et les restituer ; s'exprimer lors d'une sollicitation</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Diversité linguistique : manifester de l'intérêt pour d'autres langues ; s'exercer, répéter des sons et des mots</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-book"></i> Langage écrit — Lire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Phonologie : discriminer des sons familiers et localiser leur source ; comparer et apparier les sons</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nom des lettres : utiliser l'étiquette de son prénom avec photo pour marquer sa présence ; associer photo à prénom</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Utiliser l'étiquette de son prénom avec la photo pour évoquer une production</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Supports de l'écrit : associer un écrit connu à son utilisation ; manipuler un album dans le bon sens</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Compréhension : écouter et comprendre un texte lu ; répondre à des questions simples (personnages, lieu)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Identifier les livres dans lesquels se retrouvent les mêmes personnages</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Utiliser des marottes pour raconter ce que les personnages font dans les albums lus</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-pencil-alt"></i> Langage écrit — Écrire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme : tenir son outil scripteur correctement ; produire des tracés continus et discontinus</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Tracer des formes de base : traits verticaux ; manipuler de la pâte à modeler (l'écraser)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Oral à l'écrit : observer l'adulte écrire ; demander à l'adulte d'écrire, de légender un dessin</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Connaître le sens de l'écriture et de la lecture</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Produire : tracer des signes sur une feuille en indiquant qu'on écrit</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-running"></i> Activité physique</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Agir dans l'espace : expérimenter lancer, attraper, faire rouler, glisser, tourner</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Déplacements : reproduire un mode de déplacement ; sauter (loin, haut, par-dessus, dans)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Expression : expérimenter actions motrices (avancer, reculer, tourner, sauter sur place) ; danser à deux</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Collaborer : comprendre et s'approprier un rôle ; coopérer dans des jeux de poursuite : loup</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-palette"></i> Activités artistiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme décoratif : réaliser des tracés continus (lignes horizontales, quadrillage)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser des compositions plastiques en choisissant et combinant des matériaux ; réinvestir techniques et procédés</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Interpréter un chant ou une comptine au sein d'un groupe restreint</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Explorer des objets sonores divers empruntés à la vie quotidienne, des instruments de percussion</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Travailler autour de l'écoute et du silence ; développer progressivement son temps d'écoute</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-globe"></i> Explorer le monde</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Temps : prendre des repères plus précis dans la matinée</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Espace : se repérer dans l'espace de la classe pour se mettre en activité, ranger ; se déplacer sur un parcours orienté</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vivant : observer le monde animal ; découvrir et observer le monde végétal</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Matière : découvrir, explorer et transformer des matériaux naturels ou fabriqués par l'homme</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-heart"></i> Éducation à la vie affective et relationnelle</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Corps : s'approprier la notion d'intimité à partir de différentes situations de la vie quotidienne</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Relations : à partir de situations quotidiennes, systématiser l'expression de son consentement ou son refus</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Société : choisir parmi des illustrations de métiers/activités/sports celles qu'on aime ou non ; expliquer ses choix</span></div>
+    </div>
+  </div>
+
+  <!-- PÉRIODE 3 -->
+  <div id="P3" class="tab-content">
+    <h2 style="margin-bottom: 20px; color: #FFA500;">📅 Période 3 - Janvier/Février</h2>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-calculator"></i> Mathématiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser une collection d'objets de 1 à 3 comme celle du modèle (objets différents et organisation spatiale différente)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser une collection contenant un objet de plus (donner 2 objets → passer à 3)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Utiliser ses doigts, les points du dé ou le nom d'un nombre pour indiquer la quantité d'objets (1 à 3)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Dénombrer en déplaçant les objets : 1 puis encore 1 ça fait 2, 1 puis encore 1, puis encore 1, ça fait 3</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser une collection avec la même quantité que la représentation demandée (doigts) de 1 à 3</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Comparer globalement des quantités (avec 2 de différence) pour utiliser : plus que, moins que</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Composer le nombre à les doigts de ses mains jusqu'à 3 doigts</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nommer le nombre jusqu'à 3 correspondant à une quantité d'objets, représentation avec les doigts ou dé</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Rang : s'initier au déplacement via des jeux de plateaux (déplacer son pion selon une quantité demandée)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Problèmes : manifester sa compréhension par un problème d'ajout avec du matériel figuratif ; faire des problèmes de logique</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Formes : trier et classer des objets selon leurs formes ; classer selon des critères croisés (taille, couleur, texture)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Grandeurs : déplacer un objet pour comparer sa longueur ; grouper les objets de même longueur</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Motifs : recopier à l'identique un motif répétitif composé de plus de 4 éléments</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-comments"></i> Langage oral</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vocabulaire : Cuisine / Roi-château et hiver — comparer, trier, catégoriser les mots en les manipulant</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Syntaxe : comprendre et utiliser le pronom « je » ; utiliser le verbe au présent, puis au passé</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Coordonner avec le connecteur : « et »</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Articulation : percevoir les distinctions t/k — prononcer des mots choisis (cour/tour, cube/tube)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Discours : oser parler pour exprimer un besoin ou prendre part à la vie de la classe ; nommer les adultes de l'école</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Mémoriser comptines et chants et les restituer ; s'exprimer lors d'une sollicitation</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Diversité linguistique : manifester de l'intérêt pour d'autres langues ; s'exercer, répéter des sons et des mots</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-book"></i> Langage écrit — Lire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Phonologie : discriminer les sons familiers et localiser leur source (cuisine) ; comparer et apparier les sons</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Syllabes : prononcer son prénom en scandant les syllabes ; prononcer une comptine en scandant les syllabes</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nom des lettres : retrouver l'étiquette de son prénom en lettres capitales parmi d'autres en prenant des indices (sans photo)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Observer son initiale et la nommer ; reconnaître et nommer son initiale parmi d'autres</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Supports de l'écrit : observer des écrits et des situations d'écriture commentées par l'adulte (couverture, liste, affiche)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Compréhension : remettre les images de l'histoire dans l'ordre ; identifier les livres avec les mêmes personnages</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Utiliser des marottes pour raconter ce que les personnages font dans les albums lus</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-pencil-alt"></i> Langage écrit — Écrire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme : tenir son outil scripteur correctement ; produire des tracés continus et discontinus</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Tracer des formes de base : traits horizontaux ; manipuler de la pâte à modeler (faire une boule)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Oral à l'écrit : observer l'adulte écrire ; demander à l'adulte d'écrire, de légender un dessin</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Dicter à l'adulte une histoire connue en s'aidant des images</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Produire : tracer des signes sur une feuille en indiquant qu'on écrit</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-running"></i> Activité physique</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Déplacements : ramper (ventre, dos, avec/sans bras) ; s'adapter aux contraintes (sur, sous, dans)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Découvrir et utiliser les tricycles, vélos, draisiennes, trottinettes</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Expression : participer à des actions corporelles d'expression avec les différentes parties du corps et différents outils</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Collaborer : comprendre et s'approprier deux rôles différents dans un jeu d'opposition</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-palette"></i> Activités artistiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme décoratif : réaliser des tracés continus (lignes obliques) ; lignes brisées en freinant son geste</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Dessiner librement en utilisant différents outils, supports (craies à la cire, crayons de couleur)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Observer et décrire des images, des dessins, des illustrations d'albums, des reproductions d'œuvres d'art</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Explorer ses capacités vocales de manière ludique : intensité, hauteur, nuances</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Écouter des extraits d'œuvres musicales d'origines variées avec des contrastes forts</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-globe"></i> Explorer le monde</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Temps : commencer à utiliser les termes « maintenant » et « après » ; savoir dire l'activité à venir</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Espace : situer des objets par rapport à soi ; commencer à construire une image orientée de son corps</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vivant : distinguer les parties du corps ; être sensibilisé à une attitude écocitoyenne</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Matière : agir sur la matière en respectant une consigne (transvaser, malaxer, mélanger, couper, modeler, déchirer)</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-heart"></i> Éducation à la vie affective et relationnelle</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Corps : identifier les espaces où chacun a droit à son intimité par rapport aux adultes et aux autres élèves</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Relations : au cours d'activités physiques et artistiques, exprimer l'accord ou le désaccord par le geste et le déplacement</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Société : participer à des activités de classement et des jeux pour exprimer ses goûts ; comprendre que ces jeux ne sont pas réservés aux filles ou aux garçons</span></div>
+    </div>
+  </div>
+
+  <!-- PÉRIODE 4 -->
+  <div id="P4" class="tab-content">
+    <h2 style="margin-bottom: 20px; color: #FFA500;">📅 Période 4 - Mars/Avril</h2>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-calculator"></i> Mathématiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser des collections avec différents objets, cardinalité donnée par une représentation analogique (doigt ou dé)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser une collection contenant un objet de plus (donner 3 objets → passer à 4)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nommer les nombres correspondant au cardinal avant et après l'ajout d'un élément (de 1 à 4 objets)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Utiliser ses doigts, les points du dé ou le nom d'un nombre pour indiquer la quantité d'objets (1 à 3)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Dénombrer en déplaçant des objets jusqu'à 3 ; réaliser une collection avec la même quantité (doigts, dé) de 1 à 3</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Comparer deux collections par correspondance terme à terme</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Composer et décomposer le nombre jusqu'à 3 doigts ; verbaliser les compositions et les décompositions</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nommer le nombre jusqu'à 3 correspondant à une quantité ; faire la correspondance avec l'écriture chiffrée</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Rang : s'initier au rang en plaçant sa carte de présence sur une bande numérique jusqu'à 2 (1er ou 2ème)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Problèmes : manifester sa compréhension par un problème de retrait avec du matériel figuratif ; faire des problèmes de logique</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Formes : à partir d'un modèle, reproduire un puzzle de 6 à 12 pièces ; reproduire des assemblages de formes</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Grandeurs : déplacer un objet pour comparer sa longueur lorsqu'elles diffèrent de peu ; trier selon la longueur</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Motifs : reproduire de mémoire un motif répétitif présentant une alternance ; compléter un motif où des éléments sont absents</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-comments"></i> Langage oral</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vocabulaire : Animaux / Contes et printemps — comparer, trier, catégoriser les mots en les manipulant</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Syntaxe : comprendre et utiliser le pronom « je » ; utiliser le verbe au présent, passé, puis futur</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Coordonner avec le connecteur temporel/spatial : « et puis »</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Articulation : percevoir les distinctions f/s — prononcer des mots choisis (pouce/pouf, cassé, café)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Discours : oser parler pour exprimer un besoin ou prendre part à la vie de la classe</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>S'exprimer lors d'une sollicitation pour raconter un texte mémorisé ; expliquer ce qu'on a fait à l'aide d'une photo</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Diversité linguistique : manifester de l'intérêt pour d'autres langues ; s'exercer, répéter des sons et des mots</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-book"></i> Langage écrit — Lire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Phonologie : discriminer les sons familiers et localiser leur source (animaux) ; reconnaître les sons les plus fréquents</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Syllabes : prononcer son prénom en scandant les syllabes ; prononcer une comptine en scandant les syllabes</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nom des lettres : retrouver l'étiquette de son prénom en lettres capitales en prenant des indices sur les lettres (sans photo)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nommer les lettres capitales de son prénom et les voyelles ; les reconnaître</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Utiliser l'étiquette de son prénom pour marquer sa présence et évoquer une production</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Supports de l'écrit : observer des écrits et situations d'écriture commentés par l'adulte (couverture, liste, affiche)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Compréhension : remettre les images de l'histoire dans l'ordre ; identifier les livres avec les mêmes personnages</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Utiliser des marottes pour raconter les albums lus ; raconter une partie de l'histoire avec un support imagé</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-pencil-alt"></i> Langage écrit — Écrire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme : utiliser de façon coordonnée les 4 articulations (épaule, coude, poignet, doigts)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Tenir son outil scripteur correctement ; prendre des repères dans l'espace de la feuille</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Tracer des formes de base : traits et points ; manipuler de la pâte à modeler (faire un colombin)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Oral à l'écrit : observer l'adulte écrire ; dictée à l'adulte à partir de photos</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Produire : essayer de tracer son initiale en majuscule</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-running"></i> Activité physique</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Agir dans l'espace : agir dans un temps limité ; répondre à un signal</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Déplacements : adapter ses déplacements à des contraintes et des environnements variés</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Expression : danser à deux ; danser avec du petit matériel ; faire des rondes et jeux dansés</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Collaborer : coopérer et s'opposer dans des jeux de poursuite : loup</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-palette"></i> Activités artistiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme décoratif : réaliser des tracés en freinant son geste (les points, les traits)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Dessiner différents éléments du réel identifiables (bonhomme, maisons, animaux) ; dessiner pour représenter ou illustrer</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser des compositions plastiques en choisissant et combinant des matériaux</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Interpréter un chant ou une comptine au sein d'un groupe restreint ; apprendre progressivement à chanter en chœur</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-globe"></i> Explorer le monde</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Temps : repérer des événements sur la semaine ; comprendre et utiliser « maintenant », « après » et « avant »</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Espace : s'orienter et se déplacer en fonction d'une consigne simple ; orienter correctement une feuille, un livre</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vivant : être sensibilisé au respect des lieux et de protection du vivant</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Matière : explorer et agir sur la matière par des actions variées ; utiliser des ustensiles de cuisine</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-heart"></i> Éducation à la vie affective et relationnelle</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Corps : identifier les espaces d'intimité par rapport aux adultes et aux autres élèves</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Relations : effectuer une suite de mouvements et de déplacements sur la thématique consentement/refus, avec ou sans support musical</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Société : décrire et échanger à partir de la lecture d'albums en explicitant les assignations de rôle et les stéréotypes perceptibles</span></div>
+    </div>
+  </div>
+
+  <!-- PÉRIODE 5 -->
+  <div id="P5" class="tab-content">
+    <h2 style="margin-bottom: 20px; color: #FFA500;">📅 Période 5 - Mai/Juin</h2>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-calculator"></i> Mathématiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser des collections avec différents objets, cardinalité donnée par représentation analogique ou nom du nombre</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nommer les nombres correspondant au cardinal avant et après l'ajout d'un élément (de 1 à 4 objets)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Utiliser ses doigts, les points du dé ou le nom d'un nombre pour indiquer la quantité (1 à 4)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Dénombrer en déplaçant des objets jusqu'à 4 ; réaliser une collection dont la quantité est demandée oralement (1 à 4)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Comparer deux collections par correspondance terme à terme</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Composer et décomposer le nombre jusqu'à 4 doigts ; verbaliser les compositions et les décompositions</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Associer quantité ou constellations avec une écriture chiffrée (1 à 4)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Comptine numérique : réciter la comptine jusqu'à six, en partant de un</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Rang : s'initier au rang en plaçant sa carte de présence sur une bande numérique jusqu'à 3 (1er, 2ème ou 3ème)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Problèmes : manifester sa compréhension par un problème de réunion puis de constitution de collection ; problèmes de logique</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Formes : à partir d'un modèle, reproduire un puzzle de 6 à 12 pièces ; reproduire des assemblages de formes</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Grandeurs : trier des objets du plus petit au plus grand et inversement</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Motifs : reproduire de mémoire un motif répétitif avec alternance ; compléter un motif où des éléments sont absents</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-comments"></i> Langage oral</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vocabulaire : Transports / Jardin-insectes et été — comparer, trier, catégoriser les mots en les manipulant</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Syntaxe : comprendre et utiliser tous les pronoms appris (il-elle/ils-elles, je) ; utiliser présent, passé, futur</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Coordonner avec le connecteur : « et puis »</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Articulation : percevoir les distinctions m/n — prononcer des mots choisis (nain/main)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Discours : s'exprimer lors d'une sollicitation pour raconter un texte mémorisé</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Expliquer ce qu'on fait ou ce qu'on a fait ou ce qu'on va faire</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Diversité linguistique : manifester de l'intérêt pour d'autres langues ; s'exercer, répéter des sons, des mots, des phrases simples</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-book"></i> Langage écrit — Lire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Phonologie : discriminer les sons familiers et localiser leur source (transports) ; reconnaître les sons les plus fréquents</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Syllabes : frapper les syllabes d'un mot dans ses mains, sur ses cuisses ou avec des instruments</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nom des lettres : retrouver l'étiquette de son prénom en lettres capitales en prenant des indices (sans photo)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Nommer les lettres capitales de son prénom et toutes les voyelles</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Reconstituer un mot avec des lettres mobiles à partir d'un modèle</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Son des lettres : nommer les voyelles capitales et les prolonger pour en connaître le son</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Supports de l'écrit : observer des écrits et situations d'écriture commentés par l'adulte</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Compréhension : remettre les images de l'histoire dans l'ordre ; identifier les livres avec les mêmes personnages</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Raconter une partie de l'histoire avec l'aide d'un support imagé</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-pencil-alt"></i> Langage écrit — Écrire</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme : utiliser de façon coordonnée les 4 articulations (épaule, coude, poignet, doigts)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Tenir son outil scripteur correctement ; prendre des repères dans l'espace de la feuille</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Tracer des formes de base : traits, cercles et boucle ; reproduire des formes en pâte à modeler</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Oral à l'écrit : observer l'adulte écrire ; demander à l'adulte d'écrire, de légender un dessin</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Produire : essayer de tracer son initiale et quelques lettres de son prénom en majuscule</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-running"></i> Activité physique</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Agir dans l'espace : maîtriser lancer, attraper, faire rouler, glisser, tourner ; agir dans un temps limité</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Déplacements : adapter ses déplacements à des contraintes et des environnements variés</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Expression : danser à deux ; danser avec du petit matériel ; faire des rondes et jeux dansés</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Collaborer : coopérer et s'opposer dans des jeux de poursuite ; respecter les règles</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-palette"></i> Activités artistiques</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Graphisme décoratif : réaliser un tracé circulaire (gestes circulaires continus, cercles fermés)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Dessiner différents éléments du réel identifiables (bonhomme, maisons, animaux) ; dessiner pour représenter</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Réaliser des compositions plastiques en réinvestissant techniques et procédés</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Mémoriser comptines et chansons ; apprendre progressivement à chanter en chœur</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Spectacle vivant : participer à des mises en jeux du corps (marionnettes) ; découvrir le rôle de spectateur</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-globe"></i> Explorer le monde</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Temps : reconstituer une chronologie de 3 images séquentielles ; utiliser les sabliers pour matérialiser le temps</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Espace : décrire la position des objets (sur, sous, dans, devant, derrière, en bas, en haut)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Découvrir des espaces moins familiers (sorties de fin d'année)</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Vivant : être sensibilisé au respect des lieux et de protection du vivant</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Matière : agir sur la matière ; utiliser des ustensiles de cuisine ; découvrir l'outil ciseaux</span></div>
+    </div>
+
+    <div class="domain-card">
+      <h3><i class="fas fa-heart"></i> Éducation à la vie affective et relationnelle</h3>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Corps : développer sa connaissance de soi ; identifier les espaces d'intimité par rapport aux adultes et autres élèves</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Relations : apprendre qu'il est possible de refuser une démarche ou une action sans remettre en question des liens d'amitié</span></div>
+      <div class="competence-item"><i class="fas fa-check-circle"></i><span>Société : décrire et échanger à partir de la lecture d'albums en explicitant les assignations de rôle et stéréotypes</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL PROGRESSION -->
+<div class="modal-overlay" id="modalProgression">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>📈 Créer une progression</h3>
+      <button class="modal-close" onclick="fermerModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="progression-info">
+        <p><strong>📅 Période :</strong> <span id="progressionPeriode">-</span></p>
+        <p><strong>📚 Domaine :</strong> <span id="progressionDomaine">-</span></p>
+        <p><strong>🎯 Compétence :</strong> <span id="modalTitle">-</span></p>
+      </div>
+      
+      <div style="background: #e3f2fd; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+        <p style="margin: 0; color: #1976d2; font-size: 0.9rem;">
+          <i class="fas fa-info-circle"></i>
+          <strong>Astuce :</strong> Décrivez les activités semaine par semaine pour faire acquérir cette compétence.
+        </p>
+      </div>
+      
+      <div id="semainesContainer"></div>
+      
+      <button class="btn-add-semaine" onclick="ajouterSemaine()">
+        <i class="fas fa-plus-circle"></i> Ajouter une semaine
+      </button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="fermerModal()">
+        <i class="fas fa-times"></i> Annuler
+      </button>
+      <button class="btn btn-primary" onclick="sauvegarderProgression()">
+        <i class="fas fa-save"></i> Sauvegarder
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Charger le thème
+function chargerTheme() {
+  const savedTheme = localStorage.getItem('app_theme') || 'rose';
+  if (savedTheme === 'beige') {
+    document.documentElement.setAttribute('data-theme', 'beige');
+  }
+}
+chargerTheme();
+
+let currentCompetence = null;
+let currentPeriode = null;
+let currentDomaine = null;
+let currentIndex = null;
+let progressions = {};
+
+// INIT
+document.addEventListener('DOMContentLoaded', function() {
+  chargerProgressions();
+  ajouterClicksCompetences();
+  afficherBadges();
+});
+
+function chargerProgressions() {
+  const saved = localStorage.getItem('progressions_ps');
+  if (saved) {
+    try {
+      progressions = JSON.parse(saved);
+    } catch(e) {
+      progressions = {};
+    }
+  }
+}
+
+function sauvegarderDonnees() {
+  localStorage.setItem('progressions_ps', JSON.stringify(progressions));
+}
+
+function ajouterClicksCompetences() {
+  document.querySelectorAll('.competence-item').forEach((item, index) => {
+    item.setAttribute('data-index', index);
+    item.addEventListener('click', function() {
+      const periode = this.closest('.tab-content').id;
+      const domaine = this.closest('.domain-card').querySelector('h3').textContent.trim();
+      const competence = this.querySelector('span').textContent.trim();
+      
+      ouvrirModal(periode, domaine, competence, index);
+    });
+  });
+}
+
+function ouvrirModal(periode, domaine, competence, index) {
+  currentPeriode = periode;
+  currentDomaine = domaine;
+  currentCompetence = competence;
+  currentIndex = index;
+  
+  // Utiliser la compétence comme clé (plus stable que l'index)
+  const key = `${periode}_${competence.substring(0, 50)}`;
+  const progression = progressions[key];
+  
+  // Afficher les infos
+  document.getElementById('progressionPeriode').textContent = periode;
+  document.getElementById('progressionDomaine').textContent = domaine;
+  document.getElementById('modalTitle').textContent = competence;
+  
+  document.getElementById('semainesContainer').innerHTML = '';
+  
+  if (progression && progression.semaines) {
+    progression.semaines.forEach((semaine, i) => {
+      ajouterSemaine(i + 1, semaine);
+    });
+  } else {
+    // Ajouter 4 semaines par défaut
+    for(let i = 1; i <= 4; i++) {
+      ajouterSemaine(i);
+    }
+  }
+  
+  document.getElementById('modalProgression').classList.add('active');
+}
+
+function fermerModal() {
+  document.getElementById('modalProgression').classList.remove('active');
+}
+
+function ajouterSemaine(numero = null, texte = '') {
+  const container = document.getElementById('semainesContainer');
+  const count = container.children.length + 1;
+  const num = numero || count;
+  
+  const div = document.createElement('div');
+  div.className = 'semaine-block';
+  div.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <h4><i class="fas fa-calendar-week"></i> Semaine ${num}</h4>
+      <button onclick="supprimerSemaine(this)" style="background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <textarea placeholder="Décrivez les activités de cette semaine...">${texte}</textarea>
+  `;
+  
+  container.appendChild(div);
+}
+
+function supprimerSemaine(btn) {
+  if (document.getElementById('semainesContainer').children.length > 1) {
+    btn.closest('.semaine-block').remove();
+    renumeroterSemaines();
+  } else {
+    alert('Vous devez garder au moins une semaine !');
+  }
+}
+
+function renumeroterSemaines() {
+  document.querySelectorAll('.semaine-block').forEach((block, index) => {
+    block.querySelector('h4').innerHTML = `<i class="fas fa-calendar-week"></i> Semaine ${index + 1}`;
+  });
+}
+
+function sauvegarderProgression() {
+  const semaines = [];
+  document.querySelectorAll('.semaine-block textarea').forEach(textarea => {
+    semaines.push(textarea.value);
+  });
+  
+  // Utiliser la compétence elle-même comme partie de la clé (plus stable que l'index)
+  const key = `${currentPeriode}_${currentCompetence.substring(0, 50)}`;
+  progressions[key] = {
+    periode: currentPeriode,
+    domaine: currentDomaine,
+    competence: currentCompetence,
+    semaines: semaines
+  };
+  
+  sauvegarderDonnees();
+  afficherBadges();
+  fermerModal();
+  
+  // Notification
+  const notif = document.createElement('div');
+  notif.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #27ae60; color: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10000; animation: slideIn 0.3s;';
+  notif.innerHTML = '<i class="fas fa-check-circle"></i> Progression sauvegardée !';
+  document.body.appendChild(notif);
+  setTimeout(() => notif.remove(), 3000);
+}
+
+function afficherBadges() {
+  document.querySelectorAll('.competence-item').forEach((item, index) => {
+    const periode = item.closest('.tab-content')?.id;
+    if (!periode) return;
+    
+    const competence = item.querySelector('span')?.textContent.trim();
+    if (!competence) return;
+    
+    // Utiliser la compétence comme clé
+    const key = `${periode}_${competence.substring(0, 50)}`;
+    
+    if (progressions[key]) {
+      item.classList.add('has-progression');
+    } else {
+      item.classList.remove('has-progression');
+    }
+  });
+}
+
+function switchPeriod(periodId) {
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  
+  event.target.classList.add('active');
+  document.getElementById(periodId).classList.add('active');
+}
+
+function exporterPourIEN() {
+  // Récupérer toutes les progressions remplies
+  const progressionsRemplies = [];
+  
+  Object.keys(progressions).forEach(key => {
+    const prog = progressions[key];
+    if (prog && prog.semaines && prog.semaines.some(s => s && typeof s === 'string' && s.trim() !== '')) {
+      progressionsRemplies.push(prog);
+    }
+  });
+  
+  if (progressionsRemplies.length === 0) {
+    alert('❌ Aucune progression remplie à exporter.\n\n' +
+          '📝 Pour exporter :\n' +
+          '1. Cliquez sur une compétence\n' +
+          '2. Remplissez au moins une semaine\n' +
+          '3. Cliquez "Sauvegarder"\n' +
+          '4. Recommencez l\'export');
+    return;
+  }
+
+  let html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programmations PS - Export IEN</title>
+  <style>
+    @media print {
+      @page { margin: 1cm; size: A4; }
+      body { margin: 0; background: white !important; }
+      .no-print { display: none; }
+      .page-break { page-break-before: always; }
+      .progression-card { page-break-inside: avoid; }
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Arial', 'Helvetica', sans-serif;
+      font-size: 10pt;
+      line-height: 1.4;
+      color: #222;
+      background: white;
+      padding: 0.5cm;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 12px 0;
+      margin-bottom: 15px;
+      border-bottom: 3px solid #27ae60;
+    }
+    
+    .header h1 {
+      font-size: 18pt;
+      color: #27ae60;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    
+    .header .info {
+      font-size: 9pt;
+      color: #555;
+    }
+    
+    .periode-section {
+      margin-bottom: 20px;
+    }
+    
+    .periode-title {
+      background: #27ae60;
+      color: white;
+      padding: 6px 12px;
+      font-size: 11pt;
+      font-weight: bold;
+      margin-bottom: 10px;
+      border-radius: 3px;
+    }
+    
+    .progression-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    @media print {
+      .progression-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .progression-card {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      background: white;
+    }
+    
+    .prog-header {
+      background: #f0f7f4;
+      padding: 8px 10px;
+      border-bottom: 2px solid #27ae60;
+    }
+    
+    .prog-header h3 {
+      font-size: 10pt;
+      color: #27ae60;
+      font-weight: bold;
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+    
+    .prog-header .domaine {
+      font-size: 8pt;
+      color: #666;
+      font-style: italic;
+    }
+    
+    .prog-body {
+      padding: 8px 10px;
+    }
+    
+    .semaine-item {
+      margin-bottom: 6px;
+      padding-left: 12px;
+      border-left: 3px solid #27ae60;
+    }
+    
+    .semaine-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .semaine-label {
+      font-size: 8pt;
+      font-weight: bold;
+      color: #27ae60;
+      margin-bottom: 2px;
+    }
+    
+    .semaine-content {
+      font-size: 9pt;
+      color: #333;
+      line-height: 1.3;
+      white-space: pre-wrap;
+    }
+    
+    .btn-print {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 11pt;
+      border-radius: 4px;
+      cursor: pointer;
+      display: block;
+      margin: 15px auto;
+      font-weight: bold;
+    }
+    
+    .btn-print:hover {
+      background: #229954;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+      font-size: 8pt;
+      color: #999;
+    }
+    
+    .resume {
+      background: #f8f9fa;
+      border-left: 4px solid #27ae60;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 9pt;
+    }
+    
+    .resume strong {
+      color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📚 Programmations Petite Section</h1>
+    <div class="info">Année scolaire 2025-2026 • Document généré le ${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+  </div>
+  
+  <button class="btn-print no-print" onclick="window.print()">🖨️ Imprimer / PDF</button>
+  
+  <div class="resume">
+    <strong>${progressionsRemplies.length}</strong> progression(s) • Document optimisé pour l'impression
+  </div>
+`;
+  
+  // Grouper par période
+  const periodes = ['periode1', 'periode2', 'periode3', 'periode4', 'periode5'];
+  const periodesAlt = ['P1', 'P2', 'P3', 'P4', 'P5'];
+  const nomsperiodes = ['Période 1', 'Période 2', 'Période 3', 'Période 4', 'Période 5'];
+  
+  periodes.forEach((periode, index) => {
+    const progsperiode = progressionsRemplies.filter(p => 
+      p.periode === periode || p.periode === periodesAlt[index]
+    );
+    
+    if (progsperiode.length > 0) {
+      if (index > 0) html += '<div class="page-break"></div>';
+      
+      html += `
+  <div class="periode-section">
+    <div class="periode-title">${nomsperiodes[index]}</div>
+    <div class="progression-grid">`;
+      
+      progsperiode.forEach(prog => {
+        html += `
+      <div class="progression-card">
+        <div class="prog-header">
+          <h3>${prog.competence}</h3>
+          <div class="domaine">${prog.domaine || 'Domaine'}</div>
+        </div>
+        <div class="prog-body">`;
+        
+        let semainesAffichees = 0;
+        prog.semaines.forEach((semaine, i) => {
+          if (semaine && typeof semaine === 'string' && semaine.trim() !== '') {
+            semainesAffichees++;
+            html += `
+          <div class="semaine-item">
+            <div class="semaine-label">S${i + 1}</div>
+            <div class="semaine-content">${semaine.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+          </div>`;
+          }
+        });
+        
+        if (semainesAffichees === 0) {
+          html += `<div class="semaine-item"><div class="semaine-content" style="color: #999; font-style: italic;">Aucune activité</div></div>`;
+        }
+        
+        html += `
+        </div>
+      </div>`;
+      });
+      
+      html += `
+    </div>
+  </div>`;
+    }
+  });
+  
+  html += `
+  <div class="footer">Ma Petite Bib • Programmations PS • ${new Date().getFullYear()}</div>
+  <button class="btn-print no-print" onclick="window.print()">🖨️ Imprimer / PDF</button>
+</body>
+</html>
+  `;
+  
+  // Créer un fichier téléchargeable
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Programmations_PS_Export_IEN_' + new Date().toISOString().split('T')[0] + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  alert('✅ Export téléchargé !\n\n' +
+        '📄 Le fichier HTML a été téléchargé.\n\n' +
+        '💡 Pour le convertir en PDF :\n' +
+        '1. Ouvrez le fichier téléchargé avec votre navigateur\n' +
+        '2. Faites Cmd+P (Mac) ou Ctrl+P (Windows)\n' +
+        '3. Choisissez "Enregistrer au format PDF"\n\n' +
+        '💡 OU ouvrez-le directement avec Aperçu (Mac) :\n' +
+        '1. Double-clic sur le fichier\n' +
+        '2. Fichier > Exporter en PDF');
+}
+
+// Animation
+const style = document.createElement('style');
+style.textContent = '@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>

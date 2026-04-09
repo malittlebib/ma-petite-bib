@@ -3025,22 +3025,35 @@ function afficherNomEleve(eleve) {
 
 function chargerEleves() {
   try {
-    // Utiliser SyncData pour charger les élèves
-    eleves = window.SyncData.getEleves();
-    console.log('✅ Élèves chargés via SyncData:', eleves.length);
+    if (typeof window.SyncData !== 'undefined' && window.SyncData.getEleves) {
+      eleves = window.SyncData.getEleves();
+      console.log('✅ Élèves chargés via SyncData:', eleves.length);
+    } else {
+      // Fallback localStorage direct
+      const saved = localStorage.getItem('gestion_classe_eleves');
+      eleves = saved ? JSON.parse(saved) : [];
+      console.log('✅ Élèves chargés via localStorage:', eleves.length);
+    }
+    if (!Array.isArray(eleves)) eleves = [];
   } catch(e) {
-    console.error('Erreur chargement:', e);
+    console.error('Erreur chargement élèves:', e);
     eleves = [];
   }
 }
 
 function sauvegarderEleves() {
   try {
-    // Utiliser SyncData pour sauvegarder les élèves
-    window.SyncData.setEleves(eleves);
-    console.log('✅ Élèves sauvegardés via SyncData');
+    // Toujours sauvegarder dans localStorage (source de vérité)
+    localStorage.setItem('gestion_classe_eleves', JSON.stringify(eleves));
+    // Et dans SyncData si disponible
+    if (typeof window.SyncData !== 'undefined' && window.SyncData.setEleves) {
+      window.SyncData.setEleves(eleves);
+    }
+    console.log('✅ Élèves sauvegardés (' + eleves.length + ' élèves)');
   } catch(e) {
-    console.error('Erreur sauvegarde:', e);
+    console.error('Erreur sauvegarde élèves:', e);
+    // Dernier recours : localStorage seul
+    try { localStorage.setItem('gestion_classe_eleves', JSON.stringify(eleves)); } catch(e2) {}
   }
 }
 
@@ -3206,7 +3219,7 @@ function sauvegarderEleve() {
   }
   
   const eleve = {
-    id: currentEleveId || Date.now().toString(),
+    id: currentEleveId ? String(currentEleveId) : String(Date.now()),
     prenom: prenom,
     nom: nom,
     dateNaissance: document.getElementById('eleveDateNaissance').value,
@@ -3236,8 +3249,14 @@ function sauvegarderEleve() {
   };
   
   if (currentEleveId) {
-    const index = eleves.findIndex(e => e.id === currentEleveId);
-    if (index >= 0) eleves[index] = eleve;
+    // Utiliser == pour gérer la comparaison string/number
+    const index = eleves.findIndex(e => e.id == currentEleveId);
+    if (index >= 0) {
+      eleves[index] = eleve;
+    } else {
+      console.error('Élève non trouvé pour modification, ID:', currentEleveId);
+      eleves.push(eleve);
+    }
   } else {
     eleves.push(eleve);
   }
@@ -3255,23 +3274,26 @@ function sauvegarderEleve() {
 }
 
 function supprimerEleve(id) {
-  if (!confirm('Supprimer cet élève ?')) return;
-  
-  // NOUVEAU : Supprimer l'anniversaire du calendrier
-  supprimerAnniversaireCalendrier(id);
-  
-  eleves = eleves.filter(e => e.id !== id);
+  if (!confirm('Supprimer cet élève ? Cette action est irréversible.')) return;
+
+  // Supprimer l'anniversaire du calendrier si applicable
+  try { supprimerAnniversaireCalendrier(id); } catch(e) {}
+
+  // Utiliser == pour gérer la comparaison string/number
+  eleves = eleves.filter(e => e.id != id);
   sauvegarderEleves();
   afficherEleves();
   updateStats();
+  console.log('✅ Élève supprimé, il reste', eleves.length, 'élèves');
 }
 
 // AFFICHAGE ÉLÈVES
 function afficherEleves() {
   const grid = document.getElementById('elevesGrid');
-  
+
   if (eleves.length === 0) {
     grid.innerHTML = '<p style="color: #95a5a6; grid-column: 1/-1; text-align: center; padding: 40px;">Aucun élève. Cliquez sur "Ajouter un élève" pour commencer.</p>';
+    updateStats(); // ← toujours mettre à jour les compteurs
     return;
   }
   
@@ -3300,12 +3322,24 @@ function afficherEleves() {
     </div>
   `;
   }).join('');
+  updateStats(); // synchroniser les compteurs après chaque affichage
 }
 
 function updateStats() {
-  document.getElementById('statTotal').textContent = eleves.length;
-  document.getElementById('statGarcons').textContent = eleves.filter(e => e.genre === 'G').length;
-  document.getElementById('statFilles').textContent = eleves.filter(e => e.genre === 'F').length;
+  // S'assurer qu'on a bien un tableau
+  if (!Array.isArray(eleves)) eleves = [];
+
+  const total    = eleves.length;
+  const garcons  = eleves.filter(e => e.genre === 'G').length;
+  const filles   = eleves.filter(e => e.genre === 'F').length;
+
+  const elTotal = document.getElementById('statTotal');
+  const elGarc  = document.getElementById('statGarcons');
+  const elFill  = document.getElementById('statFilles');
+
+  if (elTotal) elTotal.textContent = total;
+  if (elGarc)  elGarc.textContent  = garcons;
+  if (elFill)  elFill.textContent  = filles;
 }
 
 // PRÉSENCES
